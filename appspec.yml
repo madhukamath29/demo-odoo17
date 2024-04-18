@@ -1,0 +1,16 @@
+version: 0.0
+os: linux
+files:
+  - source: .
+    destination: /tmp/codedeploy
+hooks:
+  AfterInstall:
+    - location: scripts/rsync.sh
+      timeout: 300
+  ApplicationStart:
+    - location: scripts/restart_server.sh
+      timeout: 300
+permissions:
+  - object: /tmp/codedeploy
+    owner: odoo17
+    group: odoo17
