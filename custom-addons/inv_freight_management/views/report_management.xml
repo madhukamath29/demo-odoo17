@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="action_report_consignment" model="ir.actions.report">
+            <field name="name">Consignment Report</field>
+            <field name="model">inv.consignment</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">inv_freight_management.report_inv_consignment</field>
+            <field name="report_file">inv_freight_management.report_inv_consignment</field>
+            <field name="print_report_name">'Consignment Report - %s' % object.master_bill_no</field>
+            <field name="binding_model_id" ref="model_inv_consignment"/>
+            <field name="binding_type">report</field>
+        </record>
+                <record id="action_report_order" model="ir.actions.report">
+            <field name="name">order Report</field>
+            <field name="model">inv.freightorder</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">inv_freight_management.report_inv_freightorder</field>
+            <field name="report_file">inv_freight_management.report_inv_freightorder</field>
+            <field name="print_report_name">'Oder Report - %s' % object.name</field>
+            <field name="binding_model_id" ref="model_inv_freightorder"/>
+            <field name="binding_type">report</field>
+        </record>
+
+    </data>
+</odoo>

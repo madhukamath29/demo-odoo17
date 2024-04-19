@@ -1,0 +1,38 @@
+{
+    'name': 'inv_freight_management',
+    'version': '17.0',
+    'summary': 'Inv Freight Management',
+    'description': """Inv Freight Management for Managing the Freight Operations""",
+    'author': 'Invenger Technologies pvt ltd',
+    'company': 'Invenger Technologies pvt ltd',
+    'maintainer': 'Invenger Technologies pvt ltd',
+    'images': ['static/description/banner.png'],
+    'website': 'https://invenger.in',
+    'depends': ['contacts' , 'website_sale'],
+    "external_dependencies": {},
+    'data': ["security/ir.model.access.csv",
+             "views/Freight_Order.xml",
+             "views/othermodel.xml",
+             "views/PartnerForm.xml",
+             "views/website.xml",
+             "views/consignment.xml",
+             "views/Consignmentreport.xml",
+             "views/orderreport.xml",
+             "views/report_management.xml",
+             "views/custom_external_layout.xml"],
+    'qweb': ['static/src/xml/*.xml',
+             ],
+    'assets': {
+        'web.assets_frontend': [
+            'inv_freight_management/static/src/css/styles.css',
+        ],
+        'web.assets_backend': [
+            'inv_freight_management/static/src/css/styles.css',
+        ],
+    },
+    'license': 'AGPL-3',
+    'installable': True,
+    'auto_install': False,
+    'application': True,
+
+}

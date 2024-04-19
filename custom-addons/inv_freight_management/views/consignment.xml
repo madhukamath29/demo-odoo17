@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="action_inv_consignment" model="ir.actions.act_window">
+            <field name="name">Consignment</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">inv.consignment</field>
+            <field name="view_mode">tree,form,kanban,graph</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first order!
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="menu_inv_consignments" name="Consignments" parent="menu_inv_freightorder" sequence="4"/>
+        <act_window id="action_consignment" name="Consignments" res_model="inv.consignment"
+                    view_mode="tree,form,kanban"/>
+        <menuitem id="menu_inv_consignments_action" name="Consignments" parent="menu_inv_consignments"
+                  action="action_inv_consignment"/>
+
+
+        <record id="view_consignment_form" model="ir.ui.view">
+            <field name="name">consignment.form</field>
+            <field name="model">inv.consignment</field>
+            <field name="arch" type="xml">
+                <form string="Consignment">
+                    <header>
+                        <button name="generate_numbers" string="Confirm" type="object" class="oe_highlight"
+                                invisible="is_confirmed"/>
+                        <field name="status_id" widget="statusbar"
+                               />
+                    </header>
+
+                    <sheet>
+                        <!-- Display fields with desired styling -->
+                        <div class="oe_structure">
+                            <div class="oe_title">
+                                <label for="master_bill_no" class="oe_edit_only" string="Master Bill Number"/>
+                                <h1>
+                                    <field name="master_bill_no"/>
+                                </h1>
+                            </div>
+                            <div class="oe_structure">
+                                <group>
+                                    <group>
+                                        <field name="booking_no"/>
+                                        <field name="term"/>
+                                        <field name="ship_date" required="1"/>
+                                        <field name="departure_date" required="1"/>
+                                        <field name="arrival_date"/>
+                                        <field name="origin_country_id"/>
+                                        <field name="origin_port_id" domain="[('country_id', '=', origin_country_id)]"
+                                               readonly="origin_country_id == False"/>
+                                        <field name="destination_country_id"/>
+                                        <field name="destination_port_id"
+                                               domain="[('country_id', '=', destination_country_id)]"
+                                               readonly="destination_country_id == False"/>
+                                        <field name="company_id"/>
+                                        <field name="status_id" />
+                                    </group>
+                                    <group>
+                                        <field name="sending_agent"
+                                        />
+                                        <field name="receiving_agent"
+                                        />
+                                        <field name="notify_party_id"
+                                        />
+                                        <field name="consignment_type_id"/>
+                                        <field name="transport_type_id"/>
+                                        <field name="mode_id"
+                                               readonly="transport_type_id == False"/>
+                                        <field name="outern_no"/>
+                                        <field name="release_type"/>
+                                        <field name="carrier_name"/>
+                                        <field name="carrier_booking_ref"/>
+                                        <field name="carrier_no"/>
+                                        <field name="agent_ref"
+                                        />
+                                        <field name="is_confirmed" invisible="1"/>
+
+                                    </group>
+                                </group>
+                                <notebook>
+                                    <!-- Existing page for Orders -->
+                                    <page string="Add Orders">
+                                        <field name="filtered_orders" widget="one2many_list"
+                                               domain="[('origin_port_id', '=', origin_port_id), ('destination_port_id', '=', destination_port_id), ('status_id.name', 'ilike', 'Ready')]">
+                                            <tree>
+                                                <!-- Add all fields you want to display for orders -->
+                                                <field name="name"/>
+                                                <field name="order_date"/>
+                                                <field name="ready_date"/>
+                                                <!-- Add other fields -->
+                                            </tree>
+                                        </field>
+                                    </page>
+                                </notebook>
+                            </div>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_consignment_tree" model="ir.ui.view">
+            <field name="name">consignment.tree</field>
+            <field name="model">inv.consignment</field>
+            <field name="arch" type="xml">
+                <tree string="Consignment Tree">
+                    <field name="master_bill_no"/>
+                    <field name="booking_no"/>
+                    <field name="term"/>
+                    <field name="origin_port_id"/>
+                    <field name="destination_port_id"/>
+
+                </tree>
+            </field>
+        </record>
+        <record id="view_consignment_graph" model="ir.ui.view">
+            <field name="name">consignment.graph</field>
+            <field name="model">inv.consignment</field>
+            <field name="arch" type="xml">
+                <graph string="Consignment Graph" type="bar">
+                    <field name="status_id"/>
+                    <field name="id" type="count" string="Number of Consignments"/>
+                </graph>
+            </field>
+        </record>
+
+
+        <record id="view_consignment_kanban" model="ir.ui.view">
+            <field name="name">consignment.kanban</field>
+            <field name="model">inv.consignment</field>
+            <field name="arch" type="xml">
+                <kanban class="o_kanban_view">
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_card oe_kanban_global_click">
+                                <div class="o_kanban_record_head">
+                                    <div class="o_kanban_record_top">
+                                        <field name="master_bill_no"/>
+                                    </div>
+                                    <div class="o_kanban_record_bottom">
+                                        <field name="origin_port_id"/>
+                                        <field name="destination_port_id"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+    </data>
+</odoo>

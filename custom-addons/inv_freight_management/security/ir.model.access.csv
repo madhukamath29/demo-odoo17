@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_inv_freightorder,inv.freightorder,model_inv_freightorder,,1,1,1,1
+access_port,port,model_port,base.group_user,1,1,1,1
+access_consignment_type,consignment.type,model_consignment_type,base.group_user,1,1,1,1
+access_mode,mode,model_mode,base.group_user,1,1,1,1
+access_freight_order_status,freight.order.status,model_freight_order_status,base.group_user,1,1,1,1
+access_transport_type,transport.type,model_transport_type,base.group_user,1,1,1,1
+access_inv_consignment,inv.consignment,model_inv_consignment,,1,1,1,1
+access_package_type,package.type,model_package_type,,1,1,1,1
+access_inv_freightorder_package,inv.freightorder.package,model_inv_freightorder_package,,1,1,1,1
+access_freight_consignment_status,freight.consignment.status,model_freight_consignment_status,,1,1,1,1

@@ -1,0 +1,155 @@
+<?xml version="1.0"?>
+<odoo>
+    <template id="report_inv_consignment">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h1>
+                            <span t-field="doc.transport_type_id.name"/>
+                            Manifest
+                        </h1>
+                        <div>
+
+                            <table class="table table-condensed">
+                                <tr>
+                                    <td colspan="5" style="border: 1px solid black; padding: 10px;">
+                                        <strong>Console Details</strong>
+                                    </td>
+                                </tr>
+                                <tr>
+
+                                    <td colspan="2" style="border: 1px solid black; padding: 10px;">
+                                        <div class="o_report_field">
+                                            <strong>Export Agent:</strong>
+                                            <span t-field="doc.sending_agent.name"/>
+                                            <br/>
+                                            <span t-field="doc.sending_agent.street"/>
+                                            <br/>
+                                            <span t-field="doc.sending_agent.street2"/>
+                                            <br/>
+                                            <span t-field="doc.sending_agent.city"/>,
+                                            <span t-field="doc.sending_agent.state_id.name"/>
+                                            <br/>
+                                            <span t-field="doc.sending_agent.zip"/>
+                                        </div>
+                                    </td>
+
+                                    <td colspan="2" style="border: 1px solid black; padding: 10px;">
+                                        <div class="o_report_field">
+                                            <strong>Import Agent:</strong>
+                                            <span t-field="doc.receiving_agent.name"/>
+                                            <br/>
+                                            <span t-field="doc.receiving_agent.street"/>
+                                            <br/>
+                                            <span t-field="doc.receiving_agent.street2"/>
+                                            <br/>
+                                            <span t-field="doc.receiving_agent.city"/>,
+                                            <span t-field="doc.receiving_agent.state_id.name"/>
+                                            <br/>
+                                            <span t-field="doc.receiving_agent.zip"/>
+                                        </div>
+                                    </td>
+
+                                    <td colspan="1" style="border: 1px solid black; padding: 10px;">
+                                        <div class="o_report_field">
+                                            <strong>Departure CFS:</strong>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid black; padding: 10px;">
+                                        <div class="o_report_field">
+                                            <strong>TOTAL WEIGHT:</strong>
+                                            <br/>
+                                            <!--                                    <span t-field="doc.origin_port_id.name"/>-->
+                                        </div>
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 10px;">
+                                        <div class="o_report_field">
+                                            <strong>TOTAL VOLUME:
+                                            </strong>
+                                            <br/>
+                                            <!--                                    <span t-field="doc.destination_port_id.name"/>-->
+                                        </div>
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 10px;">
+                                        <div class="o_report_field">
+                                            <strong>CHARGEABLE:
+                                            </strong>
+                                            <br/>
+                                            <!--                                            <span t-field="doc.transport_type_id.name"/>-->
+                                            <!--                                            ,-->
+                                            <!--                                            <span t-field="doc.mode_id.name"/>-->
+                                        </div>
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 10px;">
+                                        <div class="o_report_field">
+                                            <strong>CARRIER:</strong>
+                                            <br/>
+                                            <!--                                            <span t-field="doc.shipping_date"/>-->
+                                        </div>
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 10px;">
+                                        <div class="o_report_field">
+                                            <strong>CUSTOMS ENTRY NUMBER:</strong>
+                                            <br/>
+                                            <!--                                            <span t-field="doc.shipping_date"/>-->
+                                        </div>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid black; padding: 10px;">
+                                        <div class="o_report_field">
+                                            <strong>PACKAGES:
+                                            </strong>
+                                            <br/>
+                                            <!--                                    <span t-field="doc.origin_port_id.name"/>-->
+                                        </div>
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 10px;">
+                                        <div class="o_report_field">
+                                            <strong>MASTER FREIGHT:
+                                            </strong>
+                                            <br/>
+                                            <!--                                    <span t-field="doc.destination_port_id.name"/>-->
+                                        </div>
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 10px;">
+                                        <div class="o_report_field">
+                                            <strong>ORIGIN:
+                                            </strong>
+                                            <br/>
+                                            <!--                                            <span t-field="doc.transport_type_id.name"/>-->
+                                            <!--                                            ,-->
+                                            <!--                                            <span t-field="doc.mode_id.name"/>-->
+                                            <strong>ETD:
+                                            </strong>
+                                        </div>
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 10px;">
+                                        <div class="o_report_field">
+                                            <strong>Destination:
+                                            </strong>
+                                            <br/>
+                                            <!--                                            <span t-field="doc.transport_type_id.name"/>-->
+                                            <!--                                            ,-->
+                                            <!--                                            <span t-field="doc.mode_id.name"/>-->
+                                            <strong>ETA:
+                                            </strong>
+                                        </div>
+                                    </td>
+
+                                </tr>
+
+
+                            </table>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

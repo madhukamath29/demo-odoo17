@@ -1,0 +1,160 @@
+<?xml version="1.0"?>
+<odoo>
+    <template id="report_inv_freightorder">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <tr>
+                            <td colspan="4" style="border: 1px solid black; padding: 10px;">
+                                <h1 style="text-align: center;">
+                                    <span t-field="doc.transport_type_id.name"/>
+                                    Order Report
+                                </h1>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="vertical-align: top; border: 1px solid black; padding: 10px; width: 50%;">
+                                <h2>Sender and Receiver Details</h2>
+                                <div class="o_report_field">
+                                    <strong>Shipper:</strong>
+                                    <br/>
+                                    <span t-field="doc.shipper_id.name"/>
+                                    <br/>
+                                    <span t-field="doc.shipper_id.street"/>
+                                    <br/>
+                                    <span t-field="doc.shipper_id.street2"/>
+                                    <br/>
+                                    <span t-field="doc.shipper_id.city"/>,
+                                    <span t-field="doc.shipper_id.state_id.name"/>
+                                    <br/>
+                                    <span t-field="doc.shipper_id.zip"/>
+                                </div>
+                                <div class="o_report_field">
+                                    <strong>Consignee:</strong>
+                                    <br/>
+                                    <span t-field="doc.receiver_id.name"/>
+                                    <br/>
+                                    <span t-field="doc.receiver_id.street"/>
+                                    <br/>
+                                    <span t-field="doc.receiver_id.street2"/>
+                                    <br/>
+                                    <span t-field="doc.receiver_id.city"/>,
+                                    <span t-field="doc.receiver_id.state_id.name"/>
+                                    <br/>
+                                    <span t-field="doc.receiver_id.zip"/>
+                                </div>
+                                <div class="o_report_field">
+                                    <strong>Notify Party:</strong>
+                                    <br/>
+                                    <span t-field="doc.notify_party_id.name"/>
+                                    <br/>
+                                    <span t-field="doc.notify_party_id.street"/>
+                                    <br/>
+                                    <span t-field="doc.notify_party_id.street2"/>
+                                    <br/>
+                                    <span t-field="doc.notify_party_id.city"/>,
+                                    <span t-field="doc.notify_party_id.state_id.name"/>
+                                    <br/>
+                                    <span t-field="doc.notify_party_id.zip"/>
+                                </div>
+                            </td>
+                            <td colspan="2" style="vertical-align: top; border: 1px solid black; padding: 10px;">
+                                <div class="o_report_field">
+                                    <strong>Order Number:</strong>
+                                    <br/>
+                                    <span t-field="doc.name"/>
+                                </div>
+                                <div class="o_report_field">
+                                    <strong>Term:</strong>
+                                    <br/>
+                                    <span t-field="doc.term"/>
+                                </div>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid black; padding: 10px;">
+                                <div class="o_report_field">
+                                    <strong>Port of Loading:</strong>
+                                    <br/>
+                                    <span t-field="doc.origin_port_id.name"/>
+                                </div>
+                            </td>
+                            <td style="border: 1px solid black; padding: 10px;">
+                                <div class="o_report_field">
+                                    <strong>Port of Discharge:</strong>
+                                    <br/>
+                                    <span t-field="doc.destination_port_id.name"/>
+                                </div>
+                            </td>
+                            <td style="border: 1px solid black; padding: 10px;">
+                                <div class="o_report_field">
+                                    <strong>Transport Type/Mode:</strong>
+                                    <br/>
+                                    <span t-field="doc.transport_type_id.name"/>
+                                    ,
+                                    <span t-field="doc.mode_id.name"/>
+                                </div>
+                            </td>
+                            <td style="border: 1px solid black; padding: 10px;">
+                                <div class="o_report_field">
+                                    <strong>Ship Date:</strong>
+                                    <br/>
+                                    <span t-field="doc.shipping_date"/>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" style="border: 1px solid black; padding: 10px;">
+                                <h2>Associated Packages</h2>
+                                <table style="width: 100%; border-collapse: collapse;">
+                                    <thead>
+                                        <tr>
+                                            <th style="border: 1px solid black; padding: 5px;">Description of Goods</th>
+                                            <th style="border: 1px solid black; padding: 5px;">Type of Package</th>
+                                            <th style="border: 1px solid black; padding: 5px;">Package Weight</th>
+                                            <th style="border: 1px solid black; padding: 5px;">Package Volume</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="doc.package_ids" t-as="package">
+                                            <tr>
+                                                <td style="border: 1px solid black; padding: 5px;">
+                                                    <span t-field="package.product_description"/>
+                                                </td>
+                                                <td style="border: 1px solid black; padding: 5px;">
+                                                    <span t-field="package.package_count"/>
+                                                    <span t-field="package.package_type_id"/>
+                                                </td>
+                                                <td style="border: 1px solid black; padding: 5px;">
+                                                    <span t-field="package.unit_of_weight"/>
+                                                    <span t-field="package.weight_uom_id"/>
+                                                </td>
+                                                <td style="border: 1px solid black; padding: 5px;">
+                                                    <span t-field="package.unit_of_volume"/>
+                                                    <span t-field="package.volume_uom_id"/>
+                                                </td>
+
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </t>
+            </t>
+        </t>
+    </template>
+    <!--    <report-->
+    <!--        id="report_freightorder"-->
+    <!--        string="Freight Order Report"-->
+    <!--        model="inv.freightorder"-->
+    <!--        report_type="qweb-pdf"-->
+    <!--        name="inv_freight_management.report_inv_freightorder"-->
+    <!--        file="inv_freight_management.report_inv_freightorder"-->
+    <!--        attachment_use="False"-->
+    <!--    />-->
+</odoo>
