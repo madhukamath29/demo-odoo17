@@ -61,6 +61,11 @@ class freightorderStatus(models.Model):
             values['name'] = values['name'].upper()
         return super(freightorderStatus, self).write(values)
 
+class chargetype(models.Model):
+    _name = "charge.type"
+    _description = "Charge Type"
+
+    name = fields.Char("Charge Type", required=True)
 
 class freightconsignmentStatus(models.Model):
     _name = "freight.consignment.status"
@@ -103,6 +108,25 @@ class freightorder(models.Model):
     shipping_date = fields.Date("Shipping Date")
     is_confirmed = fields.Boolean("Confirmed", default=False)
 
+    convey_name = fields.Char("Convey Name")
+    lloyds_no = fields.Char("LLOYDS No")
+    voyage = fields.Char("Voyage")
+    flight = fields.Char("Flight")
+    loading_date = fields.Date("Loading Date")
+    loading_charge_type = fields.Many2one("charge.type", string="Charge Type")
+    routing_charge_type = fields.Many2one("charge.type", string="Charge Type")
+    departure_date = fields.Date("Departure Date")
+    departure_charge_type = fields.Many2one("charge.type", string="Departure Charge Type")
+    routing_country = fields.Many2one("res.country", string="Routing Country")
+    routing_port = fields.Many2one("port", string="Routing Port")
+    routing_date = fields.Date("Routing Date")
+    delivery_charge_type = fields.Many2one("charge.type", string="Charge Type")
+    delivery_date = fields.Date("Delivery Date")
+    release = fields.Char("Release")
+    shipper_ref = fields.Char("Shipper Ref")
+    marks_and_numbers = fields.Text("Mark's and Numbers")
+    goods_desc = fields.Text("Goods Desc")
+
     @api.model
     def _default_status_id(self):
         # Retrieve the ID of the 'New' status dynamically
@@ -130,15 +154,6 @@ class freightorder(models.Model):
                 'is_confirmed': True,
                 'tracking_no': new_name
             })
-
-
-class ResPartnerInherit(models.Model):
-    _inherit = 'res.partner'
-
-    user_category = fields.Selection([
-        ('customer', 'Customer'),
-        ('agent', 'Agent')
-    ], string='User Category')
 
 
 class Consignment(models.Model):
@@ -174,6 +189,58 @@ class Consignment(models.Model):
     status_id = fields.Many2one("freight.consignment.status", string="Status", default=lambda self: self._default_status_id())
 
     filtered_orders = fields.Many2many("inv.freightorder", string="Filtered Orders")
+    total_package_count = fields.Float(
+        string="Total Package Count",
+        compute="_compute_total_package_count",
+        store=True,
+        help="Total package count from associated orders"
+    )
+    total_volume = fields.Char(
+        string="Total Volume",
+        compute="_compute_total_volume",
+        store=True,
+        help="Total volume from associated orders with unit"
+    )
+
+    total_weight = fields.Char(
+        string="Total Weight",
+        compute="_compute_total_weight",
+        store=True,
+        help="Total weight from associated orders with unit"
+    )
+
+    def print_the_action(self):
+        print(self.master_bill_no);
+
+    @api.depends('filtered_orders.package_ids.unit_of_weight', 'filtered_orders.package_ids.weight_uom_id')
+    def _compute_total_weight(self):
+        for consignment in self:
+            total_weight = 0.0
+            weight_uom = None
+            for order in consignment.filtered_orders:
+                for package in order.package_ids:
+                    total_weight += package.unit_of_weight
+                    weight_uom = package.weight_uom_id.name
+            consignment.total_weight = f"{total_weight} {weight_uom}" if weight_uom else False
+
+    @api.depends('filtered_orders.package_ids.unit_of_volume', 'filtered_orders.package_ids.volume_uom_id')
+    def _compute_total_volume(self):
+        for consignment in self:
+            total_volume = 0.0
+            volume_uom = None
+            for order in consignment.filtered_orders:
+                for package in order.package_ids:
+                    total_volume += package.unit_of_volume
+                    volume_uom = package.volume_uom_id.name
+            consignment.total_volume = f"{total_volume} {volume_uom}" if volume_uom else False
+
+    @api.depends('filtered_orders.package_ids.package_count')
+    def _compute_total_package_count(self):
+        for consignment in self:
+            total_count = 0.0
+            for order in consignment.filtered_orders:
+                total_count += sum(order.package_ids.mapped('package_count'))
+            consignment.total_package_count = total_count
 
     def generate_numbers(self):
         confirmed_status = self.env['freight.consignment.status'].search([('name', 'ilike', 'Confirmed')], limit=1)
@@ -196,6 +263,15 @@ class Consignment(models.Model):
         if not new_status:
             raise UserError("New status not found. Please make sure it's created.")
         return new_status.id
+
+
+class ResPartnerInherit(models.Model):
+    _inherit = 'res.partner'
+
+    user_category = fields.Selection([
+        ('customer', 'Customer'),
+        ('agent', 'Agent')
+    ], string='User Category')
 
 
 class freightorderPackage(models.Model):

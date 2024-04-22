@@ -3,7 +3,7 @@
     <data>
 
         <!-- Main menu item for Freight Orders -->
-        <menuitem id="menu_inv_freightorder" name="Freight Orders" sequence="10"/>
+        <menuitem id="menu_inv_freightorder" name="Freight Management" sequence="10"/>
 
         <!-- Submenu items for related models -->
 
@@ -124,6 +124,7 @@
                                         <field name="unit_of_volume"/>
                                         <field name="volume_uom_id"/>
                                         <field name="product_description"/>
+
                                     </tree>
                                 </field>
                             </page>
@@ -153,9 +154,9 @@
         </record>
 
 
-        <!-- Action for Freight Order -->
+
         <record id="action_inv_freightorder" model="ir.actions.act_window">
-            <field name="name">Freight Orders</field>
+            <field name="name">Freight Management</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">inv.freightorder</field>
             <field name="view_mode">tree,form,kanban</field>
@@ -166,8 +167,8 @@
             </field>
         </record>
 
-        <!-- Menu action for Freight Order -->
-        <menuitem id="menu_inv_freightorder_main" name="Freight Orders" parent="menu_inv_freightorder"
+
+        <menuitem id="menu_inv_freightorder_main" name="Orders" parent="menu_inv_freightorder"
                   action="action_inv_freightorder" sequence="1"/>
     </data>
 </odoo>

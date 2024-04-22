@@ -9,3 +9,4 @@ access_inv_consignment,inv.consignment,model_inv_consignment,,1,1,1,1
 access_package_type,package.type,model_package_type,,1,1,1,1
 access_inv_freightorder_package,inv.freightorder.package,model_inv_freightorder_package,,1,1,1,1
 access_freight_consignment_status,freight.consignment.status,model_freight_consignment_status,,1,1,1,1
+access_charge_type,charge.type,model_charge_type,,1,1,1,1

@@ -11,15 +11,15 @@
                         </h1>
                         <div>
 
-                            <table class="table table-condensed">
+                            <table class="table table-sm ">
                                 <tr>
-                                    <td colspan="5" style="border: 1px solid black; padding: 10px;">
+                                    <td colspan="7" style="border: 1px solid black; padding: 10px;">
                                         <strong>Console Details</strong>
                                     </td>
                                 </tr>
                                 <tr>
 
-                                    <td colspan="2" style="border: 1px solid black; padding: 10px;">
+                                    <td colspan="3" style="border: 1px solid black; padding: 10px;">
                                         <div class="o_report_field">
                                             <strong>Export Agent:</strong>
                                             <span t-field="doc.sending_agent.name"/>
@@ -51,99 +51,299 @@
                                         </div>
                                     </td>
 
-                                    <td colspan="1" style="border: 1px solid black; padding: 10px;">
+                                    <td colspan="2" style="border: 1px solid black; padding: 10px;">
                                         <div class="o_report_field">
                                             <strong>Departure CFS:</strong>
                                         </div>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="border: 1px solid black; padding: 10px;">
+                                    <td colspan="1" style="border: 1px solid black; padding: 10px;">
                                         <div class="o_report_field">
                                             <strong>TOTAL WEIGHT:</strong>
-                                            <br/>
-                                            <!--                                    <span t-field="doc.origin_port_id.name"/>-->
+                                            <span t-field="doc.total_weight"/>
                                         </div>
                                     </td>
-                                    <td style="border: 1px solid black; padding: 10px;">
+                                    <td colspan="1" style="border: 1px solid black; padding: 10px;">
                                         <div class="o_report_field">
                                             <strong>TOTAL VOLUME:
                                             </strong>
-                                            <br/>
-                                            <!--                                    <span t-field="doc.destination_port_id.name"/>-->
+                                            <span t-field="doc.total_volume"/>
                                         </div>
                                     </td>
-                                    <td style="border: 1px solid black; padding: 10px;">
+                                    <td colspan="1" style="border: 1px solid black; padding: 10px;">
                                         <div class="o_report_field">
                                             <strong>CHARGEABLE:
                                             </strong>
-                                            <br/>
+                                            <span t-field="doc.total_weight"/>
                                             <!--                                            <span t-field="doc.transport_type_id.name"/>-->
                                             <!--                                            ,-->
                                             <!--                                            <span t-field="doc.mode_id.name"/>-->
                                         </div>
                                     </td>
-                                    <td style="border: 1px solid black; padding: 10px;">
+                                    <td colspan="2" style="border: 1px solid black; padding: 10px;">
                                         <div class="o_report_field">
                                             <strong>CARRIER:</strong>
-                                            <br/>
-                                            <!--                                            <span t-field="doc.shipping_date"/>-->
+                                            <span t-field="doc.carrier_name"/>
                                         </div>
                                     </td>
-                                    <td style="border: 1px solid black; padding: 10px;">
+                                    <td colspan="2" style="border: 1px solid black; padding: 10px;">
                                         <div class="o_report_field">
                                             <strong>CUSTOMS ENTRY NUMBER:</strong>
-                                            <br/>
                                             <!--                                            <span t-field="doc.shipping_date"/>-->
                                         </div>
                                     </td>
-
                                 </tr>
                                 <tr>
-                                    <td style="border: 1px solid black; padding: 10px;">
+                                    <td colspan="2" style="border: 1px solid black; padding: 10px;">
                                         <div class="o_report_field">
                                             <strong>PACKAGES:
                                             </strong>
-                                            <br/>
-                                            <!--                                    <span t-field="doc.origin_port_id.name"/>-->
+                                            <span t-field="doc.total_package_count"/>
                                         </div>
                                     </td>
-                                    <td style="border: 1px solid black; padding: 10px;">
+                                    <td colspan="2" style="border: 1px solid black; padding: 10px;">
                                         <div class="o_report_field">
                                             <strong>MASTER FREIGHT:
                                             </strong>
-                                            <br/>
                                             <!--                                    <span t-field="doc.destination_port_id.name"/>-->
                                         </div>
                                     </td>
-                                    <td style="border: 1px solid black; padding: 10px;">
+                                    <td colspan="1" style="border: 1px solid black; padding: 10px;">
                                         <div class="o_report_field">
                                             <strong>ORIGIN:
                                             </strong>
+                                            <span t-field="doc.origin_port_id.name"/>
+                                            ,
+                                            <span t-field="doc.origin_country_id.name"/>
                                             <br/>
-                                            <!--                                            <span t-field="doc.transport_type_id.name"/>-->
-                                            <!--                                            ,-->
-                                            <!--                                            <span t-field="doc.mode_id.name"/>-->
                                             <strong>ETD:
                                             </strong>
+                                            <span t-field="doc.departure_date"/>
+                                        </div>
+                                    </td>
+                                    <td colspan="2" style="border: 1px solid black; padding: 10px;">
+                                        <div class="o_report_field">
+                                            <strong>Destination:
+                                            </strong>
+                                            <span t-field="doc.destination_port_id.name"/>
+                                            ,
+                                            <span t-field="doc.destination_country_id.name"/>
+                                            <br/>
+                                            <strong>ETA:
+                                            </strong>
+                                            <span t-field="doc.arrival_date"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4" style="border: 1px solid black; padding: 10px;">
+                                        <div class="o_report_field">
+                                            <strong>CARRIER BOOKING REFERENCE:
+                                            </strong>
+                                            <!--                                            <span t-field="doc.total_package_count"/>-->
+                                        </div>
+                                    </td>
+                                    <td colspan="3" style="border: 1px solid black; padding: 10px;">
+                                        <div class="o_report_field">
+                                            <strong>AGENT'S REFERENCE:
+                                            </strong>
+                                            <span t-field="doc.agent_ref.name"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="7" style="border: 1px solid black; padding: 10px;">
+                                        <div class="o_report_field">
+                                            <strong>ROUTING INFORMATION
+                                            </strong>
+                                        </div>
+                                    </td>
+                                </tr>
+
+
+                                <tr>
+                                    <td style="border: 1px solid black; padding: 10px;">
+                                        <div class="o_report_field">
+                                            <strong>Mode:
+                                            </strong>
+                                            <span t-field="doc.transport_type_id.name"/>
                                         </div>
                                     </td>
                                     <td style="border: 1px solid black; padding: 10px;">
                                         <div class="o_report_field">
-                                            <strong>Destination:
+                                            <strong>Flight/Date:
                                             </strong>
-                                            <br/>
-                                            <!--                                            <span t-field="doc.transport_type_id.name"/>-->
-                                            <!--                                            ,-->
-                                            <!--                                            <span t-field="doc.mode_id.name"/>-->
+                                            <span t-field="doc.ship_date"/>
+                                        </div>
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 10px;">
+                                        <div class="o_report_field">
+                                            <strong>Carrier:
+                                            </strong>
+                                            <span t-field="doc.carrier_no"/>
+                                        </div>
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 10px;">
+                                        <div class="o_report_field">
+                                            <strong>Load:
+                                            </strong>
+                                            <span t-field="doc.origin_port_id.name"/>
+                                            ,
+                                            <span t-field="doc.origin_country_id.name"/>
+                                        </div>
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 10px;">
+                                        <div class="o_report_field">
+                                            <strong>Disch:
+                                            </strong>
+                                            <span t-field="doc.destination_port_id.name"/>
+                                            ,
+                                            <span t-field="doc.destination_country_id.name"/>
+                                        </div>
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 10px;">
+                                        <div class="o_report_field">
+                                            <strong>ETD:
+                                            </strong>
+                                            <span t-field="doc.departure_date"/>
+                                        </div>
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 10px;">
+                                        <div class="o_report_field">
                                             <strong>ETA:
                                             </strong>
+                                            <span t-field="doc.arrival_date"/>
                                         </div>
                                     </td>
 
                                 </tr>
 
 
+                            </table>
+                            <table class="table table-sm table-condensed">
+                                <tr>
+                                    <td colspan="5" style="border: 1px solid black; padding: 10px;">
+                                        <strong>SHIPMENT DETAILS</strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid black; padding: 10px;">
+                                        <strong>HOUSE</strong>
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 10px;">
+                                        <strong>CONSIGNOR</strong>
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 10px;">
+                                        <strong>CONSIGNEE</strong>
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 10px;">
+                                        <strong>NATURE OF GOODS</strong>
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 10px;">
+                                        <strong>HANDLING INSTRUCTIONS</strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border: 1px solid black; padding: 10px;">
+
+                                        <strong>HAWB:</strong>
+                                        <!--                                        <span t-field="doc.hawb"/>-->
+                                        <br/>
+                                        <strong>Wgt / Vol / Pkg:</strong>
+                                        <span t-field="doc.total_weight"/>
+                                        /
+                                        <span t-field="doc.total_volume"/>
+                                        /
+                                        <span t-field="doc.total_package_count"/>
+                                        <br/>
+                                        <strong>Origin:</strong>
+                                        <span t-field="doc.origin_port_id.name"/>
+                                        ,
+                                        <span t-field="doc.origin_country_id.name"/>
+                                        <br/>
+                                        <strong>Destination:</strong>
+                                        <span t-field="doc.destination_port_id.name"/>
+                                        ,
+                                        <span t-field="doc.destination_country_id.name"/>
+                                        <br/>
+                                        <strong>Shippers Ref:</strong>
+                                        <span t-field="doc.agent_ref.name"/>
+                                        <br/>
+                                        <strong>Master:</strong>
+                                        <!--                                        <span t-field="doc.master"/>-->
+                                        <br/>
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 10px;">
+                                        <t t-foreach="doc.filtered_orders" t-as="order">
+                                            <t t-if="order.shipper_id.name">
+                                                <span t-field="order.shipper_id.name"/>
+                                                <br/>
+                                            </t>
+
+                                            <t t-if="order.shipper_id.street2">
+                                                <span t-field="order.shipper_id.street2"/>
+                                                <br/>
+                                            </t>
+                                            <t t-if="order.shipper_id.city">
+                                                <span t-field="order.shipper_id.city"/>,
+                                            </t>
+                                            <t t-if="order.shipper_id.state_id.name">
+                                                <span t-field="order.shipper_id.state_id.name"/>
+                                                <br/>
+                                            </t>
+                                            <t t-if="order.shipper_id.zip">
+                                                <span t-field="order.shipper_id.zip"/>
+
+                                                <hr style="1px solid black"/>
+                                            </t>
+                                        </t>
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 10px;">
+                                        <t t-foreach="doc.filtered_orders" t-as="order">
+                                            <t t-if="order.receiver_id.name">
+                                                <span t-field="order.receiver_id.name"/>
+                                                <br/>
+                                            </t>
+
+                                            <t t-if="order.receiver_id.street2">
+                                                <span t-field="order.receiver_id.street2"/>
+                                                <br/>
+                                            </t>
+                                            <t t-if="order.receiver_id.city">
+                                                <span t-field="order.receiver_id.city"/>,
+                                            </t>
+                                            <t t-if="order.receiver_id.state_id.name">
+                                                <span t-field="order.receiver_id.state_id.name"/>
+                                                <br/>
+                                            </t>
+                                            <t t-if="order.receiver_id.zip">
+                                                <span t-field="order.receiver_id.zip"/>
+
+                                                <hr style="1px solid black"/>
+                                            </t>
+                                        </t>
+
+                                    </td>
+                                    <td style="border: 1px solid black; padding: 10px;">
+                                        <strong>Release:</strong>
+                                        <t t-foreach="doc.filtered_orders" t-as="order">
+                                            <span t-field="order.release"/>
+                                        </t>
+                                        <strong>Goods Description:</strong>
+                                        <t t-foreach="doc.filtered_orders" t-as="order">
+                                            <span t-field="order.goods_desc"/>
+                                        </t>
+                                    </td>
+
+                                    <td style="border: 1px solid black; padding: 10px;">
+                                        <strong>Marks &amp; Numbers:</strong>
+                                        <t t-foreach="doc.filtered_orders" t-as="order">
+                                            <span t-field="order.marks_and_numbers"/>
+                                        </t>
+                                    </td>
+
+                                </tr>
                             </table>
                         </div>
                     </div>

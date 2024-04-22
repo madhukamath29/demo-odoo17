@@ -97,6 +97,47 @@
             </field>
         </record>
 
+
+
+        <record id="view_charge_type_tree" model="ir.ui.view">
+            <field name="name">Charge Type</field>
+            <field name="model">charge.type</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_charge_type_form" model="ir.ui.view">
+            <field name="name">Charge Type</field>
+            <field name="model">charge.type</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_charge_type" model="ir.actions.act_window">
+            <field name="name">Charge Type</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">charge.type</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Define a new Charge type
+              </p>
+            </field>
+        </record>
+
+
+
+
         <!-- Mode Views -->
         <record id="view_mode_tree" model="ir.ui.view">
             <field name="name">Mode</field>
@@ -288,15 +329,14 @@
 
 
         <!-- Menu Items -->
-        <menuitem id="menu_inv_freightorder_conf" name="Configuration" parent="menu_inv_freightorder"  sequence="3"/>
+        <menuitem id="menu_inv_freightorder_conf" name="Configuration" parent="menu_inv_freightorder"  sequence="4"/>
         <menuitem id="menu_freight_port" name="Ports" parent="menu_inv_freightorder_conf" sequence="1" action="action_freight_port"/>
         <menuitem id="menu_consignment_type" name="Consignment Types" parent="menu_inv_freightorder_conf" sequence="2" action="action_consignment_type"/>
         <menuitem id="menu_mode" name="Modes" parent="menu_inv_freightorder_conf" sequence="3" action="action_mode"/>
-        <menuitem id="menu_freight_order_status" name="Freight Order Statuses" parent="menu_inv_freightorder_conf" sequence="4" action="action_freight_order_status"/>
+        <menuitem id="menu_freight_order_status" name="Order Status" parent="menu_inv_freightorder_conf" sequence="4" action="action_freight_order_status"/>
         <menuitem id="menu_transport_type" name="Transport Types" parent="menu_inv_freightorder_conf" sequence="5" action="action_transport_type"/>
         <menuitem id="menu_package_type" name="Package Types" parent="menu_inv_freightorder_conf" sequence="6" action="action_package_type"/>
-        <menuitem id="menu_freight_consignment_status" name="Freight Consignment Statuses" parent="menu_inv_freightorder_conf" sequence="7" action="action_freight_consignment_status"/>
-
-
+        <menuitem id="menu_freight_consignment_status" name="Consignment Status" parent="menu_inv_freightorder_conf" sequence="7" action="action_freight_consignment_status"/>
+        <menuitem id="menu_freight_charge_type" name="Charge Type" parent="menu_inv_freightorder_conf" sequence="8" action="action_charge_type"/>
     </data>
 </odoo>
