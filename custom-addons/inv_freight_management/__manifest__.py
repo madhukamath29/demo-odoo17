@@ -19,7 +19,8 @@
              "views/Consignmentreport.xml",
              "views/orderreport.xml",
              "views/report_management.xml",
-             "views/custom_external_layout.xml"],
+             "views/custom_external_layout.xml",
+             "views/py3o_report.xml"],
     'qweb': ['static/src/xml/*.xml',
              ],
     'assets': {

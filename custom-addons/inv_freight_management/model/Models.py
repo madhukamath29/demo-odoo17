@@ -61,11 +61,13 @@ class freightorderStatus(models.Model):
             values['name'] = values['name'].upper()
         return super(freightorderStatus, self).write(values)
 
+
 class chargetype(models.Model):
     _name = "charge.type"
     _description = "Charge Type"
 
     name = fields.Char("Charge Type", required=True)
+
 
 class freightconsignmentStatus(models.Model):
     _name = "freight.consignment.status"
@@ -95,15 +97,16 @@ class freightorder(models.Model):
     ready_date = fields.Date("Ready Date")
     tracking_no = fields.Char("Tracking No")
     term = fields.Char("Term")
-    shipper_id = fields.Many2one("res.partner", string="Shipper",domain="[('user_category', 'ilike', 'agent')]")
-    receiver_id = fields.Many2one("res.partner", string="Receiver",domain="[('user_category', 'ilike', 'agent')]")
-    bill_to_id = fields.Many2one("res.partner", string="Bill To",domain="[('user_category', 'ilike', 'customer')]")
-    notify_party_id = fields.Many2one("res.partner", string="Notify Party",domain="[('user_category', 'ilike', 'customer')]")
-    origin_port_id = fields.Many2one("port", string="Origin Port",)
+    shipper_id = fields.Many2one("res.partner", string="Shipper", domain="[('user_category', 'ilike', 'agent')]")
+    receiver_id = fields.Many2one("res.partner", string="Receiver", domain="[('user_category', 'ilike', 'agent')]")
+    bill_to_id = fields.Many2one("res.partner", string="Bill To", domain="[('user_category', 'ilike', 'customer')]")
+    notify_party_id = fields.Many2one("res.partner", string="Notify Party",
+                                      domain="[('user_category', 'ilike', 'customer')]")
+    origin_port_id = fields.Many2one("port", string="Origin Port", )
     destination_port_id = fields.Many2one("port", string="Destination Port")
     consignment_type_id = fields.Many2one("consignment.type", string="Consignment Type")
     transport_type_id = fields.Many2one("transport.type", string="Transport Type")
-    mode_id = fields.Many2one("mode", string="Mode",)
+    mode_id = fields.Many2one("mode", string="Mode", )
     company_id = fields.Many2one("res.company", string="Company")
     shipping_date = fields.Date("Shipping Date")
     is_confirmed = fields.Boolean("Confirmed", default=False)
@@ -132,7 +135,8 @@ class freightorder(models.Model):
         # Retrieve the ID of the 'New' status dynamically
         new_status = self.env['freight.order.status'].search([('name', 'ilike', 'New')], limit=1)
         return new_status.id if new_status else False
-    status_id = fields.Many2one("freight.order.status", string="Status",default=_default_status_id)
+
+    status_id = fields.Many2one("freight.order.status", string="Status", default=_default_status_id)
     notes = fields.Text("Notes")
 
     origin_country_id = fields.Many2one("res.country", string="Origin Country")
@@ -162,7 +166,7 @@ class Consignment(models.Model):
 
     freight_order_id = fields.Many2one("inv.freightorder", string="Freight Order")
     master_bill_no = fields.Char("Master Bill No", readonly=True, default='/')
-    booking_no = fields.Char("Booking No", readonly=True,default='/')
+    booking_no = fields.Char("Booking No", readonly=True, default='/')
     term = fields.Char("Terms")
     ship_date = fields.Date("Ship Date")
     departure_date = fields.Date("Departure Date")
@@ -172,9 +176,12 @@ class Consignment(models.Model):
     company_id = fields.Many2one("res.company", string="Company")
     destination_port_id = fields.Many2one("port", string="Destination Port")
     destination_country_id = fields.Many2one("res.country", string="Destination Country")
-    sending_agent = fields.Many2one("res.partner", string="Sending Agent",domain="[('user_category', 'ilike', 'agent')]")
-    receiving_agent = fields.Many2one("res.partner", string="Receiving Agent",domain="[('user_category', 'ilike', 'agent')]")
-    notify_party_id = fields.Many2one("res.partner", string="Notify Party",domain="[('user_category', 'ilike', 'customer')]")
+    sending_agent = fields.Many2one("res.partner", string="Sending Agent",
+                                    domain="[('user_category', 'ilike', 'agent')]")
+    receiving_agent = fields.Many2one("res.partner", string="Receiving Agent",
+                                      domain="[('user_category', 'ilike', 'agent')]")
+    notify_party_id = fields.Many2one("res.partner", string="Notify Party",
+                                      domain="[('user_category', 'ilike', 'customer')]")
     consignment_type_id = fields.Many2one("consignment.type", string="Consignment Type")
     transport_type_id = fields.Many2one("transport.type", string="Transport Type")
     mode_id = fields.Many2one("mode", string="Mode")
@@ -183,12 +190,15 @@ class Consignment(models.Model):
     carrier_name = fields.Char("Carrier Name")
     carrier_booking_ref = fields.Char("Carrier Booking Ref")
     carrier_no = fields.Char("Carrier No")
-    agent_ref = fields.Many2one("res.partner", string="Agent Reference", domain="[('user_category', 'ilike', 'customer')]")
+    agent_ref = fields.Many2one("res.partner", string="Agent Reference",
+                                domain="[('user_category', 'ilike', 'customer')]")
     description = fields.Text("Description")
     is_confirmed = fields.Boolean("Confirmed", default=False)
-    status_id = fields.Many2one("freight.consignment.status", string="Status", default=lambda self: self._default_status_id())
+    status_id = fields.Many2one("freight.consignment.status", string="Status",
+                                default=lambda self: self._default_status_id())
 
     filtered_orders = fields.Many2many("inv.freightorder", string="Filtered Orders")
+
     total_package_count = fields.Float(
         string="Total Package Count",
         compute="_compute_total_package_count",
@@ -272,6 +282,7 @@ class ResPartnerInherit(models.Model):
         ('customer', 'Customer'),
         ('agent', 'Agent')
     ], string='User Category')
+
 
 
 class freightorderPackage(models.Model):

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2016 ACSONE SA/NV
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <record id="res_users_report_py3o" model="ir.actions.report">
+        <field name="name">Order Report py30</field>
+        <field name="type">ir.actions.report</field>
+        <field name="model">inv.freightorder</field>
+        <field name="report_name">py3o_order_report</field>
+        <field name="report_type">py3o</field>
+        <field name="py3o_filetype">odt</field>
+        <field name="module">inv_freight_management</field>
+        <field name="py3o_template_fallback">demo/res_user.odt</field>
+        <field
+            name="print_report_name"
+        >object.name.replace(' ', '_') + '-demo.odt'</field>
+        <field name="binding_model_id" ref="inv_freight_management.model_inv_freightorder" />
+        <field name="binding_type">report</field>
+    </record>
+</odoo>
