@@ -10,5 +10,3 @@ access_package_type,package.type,model_package_type,,1,1,1,1
 access_inv_freightorder_package,inv.freightorder.package,model_inv_freightorder_package,,1,1,1,1
 access_freight_consignment_status,freight.consignment.status,model_freight_consignment_status,,1,1,1,1
 access_charge_type,charge.type,model_charge_type,,1,1,1,1
-access_customs_customs,customs.customs,model_customs_customs,,1,1,1,1
-access_consignment_document,consignment.document,model_consignment_document,,1,1,1,1

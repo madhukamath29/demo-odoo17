@@ -154,28 +154,10 @@
 
                                                         </group>
                                                     </group>
-                                                    <header>
-                                                        <button name="action_create_custom" string="Customs"
-                                                                type="object" class="btn-primary"
-                                                                position="attributes"/>
-
-                                                    </header>
                                                 </sheet>
 
 
                                             </form>
-                                        </field>
-                                    </page>
-                                    <page string="Add Documents" name="add_documents">
-                                        <field name="document_ids" widget="one2many_list">
-                                            <tree editable="bottom">
-                                                <field name="attachment_id" widget="binary"/>
-                                                <field name="document_name" string="Document Name"/>
-                                                <button name="open_document_preview" string="Preview" type="object"
-                                                        icon="fa-eye" target="_blank"/>
-
-
-                                            </tree>
                                         </field>
                                     </page>
                                 </notebook>
