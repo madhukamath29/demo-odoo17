@@ -20,7 +20,8 @@
              "views/orderreport.xml",
              "views/report_management.xml",
              "views/custom_external_layout.xml",
-             "views/py3o_report.xml"],
+             "views/py3o_report.xml",
+             "views/customs_view.xml"],
     'qweb': ['static/src/xml/*.xml',
              ],
     'assets': {

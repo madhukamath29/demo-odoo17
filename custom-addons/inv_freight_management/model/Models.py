@@ -89,6 +89,7 @@ class freightconsignmentStatus(models.Model):
 
 class freightorder(models.Model):
     _name = "inv.freightorder"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Freight Order Model'
     _rec_name = 'name'
 
@@ -129,6 +130,7 @@ class freightorder(models.Model):
     shipper_ref = fields.Char("Shipper Ref")
     marks_and_numbers = fields.Text("Mark's and Numbers")
     goods_desc = fields.Text("Goods Desc")
+    comment = fields.Html(string='Notes')
 
     @api.model
     def _default_status_id(self):
@@ -148,8 +150,8 @@ class freightorder(models.Model):
         if not confirmed_status:
             raise UserError("Confirmed status not found. Please make sure it's created.")
 
-        current_date = datetime.datetime.now().strftime("%Y%m%d")
-        new_name = f'ORD{current_date}'
+        current_datetime = datetime.datetime.now().strftime("%Y%m%d%H%M%S")  # Include time information
+        new_name = f'ORD{current_datetime}'
 
         for record in self:
             record.write({
@@ -159,6 +161,33 @@ class freightorder(models.Model):
                 'tracking_no': new_name
             })
 
+    def action_create_custom(self):
+        existing_custom = self.env['customs.customs'].search([('order_id', '=', self.id)], limit=1)
+        if existing_custom:
+            return {
+                'name': "View/Edit Custom",
+                'view_mode': 'form',
+                'res_model': 'customs.customs',
+                'type': 'ir.actions.act_window',
+                'res_id': existing_custom.id,
+                'target': 'current',
+            }
+        else:
+            # Create a new custom record and link it to this order
+            custom_values = {
+                'product': self.name,  # You can adjust these fields as needed
+                'order_id': self.id,
+            }
+            new_custom = self.env['customs.customs'].create(custom_values)
+            return {
+                'name': "Custom",
+                'view_mode': 'form',
+                'res_model': 'customs.customs',
+                'type': 'ir.actions.act_window',
+                'res_id': new_custom.id,
+                'target': 'current',
+            }
+
 
 class Consignment(models.Model):
     _name = "inv.consignment"
@@ -167,6 +196,7 @@ class Consignment(models.Model):
     freight_order_id = fields.Many2one("inv.freightorder", string="Freight Order")
     master_bill_no = fields.Char("Master Bill No", readonly=True, default='/')
     booking_no = fields.Char("Booking No", readonly=True, default='/')
+    document_ids = fields.One2many('consignment.document', 'document_id', string="Document", copy=True)
     term = fields.Char("Terms")
     ship_date = fields.Date("Ship Date")
     departure_date = fields.Date("Departure Date")
@@ -280,10 +310,34 @@ class ResPartnerInherit(models.Model):
 
     user_category = fields.Selection([
         ('customer', 'Customer'),
-        ('agent', 'Agent')
-    ], string='User Category')
+        ('agent', 'Agent'),
+        ('customer & agent','Customer & Agent')
+    ], string="Customer Y/N : ")
 
+    customs_code = fields.Char(string="Customs Code")
+    cus_code = fields.Char(string="Customer Code")
+    freeze = fields.Selection([
+        ('yes', 'Yes'),
+        ('no', 'No'),
+    ])
+    customer = fields.Selection([
+        ('yes', 'Yes'),
+        ('no', 'No'),
+    ], string="Customer Y/N : ")
 
+    overseas = fields.Selection([
+        ('yes', 'Yes'),
+        ('no', 'No'),
+    ], string="Overseas Y/N : ")
+    supplier_code = fields.Char(string="Supplier Code")
+    local_wh = fields.Selection([
+        ('yes', 'Yes'),
+        ('no', 'No'),
+    ], string="Local Warehouse Y/N : ")
+    ccc_code = fields.Char(string="CCA Code")
+    atf_no = fields.Char(string="ATF No")
+    gst_no = fields.Char(string="GST No")
+    company_no = fields.Char(string="Company No")
 
 class freightorderPackage(models.Model):
     _name = 'inv.freightorder.package'
@@ -291,9 +345,106 @@ class freightorderPackage(models.Model):
 
     order_id = fields.Many2one('inv.freightorder', string="Freight Order", required=True, ondelete='cascade')
     package_type_id = fields.Many2one('package.type', string="Package Type")
-    unit_of_weight = fields.Float("Unit")
-    weight_uom_id = fields.Many2one('uom.uom', string="Weight", domain="[('category_id.name', 'ilike', 'Weight')]")
-    unit_of_volume = fields.Float("Unit")
-    volume_uom_id = fields.Many2one('uom.uom', string="Volume", domain="[('category_id.name', 'ilike', 'volume')]")
+    unit_of_weight = fields.Float("Weight")
+    weight_uom_id = fields.Many2one('uom.uom', string="Unit", domain="[('category_id.name', 'ilike', 'Weight')]")
+    unit_of_volume = fields.Float("Volume")
+    volume_uom_id = fields.Many2one('uom.uom', string="Unit", domain="[('category_id.name', 'ilike', 'volume')]")
     product_description = fields.Text("Product Description")
     package_count = fields.Float("Package Count")
+
+
+class Customs(models.Model):
+    _name = "customs.customs"  # Adjust the model name to follow the format <module_name>.<model_name>
+    _description = "Customs"
+
+    product = fields.Char(string="Product")
+    hs_code = fields.Char(string="HS Code")
+    export_code = fields.Char(string="Export Code")
+    invoice_no = fields.Char(string="Invoice No")
+    delivery_authority = fields.Char(string="Delivery Authority")
+    term = fields.Char(string="Term")
+    invoice_amount = fields.Float(string="Invoice Amount")
+    currency_id = fields.Many2one('res.currency', string="Currency")
+    exc_rate = fields.Many2one('res.currency.rate', string="Currency", domain="[('currency_id', '=', currency_id)]")
+    lc_amount = fields.Float(string="LC Amount")
+    gst_percentage = fields.Float(string="GST %")
+    gst_value = fields.Float(string="GST Value")
+    line_total = fields.Float(string="Line Total")
+    currency_rate = fields.Float(string='Currency Rate')
+    freight_amount = fields.Float(string='Freight Amount')
+    exc_rate_1 = fields.Float(string='Exc Rate')
+    lc_amount_1 = fields.Float(string='LC Amount')
+    insurance_amount = fields.Float(string='Insurance Amount')
+    ins_currency = fields.Char(string='Ins. Currency')
+    exc_rate_2 = fields.Float(string='Exc Rate')
+    lc_amount_2 = fields.Float(string='LC Amount')
+    foreign_freight = fields.Float(string='Foreign Freight')
+    packing_cost = fields.Float(string='Packing Cost')
+    commission = fields.Float(string='Commission')
+    discount = fields.Float(string='Discount')
+    land_charge = fields.Float(string='Land Charge')
+    processing_port = fields.Char(string='Processing Port')
+    total_weight = fields.Float(string='Total Weight')
+    no_of_packs = fields.Integer(string='No of Packs')
+    country_of_origin = fields.Char(string='Country of origin')
+    country_of_destination = fields.Char(string='Country of Destination')
+    uop = fields.Char(string='UOP')
+    duty = fields.Float(string='Duty')
+    levy = fields.Float(string='Levy')
+    total = fields.Float(string='Total')
+    type = fields.Selection([
+        ('type1', 'Type 1'),
+        ('type2', 'Type 2'),
+        ('type3', 'Type 3'),
+    ], string='Type')
+    amount = fields.Float(string='Amount')
+
+    fob_fc = fields.Float(string='FOB(FC)')
+    fob_lc = fields.Float(string='FOB(LC)')
+    solid_consign = fields.Selection([
+        ('solid', 'Solid'),
+        ('consign', 'Consign'),
+    ], string='Solid/Consign')
+    style = fields.Char(string='Style')
+    edi_date = fields.Date(string='EDI Date')
+    response = fields.Char(string='Response')
+    order_id = fields.Many2one('inv.freightorder', string='Freight Order')
+
+
+class Document(models.Model):
+    _name = "consignment.document"
+    _description = "Document"
+
+    attachment_id = fields.Binary(string="Document")
+    document_id = fields.Many2one('inv.consignment', string="Main Model")
+    document_name = fields.Char(string="Document Name")
+    document_url = fields.Char(string="Document URL", compute="_compute_document_url")
+
+    @api.depends('attachment_id')
+    def _compute_document_url(self):
+        base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
+        for record in self:
+            if record.attachment_id:
+                record.document_url = base_url + '/web/content/?model=consignment.document&id=' + str(
+                    record.id) + '&filename_field=document_name&field=attachment_id'
+            else:
+                record.document_url = False
+
+    def open_document_preview(self):
+        if self.attachment_id:
+            return {
+                'type': 'ir.actions.act_url',
+                'url': self.document_url,  # Use the computed document URL
+                'target': 'new',
+            }
+        else:
+            # Handle the case where there is no attachment
+            return {
+                'type': 'ir.actions.act_window',
+                'res_model': 'ir.actions.act_window',
+                'view_mode': 'form',
+                'view_type': 'form',
+                'target': 'new',
+                'context': {'message': 'No document available for preview.'},
+                'name': 'Document Preview',
+            }
