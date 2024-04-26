@@ -308,11 +308,7 @@ class Consignment(models.Model):
 class ResPartnerInherit(models.Model):
     _inherit = 'res.partner'
 
-    user_category = fields.Selection([
-        ('customer', 'Customer'),
-        ('agent', 'Agent'),
-        ('customer & agent','Customer & Agent')
-    ], string="Customer Y/N : ")
+    user_category = fields.Many2many('user.role', string="Role")
 
     customs_code = fields.Char(string="Customs Code")
     cus_code = fields.Char(string="Customer Code")
@@ -448,3 +444,8 @@ class Document(models.Model):
                 'context': {'message': 'No document available for preview.'},
                 'name': 'Document Preview',
             }
+class Role(models.Model):
+    _name = 'user.role'
+    _description = 'User Role'
+
+    name = fields.Char(string="Role Name")

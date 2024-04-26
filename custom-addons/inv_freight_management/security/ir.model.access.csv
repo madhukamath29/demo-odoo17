@@ -12,3 +12,4 @@ access_freight_consignment_status,freight.consignment.status,model_freight_consi
 access_charge_type,charge.type,model_charge_type,,1,1,1,1
 access_customs_customs,customs.customs,model_customs_customs,,1,1,1,1
 access_consignment_document,consignment.document,model_consignment_document,,1,1,1,1
+access_user_role,user.role,model_user_role,,1,1,1,1

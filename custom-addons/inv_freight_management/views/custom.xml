@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Define actions for the menu items -->
+    <record id="action_inv_customs" model="ir.actions.act_window">
+        <field name="name">Customs</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">customs.customs</field>
+        <field name="view_mode">tree,form</field>
+        <!--        <field name="view_id" ref="view_custom_tree"/>-->
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first order!
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_inv_customs" name="customs" parent="menu_inv_consignments" sequence="4"
+              action="action_inv_customs"/>
+    <act_window id="action_customs" name="Customs" res_model="customs.customs"
+                view_mode="tree,form"/>
+
+
+    <!-- Define a simple tree view for the product.model -->
+    <record id="view_custom_tree" model="ir.ui.view">
+        <field name="name">custom.tree</field>
+        <field name="model">customs.customs</field>
+        <field name="arch" type="xml">
+            <tree>
+                <!--                <field name="name"/>-->
+                <field name="hs_code"/>
+                <field name="export_code"/>
+                <field name="invoice_no"/>
+                <!-- Add more fields as needed -->
+            </tree>
+        </field>
+    </record>
+
+    <!-- Define a simple form view for the product.model -->
+    <record id="view_custom_form" model="ir.ui.view">
+        <field name="name">custom.form</field>
+        <field name="model">customs.customs</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <!--                        <field name="name"/>-->
+                        <field name="hs_code"/>
+                        <field name="export_code"/>
+                        <field name="invoice_no"/>
+                        <!-- Add more fields as needed -->
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <menuitem id="menu_inv_customs" name="customs" parent="menu_inv_consignments" sequence="4"
+              action="action_inv_customs"/>
+    <act_window id="action_customs" name="Customs" res_model="customs.customs"
+                view_mode="tree,form"/>
+
+
+    <record id="action_custom_form" model="ir.actions.act_window">
+        <field name="name">Custom Form</field>
+        <field name="res_model">customs.customs</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_custom_form"/>
+    </record>
+</odoo>

@@ -85,9 +85,9 @@
                                                domain="[('origin_port_id', '=', origin_port_id), ('destination_port_id', '=', destination_port_id), ('status_id.name', 'ilike', 'Ready')]">
                                             <tree>
                                                 <!-- Add all fields you want to display for orders -->
-                                                <field name="name"/>
-                                                <field name="order_date"/>
-                                                <field name="ready_date"/>
+                                                <field width="150" name="name" string="Order Id" options="{'no_open': True}"/>
+                                                <field name="order_date" string="Order Date" options="{'no_open': True}"/>
+                                                <field name="ready_date" string="Ready Date" options="{'no_open': True}"/>
                                                 <!-- Add other fields -->
                                             </tree>
                                             <form>

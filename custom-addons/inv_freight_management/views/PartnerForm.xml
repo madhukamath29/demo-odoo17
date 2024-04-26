@@ -7,21 +7,21 @@
             <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="arch" type="xml">
                 <field name="category_id" position="after">
-                    <field name="user_category" widget="selection"/>  <!-- Add user_category field -->
+                        <field name="user_category" widget="many2many_tags" string="Role"/>
+  <!-- Add user_category field -->
                     <field name="customs_code"/>
                     <field name="supplier_code"/>
                     <field name="ccc_code"/>
                 </field>
-                <field name="vat" position="after">
-                    <field name="gst_no"/>
-                    <field name="atf_no"/>
-                    <field name="company_no"/>
-                    <field name="cus_code" string="Customer Code"/>
-                    <field name="freeze" widget="selection"/>
-                    <field name="overseas" widget="selection"/>
-                    <field name="local_wh" widget="selection"/>
-                </field>
-            </field>
+<xpath expr="//span[@name='address_name']" position="before">
+        <field name="gst_no" string="GST No" />
+        <field name="atf_no" />
+        <field name="company_no" />
+        <field name="cus_code" />
+        <field name="freeze" />
+        <field name="overseas"  widget="selection"/>
+        <field name="local_wh"  widget="selection"/>
+    </xpath>            </field>
         </record>
     </data>
 </odoo>
