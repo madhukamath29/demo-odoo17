@@ -346,7 +346,7 @@ class freightorderPackage(models.Model):
     unit_of_volume = fields.Float("Volume")
     volume_uom_id = fields.Many2one('uom.uom', string="Unit", domain="[('category_id.name', 'ilike', 'volume')]")
     product_description = fields.Text("Product Description")
-    package_count = fields.Float("Package Count")
+    package_count = fields.Integer("Package Count")
 
 
 class Customs(models.Model):
