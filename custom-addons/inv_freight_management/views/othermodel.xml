@@ -328,7 +328,7 @@
 
 
 
-        <!-- Menu Items -->
+
         <menuitem id="menu_inv_freightorder_conf" name="Configuration" parent="menu_inv_freightorder"  sequence="4"/>
         <menuitem id="menu_freight_port" name="Ports" parent="menu_inv_freightorder_conf" sequence="1" action="action_freight_port"/>
         <menuitem id="menu_consignment_type" name="Consignment Types" parent="menu_inv_freightorder_conf" sequence="2" action="action_consignment_type"/>

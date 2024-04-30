@@ -96,6 +96,7 @@ class freightorder(models.Model):
     name = fields.Char("Order id", copy=False, readonly=True, default='New')
     order_date = fields.Date("Order Date")
     ready_date = fields.Date("Ready Date")
+    sub_bill_no = fields.Char("Sub Bill")
     tracking_no = fields.Char("Tracking No")
     term = fields.Char("Term")
     shipper_id = fields.Many2one("res.partner", string="Shipper", domain="[('user_category', 'ilike', 'agent')]")
@@ -131,6 +132,7 @@ class freightorder(models.Model):
     marks_and_numbers = fields.Text("Mark's and Numbers")
     goods_desc = fields.Text("Goods Desc")
     comment = fields.Html(string='Notes')
+    master_bill_no = fields.Many2one("inv.consignment", string="Master Bill No", readonly=True)
 
     @api.model
     def _default_status_id(self):
@@ -144,6 +146,7 @@ class freightorder(models.Model):
     origin_country_id = fields.Many2one("res.country", string="Origin Country")
     destination_country_id = fields.Many2one("res.country", string="Destination Country")
     package_ids = fields.One2many('inv.freightorder.package', 'order_id', string="Packages", copy=True)
+    product_ids = fields.One2many('freight.product', 'order_id', string="Products", copy=True)
 
     def action_confirm(self):
         confirmed_status = self.env['freight.order.status'].search([('name', 'ilike', 'Confirmed')], limit=1)
@@ -158,7 +161,8 @@ class freightorder(models.Model):
                 'name': new_name,
                 'status_id': confirmed_status.id,
                 'is_confirmed': True,
-                'tracking_no': new_name
+                'tracking_no': new_name,
+                'order_date': fields.Date.today().strftime("%Y-%m-%d")
             })
 
     def action_create_custom(self):
@@ -173,9 +177,8 @@ class freightorder(models.Model):
                 'target': 'current',
             }
         else:
-            # Create a new custom record and link it to this order
             custom_values = {
-                'product': self.name,  # You can adjust these fields as needed
+                'product': self.name,
                 'order_id': self.id,
             }
             new_custom = self.env['customs.customs'].create(custom_values)
@@ -189,12 +192,13 @@ class freightorder(models.Model):
             }
 
 
+
 class Consignment(models.Model):
     _name = "inv.consignment"
     _description = 'Consignment Model'
 
     freight_order_id = fields.Many2one("inv.freightorder", string="Freight Order")
-    master_bill_no = fields.Char("Master Bill No", readonly=True, default='/')
+    name = fields.Char("Master Bill No", readonly=True, default='/')
     booking_no = fields.Char("Booking No", readonly=True, default='/')
     document_ids = fields.One2many('consignment.document', 'document_id', string="Document", copy=True)
     term = fields.Char("Terms")
@@ -249,9 +253,6 @@ class Consignment(models.Model):
         help="Total weight from associated orders with unit"
     )
 
-    def print_the_action(self):
-        print(self.master_bill_no);
-
     @api.depends('filtered_orders.package_ids.unit_of_weight', 'filtered_orders.package_ids.weight_uom_id')
     def _compute_total_weight(self):
         for consignment in self:
@@ -287,11 +288,11 @@ class Consignment(models.Model):
         if not confirmed_status:
             raise UserError("Confirmed status not found. Please make sure it's created.")
         current_date = fields.Datetime.now().strftime("%Y%m%d")
-        master_bill_no = current_date + ''.join(random.choices(string.ascii_uppercase + string.digits, k=5))
+        name = current_date + ''.join(random.choices(string.ascii_uppercase + string.digits, k=5))
         booking_no = current_date + ''.join(random.choices(string.digits, k=6))
 
         self.write({
-            'master_bill_no': master_bill_no,
+            'name': name,
             'booking_no': booking_no,
             'is_confirmed': True,
             'status_id': confirmed_status.id,
@@ -335,6 +336,7 @@ class ResPartnerInherit(models.Model):
     gst_no = fields.Char(string="GST No")
     company_no = fields.Char(string="Company No")
 
+
 class freightorderPackage(models.Model):
     _name = 'inv.freightorder.package'
     _description = 'Freight Order Package'
@@ -347,6 +349,18 @@ class freightorderPackage(models.Model):
     volume_uom_id = fields.Many2one('uom.uom', string="Unit", domain="[('category_id.name', 'ilike', 'volume')]")
     product_description = fields.Text("Product Description")
     package_count = fields.Integer("Package Count")
+    container_no = fields.Char(string="Container No")
+    container_type = fields.Char(string="Container Type")
+    container_weight = fields.Float(string="Container Weight")
+    container_weight_unit = fields.Many2one('uom.uom', string="Unit",
+                                            domain="[('category_id.name', 'ilike', 'Weight')]")
+    gross_weight = fields.Float(string="Gross Weight")
+    gross_weight_unit = fields.Many2one('uom.uom', string="Unit", domain="[('category_id.name', 'ilike', 'Weight')]")
+    temperature = fields.Float(string="Temperature")
+    airflow = fields.Integer(string="Airflow")
+    seal_no = fields.Char(string="Seal No")
+    marks = fields.Char(string="Marks")
+    packing_material = fields.Text(string="Packing Material")
 
 
 class Customs(models.Model):
@@ -404,7 +418,7 @@ class Customs(models.Model):
     style = fields.Char(string='Style')
     edi_date = fields.Date(string='EDI Date')
     response = fields.Char(string='Response')
-    order_id = fields.Many2one('inv.freightorder', string='Freight Order')
+    order_id = fields.Many2one('inv.freightorder', string='Freight Order', ondelete='cascade')
 
 
 class Document(models.Model):
@@ -444,8 +458,65 @@ class Document(models.Model):
                 'context': {'message': 'No document available for preview.'},
                 'name': 'Document Preview',
             }
+
+
 class Role(models.Model):
     _name = 'user.role'
     _description = 'User Role'
 
     name = fields.Char(string="Role Name")
+
+
+class FreightProduct(models.Model):
+    _name = 'freight.product'
+    _description = 'Freight Product'
+
+    order_id = fields.Many2one('inv.freightorder', string="Freight Order", required=True, ondelete='cascade')
+    name = fields.Char(string="Product Name", required=True)
+    description = fields.Text(string="Description")
+    brand = fields.Char(string="Brand")
+    supplier = fields.Char(string="Supplier")
+    invoice_no = fields.Char(string="Invoice No")
+    invoice_total = fields.Float(string="Invoice Total")
+    currency_id = fields.Many2one('res.currency', string="Currency")
+    exchange_rate = fields.Float(string="Exchange Rate")
+    quantity = fields.Integer(string="Quantity")
+    quantity_unit_id = fields.Many2one('package.type', string="Package Type")
+    weight = fields.Float(string="Weight")
+    weight_unit_id = fields.Many2one('uom.uom', string="Unit", domain="[('category_id.name', 'ilike', 'Weight')]")
+    volume = fields.Float(string="Volume")
+    volume_unit_id = fields.Many2one('uom.uom', string="Unit", domain="[('category_id.name', 'ilike', 'Volume')]")
+    country_of_origin = fields.Char(string="Country of Origin")
+    country_of_import = fields.Char(string="Country of Import")
+    country_of_export = fields.Char(string="Country of Export")
+    packing_material = fields.Char(string="Packing Material")
+
+    @api.depends('weight', 'weight_unit_id')
+    def _compute_display_weight(self):
+        for record in self:
+            if record.weight and record.weight_unit_id:
+                record.display_weight = f"{record.weight} {record.weight_unit_id.name}"
+            else:
+                record.display_weight = False
+
+    display_weight = fields.Char(string="Weight (with Unit)", compute="_compute_display_weight", store=True)
+
+    @api.depends('quantity', 'quantity_unit_id')
+    def _compute_display_quantity(self):
+        for record in self:
+            if record.quantity and record.quantity_unit_id:
+                record.display_quantity = f"{record.quantity} {record.quantity_unit_id.name}"
+            else:
+                record.display_quantity = False
+
+    display_quantity = fields.Char(string="Quantity (with Unit)", compute="_compute_display_quantity", store=True)
+
+    @api.depends('volume', 'volume_unit_id')
+    def _compute_display_volume(self):
+        for record in self:
+            if record.volume and record.volume_unit_id:
+                record.display_volume = f"{record.volume} {record.volume_unit_id.name}"
+            else:
+                record.display_volume = False
+
+    display_volume = fields.Char(string="Volume (with Unit)", compute="_compute_display_volume", store=True)

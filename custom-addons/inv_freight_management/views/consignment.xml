@@ -26,6 +26,8 @@
                     <header>
                         <button name="generate_numbers" string="Confirm" type="object" class="oe_highlight"
                                 invisible="is_confirmed"/>
+
+
                         <field name="status_id" widget="statusbar"/>
                     </header>
 
@@ -33,9 +35,9 @@
                         <!-- Display fields with desired styling -->
                         <div class="oe_structure">
                             <div class="oe_title">
-                                <label for="master_bill_no" class="oe_edit_only" string="Master Bill Number"/>
+                                <label for="name" class="oe_edit_only" string="Master Bill Number"/>
                                 <h1>
-                                    <field name="master_bill_no"/>
+                                    <field name="name"/>
                                 </h1>
                             </div>
                             <div class="oe_structure">
@@ -79,19 +81,30 @@
                                     </group>
                                 </group>
                                 <notebook>
-                                    <!-- Existing page for Orders -->
-                                    <page string="Add Orders" onchange="print_the_action">
-                                        <field name="filtered_orders" widget="one2many_list" onchange="print_the_action"
-                                               domain="[('origin_port_id', '=', origin_port_id), ('destination_port_id', '=', destination_port_id), ('status_id.name', 'ilike', 'Ready')]">
+
+                                    <page string="Add Orders">
+                                        <field name="filtered_orders" widget="one2many_list"  on_change="filtered_orders_changed"
+                                               domain="[('origin_port_id', '=', origin_port_id), ('destination_port_id', '=', destination_port_id), ('status_id.name', 'ilike', 'Ready'),]">
                                             <tree>
                                                 <!-- Add all fields you want to display for orders -->
-                                                <field width="150" name="name" string="Order Id" options="{'no_open': True}"/>
-                                                <field name="order_date" string="Order Date" options="{'no_open': True}"/>
-                                                <field name="ready_date" string="Ready Date" options="{'no_open': True}"/>
+                                                <field width="150" name="name" string="Order Id"
+                                                       options="{'no_open': True}"/>
+                                                <field name="order_date" string="Order Date"
+                                                       options="{'no_open': True}"/>
+                                                <field name="ready_date" string="Ready Date"
+                                                       options="{'no_open': True}"/>
                                                 <!-- Add other fields -->
+
                                             </tree>
                                             <form>
                                                 <sheet>
+                                                    <header>
+                                                        <button name="action_create_custom" string="Customs"
+                                                                type="object" class="btn-primary"
+                                                                position="attributes"/>
+
+                                                    </header>
+
                                                     <div class="oe_title">
                                                         <label for="name" class="oe_edit_only" string="Order Id"/>
                                                         <h1>
@@ -101,7 +114,9 @@
                                                     <group>
                                                         <group>
                                                             <field name="order_date" widget="date"/>
+                                                            <field name="master_bill_no" />
                                                             <field name="tracking_no"/>
+                                                            <field name="sub_bill_no"/>
                                                             <field name="term"/>
                                                             <field name="shipper_id"
                                                             />
@@ -154,12 +169,157 @@
 
                                                         </group>
                                                     </group>
-                                                    <header>
-                                                        <button name="action_create_custom" string="Customs"
-                                                                type="object" class="btn-primary"
-                                                                position="attributes"/>
+                                                    <notebook>
 
-                                                    </header>
+                                                        <page string="Packages" name="packages_tab">
+                                                            <field name="package_ids" widget="one2many_list">
+                                                                <tree>
+                                                                    <!-- Define fields here -->
+                                                                    <field name="package_type_id"
+                                                                           attributes="{'column_invisible': False, 'string': 'Package Type'}"
+                                                                           width="150" options="{'no_open': True}"/>
+                                                                    <field name="package_count"
+                                                                           attributes="{'column_invisible': False, 'string': 'Package Count'}"
+                                                                           width="100" options="{'no_open': True}"/>
+                                                                    <field name="unit_of_weight"
+                                                                           attributes="{'column_invisible': False, 'string': 'Weight'}"
+                                                                           width="100"
+                                                                           options="{'no_open': True}"/>
+                                                                    <field name="weight_uom_id"
+                                                                           attributes="{'column_invisible': False, 'string': 'Weight Unit'}"
+                                                                           width="100" options="{'no_open': True}"/>
+                                                                    <field name="unit_of_volume"
+                                                                           attributes="{'column_invisible': False, 'string': 'Volume'}"
+                                                                           width="100"
+                                                                           options="{'no_open': True}"/>
+                                                                    <field name="volume_uom_id"
+                                                                           attributes="{'column_invisible': False, 'string': 'Volume Unit'}"
+                                                                           width="100" options="{'no_open': True}"/>
+                                                                    <field name="product_description"
+                                                                           attributes="{'column_invisible': False, 'string': 'Product Description'}"
+                                                                           width="200" options="{'no_open': True}"/>
+                                                                </tree>
+
+                                                                <form string="Packages">
+                                                                    <sheet>
+                                                                        <group>
+
+                                                                            <field name="package_type_id"
+                                                                                   string="Package Type"/>
+                                                                            <field name="package_count"
+                                                                                   string="Package Count"/>
+
+                                                                            <field name="unit_of_weight"
+                                                                                   string="Weight"/>
+                                                                            <field name="weight_uom_id"
+                                                                                   string="Weight Unit"/>
+                                                                            <field name="unit_of_volume"
+                                                                                   string="Volume"/>
+                                                                            <field name="volume_uom_id"
+                                                                                   string="Volume Unit"/>
+
+                                                                            <field name="container_no"
+                                                                                   string="Container Number"/>
+                                                                            <field name="container_type"
+                                                                                   string="Container Type"/>
+                                                                            <field name="container_weight"
+                                                                                   string="Container Weight"/>
+                                                                            <field name="container_weight_unit"
+                                                                                   string="Unit"/>
+                                                                            <field name="gross_weight"
+                                                                                   string="Gross Weight"/>
+                                                                            <field name="gross_weight_unit"
+                                                                                   string="Unit"/>
+                                                                            <field name="temperature"
+                                                                                   string="Temperature"/>
+                                                                            <field name="airflow"
+                                                                                   string="AirFlow"/>
+                                                                            <field name="seal_no"
+                                                                                   string="Seal Number"/>
+                                                                            <field name="marks"
+                                                                                   string="Marks"/>
+                                                                            <field name="packing_material"
+                                                                                   string="Packing Materials"/>
+                                                                            <field name="product_description"
+                                                                                   string="Product Description"/>
+
+
+                                                                            <!-- Add more fields as needed -->
+                                                                        </group>
+                                                                    </sheet>
+                                                                </form>
+                                                            </field>
+                                                        </page>
+                                                        <page string="Products" name="freight_products_tab">
+                                                            <field name="product_ids" widget="one2many_list">
+                                                                <tree>
+                                                                    <!-- Main fields visible by default -->
+                                                                    <field name="name" string="Product Name"
+                                                                           width="150"/>
+                                                                    <field name="description"/>
+                                                                    <field name="brand"/>
+                                                                    <field name="supplier" optional="hide"/>
+                                                                    <field name="invoice_no" string="Invoice No"/>
+                                                                    <field name="invoice_total" string="Invoice Total"/>
+                                                                    <field name="currency_id" string="Currency"
+                                                                           options="{'no_open': True}" optional="hide"/>
+                                                                    <field name="exchange_rate" string="Exchange Rate"
+                                                                           optional="hide"/>
+                                                                    <field name="display_quantity" string="Quantity"/>
+
+                                                                    <field name="display_weight" string="Weight"/>
+
+                                                                    <field name="display_volume" string="Volume"/>
+                                                                    <field name="country_of_origin"
+                                                                           string="Country of Origin" optional="hide"/>
+                                                                    <field name="country_of_import"
+                                                                           string="Country of Import" optional="hide"/>
+                                                                    <field name="country_of_export"
+                                                                           string="Country of Export" optional="hide"/>
+                                                                    <field name="packing_material"
+                                                                           string="Packing Material" optional="hide"/>
+                                                                </tree>
+                                                                <form string="Products">
+                                                                    <sheet>
+                                                                        <group>
+                                                                            <!-- All fields are visible in the form view -->
+                                                                            <field name="name" string="Product Name"/>
+                                                                            <field name="description"
+                                                                                   string="Description"/>
+                                                                            <field name="brand" string="Brand"/>
+                                                                            <field name="supplier" string="Supplier"/>
+                                                                            <field name="invoice_no"
+                                                                                   string="Invoice No"/>
+                                                                            <field name="invoice_total"
+                                                                                   string="Invoice Total"/>
+                                                                            <field name="currency_id"
+                                                                                   string="Currency"/>
+                                                                            <field name="exchange_rate"
+                                                                                   string="Exchange Rate"/>
+                                                                            <field name="quantity" string="Quantity"/>
+                                                                            <field name="quantity_unit_id"
+                                                                                   string="Unit"/>
+                                                                            <field name="weight" string="Weight"/>
+                                                                            <field name="weight_unit_id" string="Unit"/>
+                                                                            <field name="volume" string="Volume"/>
+                                                                            <field name="volume_unit_id" string="Unit"/>
+                                                                            <field name="country_of_origin"
+                                                                                   string="Country of Origin"/>
+                                                                            <field name="country_of_import"
+                                                                                   string="Country of Import"/>
+                                                                            <field name="country_of_export"
+                                                                                   string="Country of Export"/>
+                                                                            <field name="packing_material"
+                                                                                   string="Packing Material"/>
+                                                                            <!-- Add more fields as needed -->
+                                                                        </group>
+                                                                    </sheet>
+                                                                </form>
+                                                            </field>
+
+                                                        </page>
+                                                    </notebook>
+
                                                 </sheet>
 
 
@@ -191,7 +351,7 @@
             <field name="model">inv.consignment</field>
             <field name="arch" type="xml">
                 <tree string="Consignment Tree">
-                    <field name="master_bill_no"/>
+                    <field name="name"/>
                     <field name="booking_no"/>
                     <field name="term"/>
                     <field name="origin_port_id"/>
@@ -222,7 +382,7 @@
                             <div class="oe_kanban_card oe_kanban_global_click">
                                 <div class="o_kanban_record_head">
                                     <div class="o_kanban_record_top">
-                                        <field name="master_bill_no"/>
+                                        <field name="name"/>
                                     </div>
                                     <div class="o_kanban_record_bottom">
                                         <field name="origin_port_id"/>
@@ -235,5 +395,6 @@
                 </kanban>
             </field>
         </record>
+
     </data>
 </odoo>

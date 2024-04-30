@@ -17,4 +17,5 @@
         <field name="binding_model_id" ref="inv_freight_management.model_inv_freightorder" />
         <field name="binding_type">report</field>
     </record>
+
 </odoo>

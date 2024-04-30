@@ -7,7 +7,7 @@
             <field name="report_type">qweb-pdf</field>
             <field name="report_name">inv_freight_management.report_inv_consignment</field>
             <field name="report_file">inv_freight_management.report_inv_consignment</field>
-            <field name="print_report_name">'Consignment Report - %s' % object.master_bill_no</field>
+            <field name="print_report_name">'Consignment Report - %s' % object.name</field>
             <field name="binding_model_id" ref="model_inv_consignment"/>
             <field name="binding_type">report</field>
         </record>

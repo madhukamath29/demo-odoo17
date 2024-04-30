@@ -85,6 +85,7 @@
                                 <field name="term"/>
                                 <field name="shipper_id"
                                 />
+<!--                                <field name="master_bill_no" />-->
                                 <field name="receiver_id"/>
                                 <field name="bill_to_id"/>
                                 <field name="notify_party_id"/>
@@ -111,18 +112,49 @@
                         </group>
                         <notebook>
 
-<page string="Packages" name="packages_tab">
-  <field name="package_ids" widget="one2many_list">
-    <tree editable="bottom">
-      <field name="package_type_id" attributes="{'column_invisible': False, 'string': 'Package Type'}" width="150" options="{'no_open': True}" />
-      <field name="package_count" attributes="{'column_invisible': False, 'string': 'Package Count'}" width="100" options="{'no_open': True}" />
-      <field name="weight_uom_id" attributes="{'column_invisible': False, 'string': 'Weight Unit'}" width="100" options="{'no_open': True}" />
-      <field name="unit_of_volume" attributes="{'column_invisible': False, 'string': 'Volume'}" width="100" options="{'no_open': True}" />
-      <field name="volume_uom_id" attributes="{'column_invisible': False, 'string': 'Volume Unit'}" width="100" options="{'no_open': True}" />
-      <field name="product_description" attributes="{'column_invisible': False, 'string': 'Product Description'}" width="200" options="{'no_open': True}" />
-    </tree>
-  </field>
-</page>                            <page name="internal_notes" string="Internal Notes">
+                            <page string="Packages" name="packages_tab">
+                                <field name="package_ids" widget="one2many_list">
+                                    <tree >
+                                        <!-- Define fields here -->
+                                        <field name="package_type_id"
+                                               attributes="{'column_invisible': False, 'string': 'Package Type'}"
+                                               width="150" options="{'no_open': True}"/>
+                                        <field name="package_count"
+                                               attributes="{'column_invisible': False, 'string': 'Package Count'}"
+                                               width="100" options="{'no_open': True}"/>
+                                        <field name="unit_of_weight"
+                                               attributes="{'column_invisible': False, 'string': 'Weight'}" width="100"
+                                               options="{'no_open': True}"/>
+                                        <field name="weight_uom_id"
+                                               attributes="{'column_invisible': False, 'string': 'Weight Unit'}"
+                                               width="100" options="{'no_open': True}"/>
+                                        <field name="unit_of_volume"
+                                               attributes="{'column_invisible': False, 'string': 'Volume'}" width="100"
+                                               options="{'no_open': True}"/>
+                                        <field name="volume_uom_id"
+                                               attributes="{'column_invisible': False, 'string': 'Volume Unit'}"
+                                               width="100" options="{'no_open': True}"/>
+                                        <field name="product_description"
+                                               attributes="{'column_invisible': False, 'string': 'Product Description'}"
+                                               width="200" options="{'no_open': True}"/>
+                                    </tree>
+                                    <form string="Packages">
+                                        <sheet>
+                                            <group>
+                                                <field name="package_type_id" string="Package Type"/>
+                                                <field name="package_count" string="Package Count"/>
+                                                <field name="unit_of_weight" string="Weight"/>
+                                                <field name="weight_uom_id" string="Weight Unit"/>
+                                                <field name="unit_of_volume" string="Volume"/>
+                                                <field name="volume_uom_id" string="Volume Unit"/>
+                                                <field name="product_description" string="Product Description"/>
+                                                <!-- Add more fields as needed -->
+                                            </group>
+                                        </sheet>
+                                    </form>
+                                </field>
+                            </page>
+                            <page name="internal_notes" string="Internal Notes">
                                 <field name="comment" placeholder="Internal notes..."/>
                             </page>
 

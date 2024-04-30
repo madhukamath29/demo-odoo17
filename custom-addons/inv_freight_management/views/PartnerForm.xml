@@ -7,7 +7,7 @@
             <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="arch" type="xml">
                 <field name="category_id" position="after">
-                        <field name="user_category" widget="many2many_tags" string="Role"/>
+                        <field name="user_category" widget="many2many_tags" />
   <!-- Add user_category field -->
                     <field name="customs_code"/>
                     <field name="supplier_code"/>
