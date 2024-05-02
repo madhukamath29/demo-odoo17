@@ -4,57 +4,96 @@
         <field name="name">customs.customs.form</field>
         <field name="model">customs.customs</field>
         <field name="arch" type="xml">
-            <form string="Customs">
-                <group>
+            <form string="Customs" col="4">
+                <group col="2">
                     <group>
                         <field name="product"/>
+                    </group>
+                    <group>
                         <field name="hs_code"/>
+                    </group>
+                </group>
+                <group col="4">
+                    <group>
                         <field name="export_code"/>
-                        <field name="invoice_no"/>
-                        <field name="delivery_authority"/>
-                        <field name="term"/>
                         <field name="invoice_amount"/>
-                        <field name="currency_id"/>
-                        <field name="exc_rate" widget="many2one" options="{'no_create_edit': True, 'no_quick_create': True}"/>
-
-                        <field name="lc_amount"/>
                         <field name="gst_percentage"/>
-                        <field name="gst_value"/>
-                        <field name="line_total"/>
-                        <field name="currency_rate"/>
                         <field name="freight_amount"/>
-                        <field name="exc_rate_1"/>
-                        <field name="lc_amount_1"/>
                         <field name="insurance_amount"/>
-                        <field name="ins_currency"/>
-                        <field name="exc_rate_2"/>
-                        <field name="lc_amount_2"/>
                         <field name="foreign_freight"/>
-                        <field name="packing_cost"/>
-                    </group>
-                        <group>
-                        <field name="commission"/>
-                        <field name="discount"/>
                         <field name="land_charge"/>
-                        <field name="processing_port"/>
-                        <field name="total_weight"/>
-                        <field name="no_of_packs"/>
-                        <field name="country_of_origin"/>
-                        <field name="country_of_destination"/>
-                        <field name="uop"/>
-                        <field name="duty"/>
-                        <field name="levy"/>
-                        <field name="total"/>
-                        <field name="type"/>
-                        <field name="amount"/>
-                        <field name="fob_fc"/>
-                        <field name="fob_lc"/>
-                        <field name="solid_consign"/>
-                        <field name="style"/>
-                        <field name="edi_date"/>
-                        <field name="response"/>
-                        </group>
+
                     </group>
+                    <group>
+                        <field name="invoice_no"/>
+                        <field name="currency_id"/>
+                        <field name="gst_value"/>
+                        <field name="freight_currency"/>
+                        <field name="ins_currency"/>
+                        <field name="packing_cost"/>
+                        <field name="processing_port"/>
+                    </group>
+                    <group>
+                        <field name="delivery_authority"/>
+                        <field name="exc_rate" widget="many2one"
+                               options="{'no_create_edit': True, 'no_quick_create': True}"/>
+                        <field name="line_total"/>
+                        <field name="exc_rate_1"/>
+                        <field name="exc_rate_2"/>
+                        <field name="commission"/>
+                        <field name="total_weight"/>
+                    </group>
+                    <group>
+                        <field name="term"/>
+                        <field name="lc_amount"/>
+                        <field name="currency_rate"/>
+                        <field name="lc_amount_1"/>
+                        <field name="lc_amount_2"/>
+                        <field name="discount"/>
+                        <field name="no_of_packs"/>
+
+                    </group>
+                </group>
+                <group col="2">
+                    <group>
+                        <field name="country_of_origin"/>
+                    </group>
+                    <group>
+                        <field name="country_of_destination"/>
+                    </group>
+
+                </group>
+                <group col="4">
+                    <group>
+                        <field name="uop"/>
+                        <field name="type"/>
+                        <field name="fob_fc"/>
+                    </group>
+                    <group>
+                        <field name="duty"/>
+                        <field name="amount"/>
+                        <field name="fob_lc"/>
+                    </group>
+                    <group>
+                        <field name="levy"/>
+                        <field name="currency"/>
+                        <field name="solid_consign"/>
+                    </group>
+                    <group>
+                        <field name="total"/>
+                        <field name="exc_rate_4"/>
+                        <field name="style"/>
+                    </group>
+                </group>
+                                <group col="2">
+                    <group>
+                        <field name="edi_date"/>
+                    </group>
+                    <group>
+                        <field name="response"/>
+                    </group>
+
+                </group>
 
                 <footer>
                     <button string="Cancel" special="cancel"/>

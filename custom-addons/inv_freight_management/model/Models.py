@@ -133,6 +133,43 @@ class freightorder(models.Model):
     goods_desc = fields.Text("Goods Desc")
     comment = fields.Html(string='Notes')
     master_bill_no = fields.Many2one("inv.consignment", string="Master Bill No", readonly=True)
+    total_weight = fields.Char(string="Total Weight", compute='_compute_total_weight')
+    total_volume = fields.Char(string="Total Volume", compute='_compute_total_volume')
+    total_package_count = fields.Char(string="Total Package Count", compute='_compute_total_package_count')
+
+    @api.depends('package_ids.unit_of_weight', 'package_ids.weight_uom_id')
+    def _compute_total_weight(self):
+        for order in self:
+            total_weight = 0.0
+            weight_uom = None
+            for package in order.package_ids:
+                total_weight += package.unit_of_weight
+                weight_uom = package.weight_uom_id.name
+            order.total_weight = f"{total_weight} {weight_uom}" if weight_uom else False
+
+    @api.depends('package_ids.unit_of_volume', 'package_ids.volume_uom_id')
+    def _compute_total_volume(self):
+        for order in self:
+            total_volume = 0.0
+            volume_uom = None
+            for package in order.package_ids:
+                total_volume += package.unit_of_volume
+                volume_uom = package.volume_uom_id.name
+            order.total_volume = f"{total_volume} {volume_uom}" if volume_uom else False
+
+    @api.depends('package_ids.package_count', 'package_ids.package_type_id')
+    def _compute_total_package_count(self):
+        for order in self:
+            package_counts = {}
+            for package in order.package_ids:
+                package_type = package.package_type_id.name
+                if package_type not in package_counts:
+                    package_counts[package_type] = 0
+                package_counts[package_type] += package.package_count
+
+            total_package_count_str = ", ".join(
+                [f"{count} {package_type}" for package_type, count in package_counts.items()])
+            order.total_package_count = total_package_count_str
 
     @api.model
     def _default_status_id(self):
@@ -147,6 +184,30 @@ class freightorder(models.Model):
     destination_country_id = fields.Many2one("res.country", string="Destination Country")
     package_ids = fields.One2many('inv.freightorder.package', 'order_id', string="Packages", copy=True)
     product_ids = fields.One2many('freight.product', 'order_id', string="Products", copy=True)
+    total_product_quantity = fields.Char(string="Total Product Quantity", compute='_compute_total_product_quantity')
+    total_product_weight = fields.Char(string="Total Product Weight", compute='_compute_total_product_weight')
+    total_product_volume = fields.Char(string="Total Product Volume", compute='_compute_total_product_volume')
+
+    @api.depends('product_ids.quantity', 'product_ids.quantity_unit_id')
+    def _compute_total_product_quantity(self):
+        for order in self:
+            total_quantity = sum(order.product_ids.mapped('quantity'))
+            unit = order.product_ids and order.product_ids[0].quantity_unit_id.name or ''
+            order.total_product_quantity = f"{total_quantity} {unit}"
+
+    @api.depends('product_ids.weight', 'product_ids.weight_unit_id')
+    def _compute_total_product_weight(self):
+        for order in self:
+            total_weight = sum(order.product_ids.mapped('weight'))
+            unit = order.product_ids and order.product_ids[0].weight_unit_id.name or ''
+            order.total_product_weight = f"{total_weight} {unit}"
+
+    @api.depends('product_ids.volume', 'product_ids.volume_unit_id')
+    def _compute_total_product_volume(self):
+        for order in self:
+            total_volume = sum(order.product_ids.mapped('volume'))
+            unit = order.product_ids and order.product_ids[0].volume_unit_id.name or ''
+            order.total_product_volume = f"{total_volume} {unit}"
 
     def action_confirm(self):
         confirmed_status = self.env['freight.order.status'].search([('name', 'ilike', 'Confirmed')], limit=1)
@@ -165,9 +226,31 @@ class freightorder(models.Model):
                 'order_date': fields.Date.today().strftime("%Y-%m-%d")
             })
 
+    def update_product_details(self):
+        # Fetch all product names associated with this order
+        product_names = ', '.join(self.product_ids.mapped('name'))
+
+        # Update the products field in the customs model
+        for customs_record in self.env['customs.customs'].search([('order_id', '=', self.id)]):
+            customs_record.write(
+                {'product': product_names, 'total_weight': self.total_product_weight,
+                 'no_of_packs': self.total_product_quantity,
+                 'country_of_origin': self.origin_country_id.id,
+                 'country_of_destination': self.destination_country_id.id,
+                 'processing_port': self.origin_port_id.id,
+                 'invoice_no': self.product_ids.invoice_no,
+                 'invoice_amount': self.product_ids.invoice_total,
+                 'exc_rate': self.product_ids.exchange_rate.id,
+                 'currency_id': self.product_ids.currency_id.id,
+
+                 })
+
     def action_create_custom(self):
+        # Check if there's an existing customs entry for this order
         existing_custom = self.env['customs.customs'].search([('order_id', '=', self.id)], limit=1)
         if existing_custom:
+            # Update the product details in existing customs entry
+            self.update_product_details()
             return {
                 'name': "View/Edit Custom",
                 'view_mode': 'form',
@@ -177,11 +260,12 @@ class freightorder(models.Model):
                 'target': 'current',
             }
         else:
-            custom_values = {
-                'product': self.name,
-                'order_id': self.id,
-            }
-            new_custom = self.env['customs.customs'].create(custom_values)
+            # Create a new customs entry
+            new_custom = self.env['customs.customs'].create({'order_id': self.id})
+
+            # Update the product details in the new customs entry
+            self.update_product_details()
+
             return {
                 'name': "Custom",
                 'view_mode': 'form',
@@ -190,7 +274,6 @@ class freightorder(models.Model):
                 'res_id': new_custom.id,
                 'target': 'current',
             }
-
 
 
 class Consignment(models.Model):
@@ -232,6 +315,28 @@ class Consignment(models.Model):
                                 default=lambda self: self._default_status_id())
 
     filtered_orders = fields.Many2many("inv.freightorder", string="Filtered Orders")
+
+    consignment_order_ids = fields.One2many("inv.freightorder", "name", string="Consignment Orders")
+
+    @api.onchange('filtered_orders')
+    def _onchange_filtered_orders(self):
+        """
+        Update master_bill_no field of related orders when filtered_orders change.
+        """
+        print("_onchange_filtered_orders")
+
+        # Save the consignment record to ensure its ID is available
+        self.ensure_one()  # Ensure only one record is being processed
+        self.write({})  # Save the record (no actual changes)
+
+        # Assign consignment_id to master_bill_no field of related orders
+        for order in self.filtered_orders:
+            print("Assigning consignment to order:", order)
+            print("self.id", self.id)
+            order.master_bill_no = self.name  # Assign consignment ID to master_bill_no field of the order
+
+            # Explicitly save the record to persist changes
+            order.write({'master_bill_no': self.name})
 
     total_package_count = fields.Float(
         string="Total Package Count",
@@ -367,7 +472,8 @@ class Customs(models.Model):
     _name = "customs.customs"  # Adjust the model name to follow the format <module_name>.<model_name>
     _description = "Customs"
 
-    product = fields.Char(string="Product")
+    order_id = fields.Many2one('inv.freightorder', string='Freight Order')
+    product = fields.Text(string="Product")
     hs_code = fields.Char(string="HS Code")
     export_code = fields.Char(string="Export Code")
     invoice_no = fields.Char(string="Invoice No")
@@ -375,50 +481,88 @@ class Customs(models.Model):
     term = fields.Char(string="Term")
     invoice_amount = fields.Float(string="Invoice Amount")
     currency_id = fields.Many2one('res.currency', string="Currency")
-    exc_rate = fields.Many2one('res.currency.rate', string="Currency", domain="[('currency_id', '=', currency_id)]")
-    lc_amount = fields.Float(string="LC Amount")
+    exc_rate = fields.Many2one('res.currency.rate', string="Exc Rate", domain="[('currency_id', '=', currency_id)]")
+    lc_amount = fields.Float(string="LC Amount", compute='_compute_lc_amount', store=True, readonly=True)
     gst_percentage = fields.Float(string="GST %")
-    gst_value = fields.Float(string="GST Value")
-    line_total = fields.Float(string="Line Total")
-    currency_rate = fields.Float(string='Currency Rate')
+    gst_value = fields.Float(string="GST Value", compute='_compute_gst_value', store=True, readonly=True)
+    line_total = fields.Float(string="Line Total", compute='_compute_line_total', store=True, readonly=True)
+    currency_rate = fields.Selection([
+        ('floating', 'Floating'),
+        ('forward_cover', 'Forward Cover'),
+        ('nz_dollar', 'NZ Dollar')],
+        string="Currency Rate")
     freight_amount = fields.Float(string='Freight Amount')
-    exc_rate_1 = fields.Float(string='Exc Rate')
-    lc_amount_1 = fields.Float(string='LC Amount')
+    freight_currency = fields.Many2one('res.currency', string="Freight Currency")
+    exc_rate_1 = fields.Many2one('res.currency.rate', string="Exc Rate",
+                                 domain="[('currency_id', '=', freight_currency)]")
+    lc_amount_1 = fields.Float(string="LC Amount", compute='_compute_lc_amount_1', store=True, readonly=True)
     insurance_amount = fields.Float(string='Insurance Amount')
-    ins_currency = fields.Char(string='Ins. Currency')
-    exc_rate_2 = fields.Float(string='Exc Rate')
-    lc_amount_2 = fields.Float(string='LC Amount')
-    foreign_freight = fields.Float(string='Foreign Freight')
+    ins_currency = fields.Many2one('res.currency', string="Insurance Currency")
+    exc_rate_2 = fields.Many2one('res.currency.rate', string="Exc Rate", domain="[('currency_id', '=',ins_currency )]")
+    lc_amount_2 = fields.Float(string="LC Amount", compute='_compute_lc_amount_2', store=True, readonly=True)
+    foreign_freight = fields.Char(string='Foreign Freight')
     packing_cost = fields.Float(string='Packing Cost')
     commission = fields.Float(string='Commission')
     discount = fields.Float(string='Discount')
-    land_charge = fields.Float(string='Land Charge')
-    processing_port = fields.Char(string='Processing Port')
-    total_weight = fields.Float(string='Total Weight')
-    no_of_packs = fields.Integer(string='No of Packs')
-    country_of_origin = fields.Char(string='Country of origin')
-    country_of_destination = fields.Char(string='Country of Destination')
+    land_charge = fields.Char(string='Land Charge')
+    processing_port = fields.Many2one("port", string="Origin Port", )
+    total_weight = fields.Char(string='Total Weight')
+    no_of_packs = fields.Char(string='No of Packs')
+    country_of_origin = fields.Many2one("res.country", string="Origin Country")
+    country_of_destination = fields.Many2one("res.country", string="Country of Destination")
     uop = fields.Char(string='UOP')
     duty = fields.Float(string='Duty')
     levy = fields.Float(string='Levy')
     total = fields.Float(string='Total')
-    type = fields.Selection([
-        ('type1', 'Type 1'),
-        ('type2', 'Type 2'),
-        ('type3', 'Type 3'),
-    ], string='Type')
+    type = fields.Char(string='Type')
     amount = fields.Float(string='Amount')
-
+    currency = fields.Many2one('res.currency', string="Currency")
+    exc_rate_4 = fields.Float(string='Exc Rate')
     fob_fc = fields.Float(string='FOB(FC)')
     fob_lc = fields.Float(string='FOB(LC)')
     solid_consign = fields.Selection([
         ('solid', 'Solid'),
         ('consign', 'Consign'),
     ], string='Solid/Consign')
-    style = fields.Char(string='Style')
-    edi_date = fields.Date(string='EDI Date')
-    response = fields.Char(string='Response')
-    order_id = fields.Many2one('inv.freightorder', string='Freight Order', ondelete='cascade')
+    style = fields.Selection([('normal', 'Normal'),
+                              ('drawback', 'Drawback'),
+                              ('completion', 'Completion'), ], string='Style')
+    edi_date = fields.Date(string='EDI Date', readonly=True)
+    response = fields.Char(string='Response', readonly=True)
+
+    @api.depends('invoice_amount', 'exc_rate.rate')
+    def _compute_lc_amount(self):
+        for record in self:
+            if record.exc_rate and record.exc_rate.rate:
+                record.lc_amount = record.invoice_amount / record.exc_rate.rate
+            else:
+                record.lc_amount = 0.0
+
+    @api.depends('invoice_amount', 'exc_rate.rate')
+    def _compute_lc_amount_2(self):
+        for record in self:
+            if record.exc_rate_2 and record.exc_rate_2.rate:
+                record.lc_amount_2 = record.insurance_amount / record.exc_rate_2.rate
+            else:
+                record.lc_amount_2 = 0.0
+
+    @api.depends('invoice_amount', 'exc_rate.rate')
+    def _compute_lc_amount_1(self):
+        for record in self:
+            if record.exc_rate_1 and record.exc_rate_1.rate:
+                record.lc_amount_1 = record.freight_amount / record.exc_rate_1.rate
+            else:
+                record.lc_amount_1 = 0.0
+
+    @api.depends('invoice_amount', 'gst_percentage')
+    def _compute_gst_value(self):
+        for record in self:
+            record.gst_value = (record.invoice_amount * record.gst_percentage) / 100
+
+    @api.depends('lc_amount', 'gst_value')
+    def _compute_line_total(self):
+        for record in self:
+            record.line_total = record.lc_amount + record.gst_value
 
 
 class Document(models.Model):
@@ -475,11 +619,12 @@ class FreightProduct(models.Model):
     name = fields.Char(string="Product Name", required=True)
     description = fields.Text(string="Description")
     brand = fields.Char(string="Brand")
-    supplier = fields.Char(string="Supplier")
+    supplier = fields.Many2one("res.partner", string="Shipper", domain="[('user_category', 'ilike', 'supplier')]")
     invoice_no = fields.Char(string="Invoice No")
     invoice_total = fields.Float(string="Invoice Total")
     currency_id = fields.Many2one('res.currency', string="Currency")
-    exchange_rate = fields.Float(string="Exchange Rate")
+    exchange_rate = fields.Many2one('res.currency.rate', string="Exc Rate",
+                                    domain="[('currency_id', '=', currency_id)]")
     quantity = fields.Integer(string="Quantity")
     quantity_unit_id = fields.Many2one('package.type', string="Package Type")
     weight = fields.Float(string="Weight")
@@ -489,7 +634,7 @@ class FreightProduct(models.Model):
     country_of_origin = fields.Char(string="Country of Origin")
     country_of_import = fields.Char(string="Country of Import")
     country_of_export = fields.Char(string="Country of Export")
-    packing_material = fields.Char(string="Packing Material")
+    packing_material = fields.Text(string="Packing Material")
 
     @api.depends('weight', 'weight_unit_id')
     def _compute_display_weight(self):

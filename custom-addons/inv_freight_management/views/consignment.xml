@@ -83,7 +83,7 @@
                                 <notebook>
 
                                     <page string="Add Orders">
-                                        <field name="filtered_orders" widget="one2many_list"  on_change="filtered_orders_changed"
+                                        <field name="filtered_orders" widget="one2many_list"
                                                domain="[('origin_port_id', '=', origin_port_id), ('destination_port_id', '=', destination_port_id), ('status_id.name', 'ilike', 'Ready'),]">
                                             <tree>
                                                 <!-- Add all fields you want to display for orders -->

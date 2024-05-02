@@ -85,7 +85,7 @@
                                 <field name="term"/>
                                 <field name="shipper_id"
                                 />
-<!--                                <field name="master_bill_no" />-->
+                                <field name="master_bill_no" />
                                 <field name="receiver_id"/>
                                 <field name="bill_to_id"/>
                                 <field name="notify_party_id"/>
