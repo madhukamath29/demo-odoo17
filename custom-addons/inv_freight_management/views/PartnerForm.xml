@@ -6,22 +6,31 @@
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="arch" type="xml">
-                <field name="category_id" position="after">
-                        <field name="user_category" widget="many2many_tags" />
-  <!-- Add user_category field -->
-                    <field name="customs_code"/>
-                    <field name="supplier_code"/>
-                    <field name="ccc_code"/>
-                </field>
-<xpath expr="//span[@name='address_name']" position="before">
-        <field name="gst_no" string="GST No" />
-        <field name="atf_no" />
-        <field name="company_no" />
-        <field name="cus_code" />
-        <field name="freeze" />
-        <field name="overseas"  widget="selection"/>
-        <field name="local_wh"  widget="selection"/>
-    </xpath>            </field>
+                <xpath expr="//notebook" position="before">
+                    <group>
+                        <!-- Insert your new fields here -->
+                        <group>
+                            <field name="overseas" string="Overseas" widget="selection"/>
+                            <field name="local_wh" string="Local Warehouse" widget="selection"/>
+                            <field name="customer" string="Customer Y/N" widget="selection"/>
+                            <field name="user_category" widget="many2many_tags"/>
+                            <field name="atf_no" string="ATF No"/>
+                            <field name="company_no" string="Company No"/>
+                        </group>
+                        <group>
+
+                            <field name="supplier_code" readonly="not(overseas  == 'yes')"/>
+                            <field name="ccc_code" readonly="not(overseas == 'yes')"/>
+                            <field name="customs_code" readonly="not(customer == 'yes')"/>
+                            <!--                            <field name="cus_code" string="Customer Code"-->
+                            <!--                            />-->
+                            <field name="gst_no" string="GST No"/>
+                            <field name="freeze" string="Freeze"/>
+
+                        </group>
+                    </group>
+                </xpath>
+            </field>
         </record>
     </data>
 </odoo>
