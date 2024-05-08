@@ -10,23 +10,20 @@
                     <group>
                         <!-- Insert your new fields here -->
                         <group>
+                            <field name="cus_code" string="Customer Code" required="1"/>
+                            <field name="customer" string="Customs Y/N" widget="selection"/>
                             <field name="overseas" string="Overseas" widget="selection"/>
                             <field name="local_wh" string="Local Warehouse" widget="selection"/>
-                            <field name="customer" string="Customer Y/N" widget="selection"/>
                             <field name="user_category" widget="many2many_tags"/>
                             <field name="atf_no" string="ATF No"/>
                             <field name="company_no" string="Company No"/>
                         </group>
                         <group>
-
-                            <field name="supplier_code" readonly="not(overseas  == 'yes')"/>
-                            <field name="ccc_code" readonly="not(overseas == 'yes')"/>
                             <field name="customs_code" readonly="not(customer == 'yes')"/>
-                            <!--                            <field name="cus_code" string="Customer Code"-->
-                            <!--                            />-->
+                            <field name="supplier_code" readonly="not(overseas  == 'yes')"/>
+                            <field name="ccc_code" readonly="not(local_wh == 'yes')"/>
                             <field name="gst_no" string="GST No"/>
-                            <field name="freeze" string="Freeze"/>
-
+                            <field name="freeze" string="Freeze" required="1"/>
                         </group>
                     </group>
                 </xpath>

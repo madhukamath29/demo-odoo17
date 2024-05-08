@@ -99,7 +99,7 @@ class freightorder(models.Model):
     sub_bill_no = fields.Char("Sub Bill")
     tracking_no = fields.Char("Tracking No")
     term = fields.Char("Term")
-    shipper_id = fields.Many2one("res.partner", string="Shipper", domain="[('user_category', 'ilike', 'agent')]")
+    shipper_id = fields.Many2one("res.partner", string="Shipper", domain="[('user_category', 'ilike', 'customer')]")
     receiver_id = fields.Many2one("res.partner", string="Receiver", domain="[('user_category', 'ilike', 'agent')]")
     bill_to_id = fields.Many2one("res.partner", string="Bill To", domain="[('user_category', 'ilike', 'customer')]")
     notify_party_id = fields.Many2one("res.partner", string="Notify Party",
@@ -425,7 +425,7 @@ class ResPartnerInherit(models.Model):
     customer = fields.Selection([
         ('yes', 'Yes'),
         ('no', 'No'),
-    ], string="Customer Y/N : ")
+    ], string="Customs Y/N : ")
 
     overseas = fields.Selection([
         ('yes', 'Yes'),
