@@ -6,22 +6,45 @@
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="arch" type="xml">
+                <xpath expr="//span[@name='address_name']" position="before">
+                    <field name="customer" string="CustomerY/N" invisible="1"/>
+                    <field name="user_category" widget="many2many_tags"/>
+                    <field name="cus_code" invisible="not(customer == 'yes')" required="1"/>
+                </xpath>
+                <xpath expr="//field[@name='street']" position="attributes">
+                    <attribute name="required">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='city']" position="attributes">
+                    <attribute name="required">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='state_id']" position="attributes">
+                    <attribute name="required">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='zip']" position="attributes">
+                    <attribute name="required">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='country_id']" position="attributes">
+                    <attribute name="required">1</attribute>
+                </xpath>
                 <xpath expr="//notebook" position="before">
                     <group>
                         <!-- Insert your new fields here -->
                         <group>
-                            <field name="cus_code" string="Customer Code" required="1"/>
-                            <field name="customer" string="Customs Y/N" widget="selection"/>
-                            <field name="overseas" string="Overseas" widget="selection"/>
-                            <field name="local_wh" string="Local Warehouse" widget="selection"/>
-                            <field name="user_category" widget="many2many_tags"/>
-                            <field name="atf_no" string="ATF No"/>
+                            <field name="overseas" string="Overseas" widget="selection"
+                                   invisible="not(customer == 'yes')"/>
+                            <field name="local_wh" string="Local Warehouse" widget="selection"
+                                   invisible="not(customer == 'yes')"/>
+                            <field name="customs_y_n" invisible="not(customer == 'yes')"/>
                             <field name="company_no" string="Company No"/>
+                            <field name="atf_no" string="ATF No"/>
                         </group>
                         <group>
-                            <field name="customs_code" readonly="not(customer == 'yes')"/>
-                            <field name="supplier_code" readonly="not(overseas  == 'yes')"/>
-                            <field name="ccc_code" readonly="not(local_wh == 'yes')"/>
+                            <field name="supplier_code" readonly="not(overseas == 'yes')"
+                                   invisible="not(customer == 'yes')"/>
+                            <field name="ccc_code" readonly="not( local_wh == 'yes')"
+                                   invisible="not(customer == 'yes')"/>
+                            <field name="customs_code" readonly="not(customs_y_n == 'yes')"
+                                   invisible="not(customer == 'yes')"/>
                             <field name="gst_no" string="GST No"/>
                             <field name="freeze" string="Freeze" required="1"/>
                         </group>

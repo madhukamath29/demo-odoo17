@@ -425,7 +425,12 @@ class ResPartnerInherit(models.Model):
     customer = fields.Selection([
         ('yes', 'Yes'),
         ('no', 'No'),
-    ], string="Customs Y/N : ")
+    ], string="Customer Y/N", compute='_compute_customer')
+
+    customs_y_n = fields.Selection([
+        ('yes', 'Yes'),
+        ('no', 'No'),
+    ], string="Customs Y/N", )
 
     overseas = fields.Selection([
         ('yes', 'Yes'),
@@ -440,6 +445,16 @@ class ResPartnerInherit(models.Model):
     atf_no = fields.Char(string="ATF No")
     gst_no = fields.Char(string="GST No")
     company_no = fields.Char(string="Company No")
+
+    @api.depends('user_category')
+    def _compute_customer(self):
+        for partner in self:
+            categories = ", ".join(category.name for category in partner.user_category)
+            _logger.info(f"User categories for partner {partner.id}: {categories}")
+            if any(category.name.lower() == 'customer' for category in partner.user_category):
+                partner.customer = 'yes'
+            else:
+                partner.customer = 'no'
 
 
 class freightorderPackage(models.Model):
