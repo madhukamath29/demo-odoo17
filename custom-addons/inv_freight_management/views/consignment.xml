@@ -57,6 +57,7 @@
                                                readonly="destination_country_id == False"/>
                                         <field name="company_id"/>
                                         <field name="status_id"/>
+                                        <field name="desc"/>
                                     </group>
                                     <group>
                                         <field name="sending_agent"
