@@ -77,13 +77,13 @@
                                     <field colspan="4" name="general_info"
                                         nolabel="1" />
                                     <newline />
-                                    <group>
-                                        <field name="deceased" />
-                                        <field name="date_of_death"
-                                             invisible="not deceased" required="deceased == 1"/>
-                                        <field name="cause_of_death"
-                                            invisible="not deceased" />
-                                    </group>
+<!--                                    <group>-->
+<!--&lt;!&ndash;                                        <field name="deceased" />&ndash;&gt;-->
+<!--&lt;!&ndash;                                        <field name="date_of_death"&ndash;&gt;-->
+<!--&lt;!&ndash;                                             invisible="not deceased" required="deceased == 1"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                                        <field name="cause_of_death"&ndash;&gt;-->
+<!--&lt;!&ndash;                                            invisible="not deceased" />&ndash;&gt;-->
+<!--                                    </group>-->
                                 </group>
                             </page>
 
@@ -393,7 +393,7 @@
                     <field name="sex" />
                     <field name="date_of_birth" />
                     <field name="primary_care_physician_id" />
-                    <field name="deceased" />
+<!--                    <field name="deceased" />-->
                 </tree>
             </field>
         </record>

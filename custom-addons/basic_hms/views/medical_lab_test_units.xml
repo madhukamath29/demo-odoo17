@@ -36,9 +36,9 @@
             <field name="view_mode">tree,form</field>
         </record>
 
-        <menuitem name="Lab Testing Units" 
+        <menuitem name="Lab Testing Units"
                 id="menu_lab_testing_units"
-                parent="main_menu_conf_laboratory" 
+                parent="main_menu_conf_laboratory"
                 action="action_medical_lab_test_units" />
 
     </odoo>

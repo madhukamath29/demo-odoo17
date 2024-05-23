@@ -3,31 +3,25 @@
 
 {
 
-    "name": "Basic Hospital Management System in Odoo",
+    "name": "Dental ERP",
     "version": "17.0.0.2",
     "currency": 'EUR',
-    "summary": "Apps basic Hospital Management system Healthcare Management Clinic Management apps manage clinic manage Patient hospital manage Healthcare system Patient Management Hospital Management Healthcare Management Clinic Management hospital Lab Test Request",
+    "summary": "Apps basic Dental ERP system  Clinic Management apps manage clinic manage Patient  Patient Management  Clinic Management hospital ",
     "category": "Industry",
     "description": """
-    BrowseInfo developed a new odoo/OpenERP module apps
+    Invenger Cloud  developed a new odoo/OpenERP module apps
     This module is used to manage Hospital and Healthcare Management and Clinic Management apps. 
     manage clinic manage Patient hospital in odoo manage Healthcare system Patient Management, 
-    Odoo Hospital Management odoo Healthcare Management Odoo Clinic Management
-    Odoo hospital Patients
-    Odoo Healthcare Patients Card Report
-    Odoo Healthcare Patients Medication History Report
-    Odoo Healthcare Appointments
-    Odoo hospital Appointments Invoice
-    Odoo Healthcare Families Prescriptions Healthcare Prescriptions
-    Odoo Healthcare Create Invoice from Prescriptions odoo hospital Prescription Report
-    Odoo Healthcare Patient Hospitalization
-    odoo Hospital Management System
-    Odoo Healthcare Management System
-    Odoo Clinic Management System
+    
+    Odoo Dental Patients
+    Odoo Dental Patients Card Report
+    Odoo Dental Patients Medication History Report
+    Odoo Dental Appointments
+    Odoo Clinic Appointments Invoice
+    odoo Clini Management System
     Odoo Appointment Management System
-    health care management system
+    Dental care management system
     Generate Report for patient details, appointment, prescriptions, lab-test
-
     Odoo Lab Test Request and Result
     Odoo Patient Hospitalization details
     Generate Patient's Prescriptions
@@ -94,8 +88,8 @@
         'report/patient_vaccinations_document_report.xml',
         'report/prescription_demo_report.xml',
     ],
-    "author": "BrowseInfo",
-    "website": "https://www.browseinfo.com",
+    "author": "Invenger Technologies",
+    "website": "https://www.invenger.in/",
     "installable": True,
     "application": True,
     "auto_install": False,
