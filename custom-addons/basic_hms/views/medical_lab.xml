@@ -98,8 +98,8 @@
         <field name="domain">[('patient_id', '=', active_id)]</field>
     </record>
 
-<!--        <menuitem name="Lab Tests Results" id="menu_lab_test_result"-->
-<!--            parent="basic_hms.main_menu_laboratory" action="action_medical_lab_form"-->
-<!--            sequence="0" />-->
+        <menuitem name="Lab Tests Results" id="menu_lab_test_result"
+            parent="basic_hms.main_menu_laboratory" action="action_medical_lab_form"
+            sequence="0" />
 
 </odoo>

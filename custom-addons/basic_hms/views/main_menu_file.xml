@@ -2,7 +2,7 @@
 <openerp>                 
         <menuitem 
         	id="main_menu_hospital_management"
-        	name="Dental Management"
+        	name="Dental Clinic"
             web_icon="basic_hms,static/description/icon.png"
            />
 
@@ -30,8 +30,8 @@
             name='Medical Service' parent="main_menu_hospital_management"
             sequence="11" />
 
-<!--         <menuitem id="menu_inpatient_administration" name="Inpatient Administration"-->
-<!--            parent="main_menu_hospital_management" sequence='2' />-->
+         <menuitem id="menu_inpatient_administration" name="Inpatient Administration"
+            parent="main_menu_hospital_management" sequence='2' />
 
         <menuitem id="menu_patients" name='Patients'
             parent="main_menu_hospital_management" sequence="0" />
@@ -52,8 +52,8 @@
             parent="main_menu_configartion" sequence='10' />
 
 
-<!--        <menuitem id="menu_intensive_care" name="Intensive Care"-->
-<!--            parent="menu_inpatient_administration" />-->
+        <menuitem id="menu_intensive_care" name="Intensive Care"
+            parent="menu_inpatient_administration" />
 
         <menuitem id="menu_medical_management" name="Medical" />
 

@@ -263,6 +263,7 @@ class medical_patient(models.Model):
     lastname = fields.Char('Last Name')
     report_date = fields.Date('Date',default = datetime.today().date())
     medication_ids = fields.One2many('medical.patient.medication1','medical_patient_medication_id')
+
     deaths_2nd_week = fields.Integer('Deceased after 2nd week')
     deaths_1st_week = fields.Integer('Deceased after 1st week')
     full_term = fields.Integer('Full Term')
@@ -307,5 +308,16 @@ class medical_patient(models.Model):
     def copy(self, default=None):
         for rec in self:
             raise UserError(_('You Can Not Duplicate Patient.' ))
+
+    def action_view_prescriptions(self):
+        return {
+            'name': _('Prescription Orders'),
+            'domain': [('patient_id', '=', self.id)],
+            'view_type': 'form',
+            'view_mode': 'tree,form',
+            'res_model': 'medical.prescription.order',
+            'type': 'ir.actions.act_window',
+            'context': {'default_patient_id': self.id},
+        }
 
 # vim=expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

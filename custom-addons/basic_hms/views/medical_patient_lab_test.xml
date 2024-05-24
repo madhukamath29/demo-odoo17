@@ -86,18 +86,18 @@
             <field name="domain">[('state','=','draft'),('date','>=',time.strftime('%Y-%m-%d'))]</field>
         </record>
 
-<!--        <menuitem name="Laboratory" id="main_menu_laboratory"-->
-<!--            parent="main_menu_hospital_management" sequence='7' />-->
+        <menuitem name="Laboratory" id="main_menu_laboratory"
+            parent="main_menu_hospital_management" sequence='7' />
 
-<!--        <menuitem name="Lab Requests" id="menu_lab_requests"-->
-<!--            parent="basic_hms.main_menu_laboratory"-->
-<!--            sequence="1" action="action_medical_patient_lab_test_draft"/>-->
+        <menuitem name="Lab Requests" id="menu_lab_requests"
+            parent="basic_hms.main_menu_laboratory"
+            sequence="1" action="action_medical_patient_lab_test_draft"/>
 
-<!--        <menuitem name="Draft Lab Requests" id="sub_menu_draft_req"-->
-<!--            parent="menu_lab_requests" action="action_medical_patient_lab_test_draft" />-->
+        <menuitem name="Draft Lab Requests" id="sub_menu_draft_req"
+            parent="menu_lab_requests" action="action_medical_patient_lab_test_draft" />
 
-<!--        <menuitem name="Today's Draft Lab Requests" id="sub_menu_today_draft_req"-->
-<!--            parent="menu_lab_requests" action="action_medical_patient_lab_test_todays_draft" />-->
+        <menuitem name="Today's Draft Lab Requests" id="sub_menu_today_draft_req"
+            parent="menu_lab_requests" action="action_medical_patient_lab_test_todays_draft" />
 
 
 

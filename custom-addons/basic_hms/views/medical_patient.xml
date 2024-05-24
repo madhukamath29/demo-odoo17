@@ -9,13 +9,15 @@
                     <header>
                         <button name="print_report" type="object"
                             string="Print Patient Card" class="oe_highlight" />
+                        <button name="action_view_prescriptions" type="object" string="View Prescriptions" class="oe_highlight" />
+
                     </header>
                     <sheet>
-                      
+
                             <field name="photo" nolabel="1"
-                                widget="image" class="oe_avatar" 
+                                widget="image" class="oe_avatar"
                               />
-                            
+
                             <div class="oe_title mb24">
                                 <div class="oe_edit_only">
                                     <label for="patient_id" />
@@ -27,7 +29,7 @@
                                          />
                                 </h1>
                             </div>
-                        
+
                         <group>
                             <group>
                                 <field name="name" />
@@ -51,7 +53,7 @@
                             </group>
                         </group>
 
-                        <group> 
+                        <group>
                             <separator colspan="4"
                                 string="Patient Critical Information" />
                             <newline />
@@ -77,13 +79,13 @@
                                     <field colspan="4" name="general_info"
                                         nolabel="1" />
                                     <newline />
-<!--                                    <group>-->
-<!--&lt;!&ndash;                                        <field name="deceased" />&ndash;&gt;-->
-<!--&lt;!&ndash;                                        <field name="date_of_death"&ndash;&gt;-->
-<!--&lt;!&ndash;                                             invisible="not deceased" required="deceased == 1"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                                        <field name="cause_of_death"&ndash;&gt;-->
-<!--&lt;!&ndash;                                            invisible="not deceased" />&ndash;&gt;-->
-<!--                                    </group>-->
+                                    <group>
+                                        <field name="deceased" />
+                                        <field name="date_of_death"
+                                             invisible="not deceased" required="deceased == 1"/>
+                                        <field name="cause_of_death"
+                                            invisible="not deceased" />
+                                    </group>
                                 </group>
                             </page>
 
@@ -363,7 +365,7 @@
                                 </field>
                             </page>
                             <page string="Vaccinations">
-                              
+
                                 <field name="medical_vaccination_ids"
                                     nolabel="1"  >
                                     <tree>
@@ -393,7 +395,7 @@
                     <field name="sex" />
                     <field name="date_of_birth" />
                     <field name="primary_care_physician_id" />
-<!--                    <field name="deceased" />-->
+                    <field name="deceased" />
                 </tree>
             </field>
         </record>
