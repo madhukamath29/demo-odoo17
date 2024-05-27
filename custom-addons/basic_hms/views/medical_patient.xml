@@ -34,7 +34,17 @@
                             <group>
                                 <field name="name" />
                                 <field name="date_of_birth" />
-                                <field name="marital_status" />
+                            <field name="occupation"/>
+                            <field name="ph_no"/>
+                            <field name="govt_id"/>
+                            <field name="height"/>
+                            <field name="weight"/>
+                            <field name="diagnosis" placeholder="Ex: Root Infection, Enamel Erosion"/>
+                            <field name="language_preferences"/>
+                            <field name="preferred_appointment_times"/>
+                            <field name="special_needs_or_disabilities"/>
+                            <field name="anxiety_or_phobia_information"/>
+                            <field name="follow_up_appointments"/>
                             </group>
 
                             <group>
@@ -50,6 +60,15 @@
                                     <field name="zip_code" placeholder="ZIP" class="o_address_zip"/>
                                     <field name="country_id" placeholder="Country" class="o_address_country"/>
                                 </div>
+                            <field name="emergency_no"/>
+                            <field name="relation_patient"/>
+                            <field name="allergies"/>
+                            <field name="followUp_date"/>
+                            <field name="patient_ins" placeholder="Ex: Consume only cold food"/>
+                            <field name="recall_reminders_method"/>
+                            <field name="recall_reminders_frequency"/>
+                            <field name="oral_hygiene_practices"/>
+                            <field name="email_address"/>
                             </group>
                         </group>
 

@@ -64,6 +64,7 @@
                         <field name="quantity" />
                         <field name="refills" />
                         <field name="short_comment" />
+                    <field name="instructions"/>
                     </group>
                 </form>
             </field>

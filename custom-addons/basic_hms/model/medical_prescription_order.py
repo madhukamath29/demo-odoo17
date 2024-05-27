@@ -15,18 +15,26 @@ class medical_prescription_order(models.Model):
     no_invoice = fields.Boolean('Invoice exempt')
     inv_id = fields.Many2one('account.move', 'Invoice')
     invoice_to_insurer = fields.Boolean('Invoice to Insurance')
-    doctor_id = fields.Many2one('medical.physician','Prescribing Doctor')
+doctor_id = fields.Many2one('medical.physician', 'Doctor Name')
     medical_appointment_id = fields.Many2one('medical.appointment','Appointment')
     state = fields.Selection([('invoiced','To Invoiced'),('tobe','To Be Invoiced')], 'Invoice Status')
     pharmacy_partner_id = fields.Many2one('res.partner',domain=[('is_pharmacy','=',True)], string='Pharmacy')
     prescription_line_ids = fields.One2many('medical.prescription.line','name','Prescription Line')
     invoice_done= fields.Boolean('Invoice Done')
     notes = fields.Text('Prescription Note')
-    appointment_id = fields.Many2one('medical.appointment',string="appointment")
+appointment_id = fields.Many2one('medical.appointment', string="Appointment")
     is_invoiced = fields.Boolean(copy=False,default = False)
     insurer_id = fields.Many2one('medical.insurance', 'Insurer')
     is_shipped = fields.Boolean(default  =  False,copy=False)
+contact_number = fields.Char('Pharmacy Contact Information')
 
+    height = fields.Float(related='patient_id.height', string="Height", readonly=True)
+    weight = fields.Float(related='patient_id.weight', string="Weight", readonly=True)
+    ph_no = fields.Char(related='patient_id.ph_no', string="Phone Number", readonly=True)
+    diagnosis = fields.Char(related='patient_id.diagnosis', string="Diagnosis", readonly=True)
+    allergies = fields.Char(related='patient_id.allergies', string="Allergies", readonly=True)
+    patient_ins = fields.Char(related='patient_id.patient_ins', string="Patient Instruction", readonly=True)
+    followUp_date = fields.Char(related='patient_id.followUp_date', string="Followup Date", readonly=True)
 
     @api.model_create_multi
     def create(self , vals_list):

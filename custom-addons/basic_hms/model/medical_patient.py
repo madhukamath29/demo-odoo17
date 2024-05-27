@@ -53,6 +53,18 @@ class medical_patient(models.Model):
     current_insurance_id = fields.Many2one('medical.insurance',string="Insurance")
     partner_address_id = fields.Many2one('res.partner', string="Address", )
 
+    occupation = fields.Char(string="Occupation",)
+    govt_id = fields.Char(string="Identification Proof",)
+    emergency_no = fields.Char(string="Emergency Number",)
+    relation_patient=fields.Char(string="Relationship to the patient",)
+
+    height=fields.Float(string="Height",)
+    weight=fields.Float(string="Weight",)
+    ph_no=fields.Char(string="Phone Number",)
+    diagnosis = fields.Char(string="Diagnosis",)
+    allergies = fields.Char(string="Allergies")
+    patient_ins = fields.Char(string="Patient Instruction",)
+    followUp_date = fields.Char(string="Followup Date")
     street = fields.Char(related='patient_id.street', readonly=False)
     street2 = fields.Char(related='patient_id.street2', readonly=False)
     zip_code = fields.Char(related='patient_id.zip', readonly=False)
@@ -269,6 +281,23 @@ class medical_patient(models.Model):
     full_term = fields.Integer('Full Term')
     ses_notes = fields.Text('Notes')
 
+    language_preferences = fields.Char(string="Language Preferences")
+    preferred_appointment_times = fields.Char(string="Preferred Appointment Times")
+    special_needs_or_disabilities = fields.Char(string="Special Needs or Disabilities")
+    anxiety_or_phobia_information = fields.Char(string="Anxiety or Phobia Information")
+    follow_up_appointments = fields.Char(string="Follow-Up Appointments")
+    recall_reminders_method = fields.Selection([
+        ('email', 'Email'),
+        ('sms', 'SMS'),
+        ('phone', 'Phone Call')
+    ], string="Recall Reminders Method")
+    recall_reminders_frequency = fields.Selection([
+        ('daily', 'Daily'),
+        ('weekly', 'Weekly'),
+        ('monthly', 'Monthly')
+    ], string="Recall Reminders Frequency")
+    oral_hygiene_practices = fields.Char(string="Oral Hygiene Practices")
+    email_address = fields.Char(string="Email Address")
     def _valid_field_parameter(self, field, name):
         return name == 'sort' or super()._valid_field_parameter(field, name)
 

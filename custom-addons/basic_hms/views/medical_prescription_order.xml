@@ -45,6 +45,9 @@
                                 <field name="prescription_date"
                                     required="1" />
                                 <field name="pharmacy_partner_id" />
+                            <field name="ph_no" readonly="1"/>
+                            <field name="diagnosis" readonly="1"/>
+                            <field name="allergies" readonly="1"/>
                             </group>
                             <group>
                                 <field name="name" readonly="1" />
@@ -53,6 +56,10 @@
                                 <field name="invoice_to_insurer" />
                                 <field name="insurer_id"
                                     invisible="not invoice_to_insurer" />
+                            <field name="height" readonly="1"/>
+                            <field name="weight" readonly="1"/>
+                            <field name="patient_ins" readonly="1"/>
+                            <field name="followUp_date" readonly="1"/>
                             </group>
                         </group>
                         <group string="Prescription Detail">

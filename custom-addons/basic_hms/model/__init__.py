@@ -65,6 +65,7 @@ from . import medical_vaccitation
 from . import pet_type
 from . import psc_code
 from . import res_partner
+from . import employee
 
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:s

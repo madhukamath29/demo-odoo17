@@ -8,12 +8,28 @@
                     <sheet>
                         <notebook> 
                             <page string="Main Info">
-                                <group colspan="4" col="4">
+                            <group>
+                                <group>
                                     <field name="partner_id" required="1"
                                         context="{'default_is_doctor': 1, 'search_default_is_doctor': 1}" />
                                     <field name="institution_partner_id"
                                         context="{'default_is_institution': 1, 'search_default_is_institution': 1}" />
-                                    <field name="code" />
+                                    <!--                                    <field name="code"/>-->
+                                    <field name="emp_id"/>
+<!--                                    <field name="birthday" readonly="1"/>-->
+                                    <field name="specialization"/>
+                                    <field name="qualifications"/>
+                                    <field name="pro_reg_no"/>
+                                </group>
+                                <group>
+<!--                                    <field name="emp_id"/>-->
+<!--                                    <field name="aff_ins"/>-->
+                                    <field name="lang_spoken"/>
+                                    <field name="years_exp"/>
+                                    <field name="consult_hours"/>
+                                    <field name="emg_contact"/>
+                                    <field name="identification_proof"/>
+                                </group>
                                 </group>
                             </page>
                             <page string="Extra Info">
