@@ -40,6 +40,7 @@
         'security/hospital_groups.xml',
         'security/ir.model.access.csv',
         'data/ir_sequence_data.xml',
+        'views/emp_view.xml',
         'views/assets.xml',
         'views/login_page.xml',
         'views/main_menu_file.xml',
