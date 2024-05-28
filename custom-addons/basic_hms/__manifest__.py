@@ -103,7 +103,7 @@
     "auto_install": False,
     "images": ["static/description/Banner.gif"],
     "live_test_url": 'https://youtu.be/fk9dY53I9ow',
-    "license":'OPL-1',
+    "license": 'OPL-1',
 
 }
 
