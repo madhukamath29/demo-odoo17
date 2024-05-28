@@ -43,7 +43,7 @@ class medical_appointment(models.Model):
 	medical_prescription_order_ids = fields.One2many('medical.prescription.order','appointment_id',string='Prescription')
 	insurer_id = fields.Many2one('medical.insurance','Insurer')
 	duration = fields.Integer('Duration')
-    status = fields.Selection([
+	status = fields.Selection([
         ('booked', 'Booked'),
         ('cancel', 'Cancel'),
         ('no_show', 'No Show'),
