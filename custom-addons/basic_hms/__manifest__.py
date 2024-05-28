@@ -84,7 +84,6 @@
         'views/medical_test_type.xml',
         'views/medical_vaccination.xml',
         'views/res_partner.xml',
-        'views/treatment_plan_wizard',
         'report/report_view.xml',
         'report/appointment_recipts_report_template.xml',
         'report/medical_view_report_document_lab.xml',
@@ -103,7 +102,7 @@
     "auto_install": False,
     "images": ["static/description/Banner.gif"],
     "live_test_url": 'https://youtu.be/fk9dY53I9ow',
-    "license": 'OPL-1',
+    "license":'OPL-1',
 
 }
 
