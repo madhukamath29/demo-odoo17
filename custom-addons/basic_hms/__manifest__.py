@@ -84,6 +84,7 @@
         'views/medical_test_type.xml',
         'views/medical_vaccination.xml',
         'views/res_partner.xml',
+        'views/treatment_plan_wizard.xml',
         'report/report_view.xml',
         'report/appointment_recipts_report_template.xml',
         'report/medical_view_report_document_lab.xml',

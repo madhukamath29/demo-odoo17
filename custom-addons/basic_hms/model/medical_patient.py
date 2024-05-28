@@ -393,4 +393,18 @@ class medical_patient(models.Model):
         inverse_name='patient_id',
         string='Prescriptions'
     )
+
+    def action_create_appointment(self):
+        appointment_model = self.env['medical.appointment']
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Create Appointment',
+            'res_model': 'medical.appointment',  # Replace with your actual appointment model name
+            'view_mode': 'form',
+            'context': {
+                'default_patient_id': self.id,
+                # You can add more default values here if needed
+            },
+        }
+
 # vim=expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -11,6 +11,8 @@
                             string="Print Patient Card" class="oe_highlight"/>
                     <button name="action_view_prescriptions" type="object" string="View Prescriptions"
                             class="oe_highlight"/>
+                    <button name="action_create_appointment" type="object" string="Create Appointment"
+                            class="oe_highlight"/>
 
                 </header>
                 <sheet>
