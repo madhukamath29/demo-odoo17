@@ -280,6 +280,7 @@ class medical_patient(models.Model):
     deaths_1st_week = fields.Integer('Deceased after 1st week')
     full_term = fields.Integer('Full Term')
     ses_notes = fields.Text('Notes')
+    treatment_plan_ids = fields.One2many('project.task', 'patient_id', string='Treatment Plans')
 
     language_preferences = fields.Char(string="Language Preferences")
     preferred_appointment_times = fields.Char(string="Preferred Appointment Times")
@@ -349,4 +350,38 @@ class medical_patient(models.Model):
             'context': {'default_patient_id': self.id},
         }
 
+    def action_create_project_task(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Create Task in Project',
+            'res_model': 'wizard.create.project.task',
+            'view_mode': 'form',
+            'view_id': self.env.ref('basic_hms.view_wizard_create_project_task').id,
+            'target': 'new',
+            'context': {
+                'default_task_name': self.patient_id.name,
+            },
+        }
+
+    def action_view_patient_tasks(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Tasks',
+            'res_model': 'project.task',
+            'view_mode': 'tree,form',
+            'domain': [('patient_id', '=', self.id)],
+            'context': {'default_patient_id': self.id},
+        }
+
+    task_count = fields.Integer(string="Task Count", compute='_compute_task_count')
+
+    def _compute_task_count(self):
+        for patient in self:
+            patient.task_count = self.env['project.task'].search_count([('patient_id', '=', patient.id)])
+
+    prescription_ids = fields.One2many(
+        comodel_name='medical.prescription.order',
+        inverse_name='patient_id',
+        string='Prescriptions'
+    )
 # vim=expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

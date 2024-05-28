@@ -13,6 +13,11 @@
 
                     </header>
                     <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_patient_tasks" type="object" class="oe_stat_button" icon="fa-tasks">
+                            <field name="task_count" widget="statinfo" string="Treatment Plans"/>
+                        </button>
+                    </div>
 
                             <field name="photo" nolabel="1"
                                 widget="image" class="oe_avatar"
@@ -370,7 +375,11 @@
                                 </notebook>
                             </page>
 
+                            <page string="Prescription">
+                                <field name="prescription_ids" widget="section_and_note_one2many">
 
+                                </field>
+                            </page>
                             <page string="Medication">
                                 <field name="medication_ids" widget="section_and_note_one2many" >
                                     <tree>
@@ -397,6 +406,15 @@
                             </page>
 
 
+                        <page string="Treatment Plan">
+                                <field name="treatment_plan_ids">
+                                    <tree>
+                                        <field name="name"/>
+                                        <field name="project_id"/>
+                                        <field name="date_deadline"/>
+                                    </tree>
+                                </field>
+                        </page>
                         </notebook>
                     </sheet>
                 </form>

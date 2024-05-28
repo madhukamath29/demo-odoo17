@@ -43,6 +43,13 @@ class medical_appointment(models.Model):
 	medical_prescription_order_ids = fields.One2many('medical.prescription.order','appointment_id',string='Prescription')
 	insurer_id = fields.Many2one('medical.insurance','Insurer')
 	duration = fields.Integer('Duration')
+    status = fields.Selection([
+        ('booked', 'Booked'),
+        ('cancel', 'Cancel'),
+        ('no_show', 'No Show'),
+        ('check_in', 'Check-in'),
+        ('completed', 'Completed')
+    ], string='Status', default='booked')
  
 	def _valid_field_parameter(self, field, name):
 		return name == 'sort' or super()._valid_field_parameter(field, name)
@@ -132,6 +139,18 @@ class medical_appointment(models.Model):
 			 raise UserError(_(' The Appointment is invoice exempt'))
 		return result
 
+    def action_noshow_appointment(self):
+        for appointment in self:
+            appointment.write({'status': 'no_show'})
+
+        action = self.env.ref('basic_hms.action_medical_appointment').read()[0]
+        return action
 	
+    def action_cancel_appointment(self):
+        for appointment in self:
+            appointment.write({'status': 'cancel'})
 		
+        # Define the action to return
+        action = self.env.ref('basic_hms.action_medical_appointment').read()[0]
+        return action
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

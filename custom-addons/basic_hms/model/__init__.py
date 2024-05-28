@@ -66,6 +66,7 @@ from . import pet_type
 from . import psc_code
 from . import res_partner
 from . import employee
+from . import treatment_plan_wizard
 
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:s
