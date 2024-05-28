@@ -8,7 +8,7 @@
         <field name="model">inv.freightorder</field>
         <field name="report_name">py3o_order_report</field>
         <field name="report_type">py3o</field>
-        <field name="py3o_filetype">odt</field>
+        <field name="py3o_filetype">pdf</field>
         <field name="module">inv_freight_management</field>
         <field name="py3o_template_fallback">demo/res_user.odt</field>
         <field
