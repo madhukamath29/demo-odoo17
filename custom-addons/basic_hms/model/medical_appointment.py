@@ -142,19 +142,19 @@ class medical_appointment(models.Model):
         return result
 
 
-def action_noshow_appointment(self):
-    for appointment in self:
-        appointment.write({'status': 'no_show'})
+    def action_noshow_appointment(self):
+        for appointment in self:
+            appointment.write({'status': 'no_show'})
 
-    action = self.env.ref('basic_hms.action_medical_appointment').read()[0]
-    return action
+        action = self.env.ref('basic_hms.action_medical_appointment').read()[0]
+        return action
 
 
-def action_cancel_appointment(self):
-    for appointment in self:
-        appointment.write({'status': 'cancel'})
+    def action_cancel_appointment(self):
+        for appointment in self:
+            appointment.write({'status': 'cancel'})
 
     # Define the action to return
-    action = self.env.ref('basic_hms.action_medical_appointment').read()[0]
-    return action
+        action = self.env.ref('basic_hms.action_medical_appointment').read()[0]
+        return action
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
