@@ -56,7 +56,14 @@ class medical_patient(models.Model):
     partner_address_id = fields.Many2one('res.partner', string="Address", )
 
     occupation = fields.Char(string="Occupation", )
-    govt_id = fields.Char(string="Identification Proof", )
+    # govt_id = fields.Char(string="Identification Proof",)
+    govt_id_type = fields.Selection([
+        ('aadhar', 'Aadhar Card'),
+        ('driving', 'Driving Licence'),
+        ('election', 'Election Card')
+    ], string="Identification Proof Type", required=True)
+
+    govt_id = fields.Char(string="Identification No:", )
     emergency_no = fields.Char(string="Emergency Number", )
     relation_patient = fields.Char(string="Relationship to the patient", )
 
@@ -66,7 +73,7 @@ class medical_patient(models.Model):
     diagnosis = fields.Char(string="Diagnosis", )
     allergies = fields.Char(string="Allergies")
     patient_ins = fields.Char(string="Patient Instruction", )
-    followUp_date = fields.Char(string="Followup Date")
+    followUp_date = fields.Date(string="Follow-Up Appointments")
     street = fields.Char(related='patient_id.street', readonly=False)
     street2 = fields.Char(related='patient_id.street2', readonly=False)
     zip_code = fields.Char(related='patient_id.zip', readonly=False)
@@ -291,7 +298,7 @@ class medical_patient(models.Model):
     treatment_plan_ids = fields.One2many('project.task', 'patient_id', string='Treatment Plans')
 
     language_preferences = fields.Char(string="Language Preferences")
-    preferred_appointment_times = fields.Char(string="Preferred Appointment Times")
+    preferred_appointment_times = fields.Date(string="Preferred Appointment Times")
     special_needs_or_disabilities = fields.Char(string="Special Needs or Disabilities")
     anxiety_or_phobia_information = fields.Char(string="Anxiety or Phobia Information")
     follow_up_appointments = fields.Char(string="Follow-Up Appointments")

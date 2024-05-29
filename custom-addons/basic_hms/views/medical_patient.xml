@@ -44,7 +44,9 @@
                             <field name="date_of_birth"/>
                             <field name="occupation"/>
                             <field name="ph_no"/>
-                            <field name="govt_id"/>
+                            <field name="govt_id_type"/>
+                            <field name="govt_id" modifiers="{'invisible': [('govt_id_type', '=', False)]}"
+                                   options='{"no_label": True}'/>
                             <field name="height"/>
                             <field name="weight"/>
                             <field name="diagnosis" placeholder="Ex: Root Infection, Enamel Erosion"/>

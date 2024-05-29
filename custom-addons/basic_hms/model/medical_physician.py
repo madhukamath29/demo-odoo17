@@ -8,8 +8,9 @@ class medical_physician(models.Model):
     _description = 'medical physician'
     _rec_name = 'partner_id'
 
-    partner_id = fields.Many2one('res.partner','Physician',required=True)
-    institution_partner_id = fields.Many2one('res.partner',domain=[('is_institution','=',True)],string='Institution')
+    partner_id = fields.Many2one('res.partner', 'Doctor', required=True)
+    institution_partner_id = fields.Many2one('res.partner', domain=[('is_institution', '=', True)],
+                                             string='Institution')
     code = fields.Char('Id')
     info = fields.Text('Extra Info')
     doc_id=fields.Many2one(comodel_name='hr.employee')
