@@ -64,15 +64,16 @@ class medical_patient(models.Model):
     ], string="Identification Proof Type", required=True)
 
     govt_id = fields.Char(string="Identification No:", )
-    emergency_no = fields.Char(string="Emergency Number", )
-    relation_patient = fields.Char(string="Relationship to the patient", )
+
+    emergency_no = fields.Char(string="Phone Number", )
+    relation_patient = fields.Char(string="Relationship to the patient")
+    relation_name = fields.Char(string="Name")
 
     height = fields.Float(string="Height", )
     weight = fields.Float(string="Weight", )
     ph_no = fields.Char(string="Phone Number", )
-    diagnosis = fields.Char(string="Diagnosis", )
+    # diagnosis = fields.Char(string="Diagnosis", )
     allergies = fields.Char(string="Allergies")
-    patient_ins = fields.Char(string="Patient Instruction", )
     followUp_date = fields.Date(string="Follow-Up Appointments")
     street = fields.Char(related='patient_id.street', readonly=False)
     street2 = fields.Char(related='patient_id.street2', readonly=False)
@@ -298,10 +299,14 @@ class medical_patient(models.Model):
     treatment_plan_ids = fields.One2many('project.task', 'patient_id', string='Treatment Plans')
 
     language_preferences = fields.Char(string="Language Preferences")
-    preferred_appointment_times = fields.Date(string="Preferred Appointment Times")
+    preferred_appointment_times = fields.Selection([
+        ('morning', 'Morning'),
+        ('afternoon', 'Afternoon'),
+        ('evening', 'Evening'),
+    ], string="Preferred Appointment Times")
     special_needs_or_disabilities = fields.Char(string="Special Needs or Disabilities")
     anxiety_or_phobia_information = fields.Char(string="Anxiety or Phobia Information")
-    follow_up_appointments = fields.Char(string="Follow-Up Appointments")
+    follow_up_appointments = fields.Date(string="Follow-Up Appointments")
     recall_reminders_method = fields.Selection([
         ('email', 'Email'),
         ('sms', 'SMS'),
@@ -314,6 +319,30 @@ class medical_patient(models.Model):
     ], string="Recall Reminders Frequency")
     oral_hygiene_practices = fields.Char(string="Oral Hygiene Practices")
     email_address = fields.Char(string="Email Address")
+    family_med_history = fields.Char(string="Family Medical History")
+    diet_hab = fields.Char(string="Dietary Habits")
+    pay_method_pref = fields.Selection([
+        ('debit_card', 'Debit Card'),
+        ('credit_card', 'Credit Card'),
+        ('upi', 'UPI'),
+        ('cash', 'Cash')
+    ], string="Payment Method Preference")
+    # treatment_consent = fields.Boolean(string="Treatment Consent")
+
+    treatment_consent = fields.Boolean(string="Treatment Consent")
+    treatment_consent_label = fields.Char(string="", compute='_compute_treatment_consent_label')
+
+    @api.depends('treatment_consent')
+    def _compute_treatment_consent_label(self):
+        for record in self:
+            record.treatment_consent_label = "Yes" if record.treatment_consent else "No"
+
+    # @api.onchange('govt_id_type')
+    # def _onchange_govt_id_type(self):
+    #     if self.govt_id_type:
+    #         self.govt_id = ''  # Reset the ID field when type changes
+    #     else:
+    #         self.govt_id = False  # Clear the ID field if no type is selected
 
     def _valid_field_parameter(self, field, name):
         return name == 'sort' or super()._valid_field_parameter(field, name)
@@ -400,6 +429,13 @@ class medical_patient(models.Model):
         inverse_name='patient_id',
         string='Prescriptions'
     )
+    appointment_ids = fields.One2many('medical.appointment', 'patient_id', string='Appointments')
+    appointment_count = fields.Integer(string='Appointment Count', compute='_compute_appointment_count', store=True)
+
+    @api.depends('appointment_ids')
+    def _compute_appointment_count(self):
+        for patient in self:
+            patient.appointment_count = len(patient.appointment_ids)
 
     def action_create_appointment(self):
         appointment_model = self.env['medical.appointment']
@@ -414,4 +450,14 @@ class medical_patient(models.Model):
             },
         }
 
+    def action_view_appointment(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Appointment',
+            'res_model': 'medical.appointment',
+            'view_mode': 'list',
+            'domain': [('patient_id', '=', self.id)],
+            'context': {'default_patient_id': self.id},
+
+        }
 # vim=expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

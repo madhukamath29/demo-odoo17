@@ -36,9 +36,10 @@ class medical_prescription_order(models.Model):
     height = fields.Float(related='patient_id.height', string="Height", readonly=True)
     weight = fields.Float(related='patient_id.weight', string="Weight", readonly=True)
     ph_no = fields.Char(related='patient_id.ph_no', string="Phone Number", readonly=True)
-    diagnosis = fields.Char(related='patient_id.diagnosis', string="Diagnosis", readonly=True)
+    # diagnosis = fields.Char(related='patient_id.diagnosis', string="Diagnosis", readonly=True)
+    diagnosis = fields.Char(string="Diagnosis")
     allergies = fields.Char(related='patient_id.allergies', string="Allergies", readonly=True)
-    patient_ins = fields.Char(related='patient_id.patient_ins', string="Patient Instruction", readonly=True)
+    general_info = fields.Text(related='patient_id.general_info', string="Patient Instruction", readonly=True)
     followUp_date = fields.Date(related='patient_id.followUp_date', string="Follow-Up Appointments", store=True)
 
     @api.model_create_multi

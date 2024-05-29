@@ -3,8 +3,9 @@
 
 from odoo import models, fields, api, _
 
+
 class medical_physician(models.Model):
-    _name="medical.physician"
+    _name = "medical.physician"
     _description = 'medical physician'
     _rec_name = 'partner_id'
 
@@ -13,7 +14,7 @@ class medical_physician(models.Model):
                                              string='Institution')
     code = fields.Char('Id')
     info = fields.Text('Extra Info')
-    doc_id=fields.Many2one(comodel_name='hr.employee')
+    doc_id = fields.Many2one(comodel_name='hr.employee')
     # birthday = fields.Date(related='doc_id.birthday', string="DOB", readonly=True)
     specialization = fields.Char(string="Specialization")
     qualifications = fields.Char(string="Qualifications")
@@ -25,5 +26,10 @@ class medical_physician(models.Model):
     emp_id = fields.Char(string="Employee ID")
     emg_contact = fields.Char(string="Name of Emergency Contact")
     specialization = fields.Char(string="Specialization")
-    identification_proof = fields.Char(string="Identification Proof")
+    govt_id_type = fields.Selection([
+        ('aadhar', 'Aadhar Card'),
+        ('driving', 'Driving Licence'),
+        ('election', 'Election Card')
+    ], string="Identification Proof Type", required=True)
+    govt_id = fields.Char(string="Identification No:", )
     cons_fees = fields.Float(string="Consultation Fees")

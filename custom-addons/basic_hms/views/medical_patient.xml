@@ -11,6 +11,8 @@
                             string="Print Patient Card" class="oe_highlight"/>
                     <button name="action_view_prescriptions" type="object" string="View Prescriptions"
                             class="oe_highlight"/>
+                    <button name="action_create_project_task" type="object" string="Create Treatment Plan"
+                            class="oe_highlight"/>
                     <button name="action_create_appointment" type="object" string="Create Appointment"
                             class="oe_highlight"/>
 
@@ -20,6 +22,11 @@
                         <button name="action_view_patient_tasks" type="object" class="oe_stat_button" icon="fa-tasks">
                             <field name="task_count" widget="statinfo" string="Treatment Plans"/>
                         </button>
+                        <button name="action_view_appointment" type="object" class="oe_stat_button"
+                                icon="fa-calendar">
+                            <field name="appointment_count" widget="statinfo" string="Appointments"/>
+                        </button>
+
                     </div>
 
                     <field name="photo" nolabel="1"
@@ -47,14 +54,15 @@
                             <field name="govt_id_type"/>
                             <field name="govt_id" modifiers="{'invisible': [('govt_id_type', '=', False)]}"
                                    options='{"no_label": True}'/>
-                            <field name="height"/>
-                            <field name="weight"/>
-                            <field name="diagnosis" placeholder="Ex: Root Infection, Enamel Erosion"/>
+                            <!--                            <label for="govt_id" string=""/>-->
+                            <!--                            <field name="diagnosis" placeholder="Ex: Root Infection, Enamel Erosion"/>-->
                             <field name="language_preferences"/>
                             <field name="preferred_appointment_times"/>
-                            <field name="special_needs_or_disabilities"/>
-                            <field name="anxiety_or_phobia_information"/>
+                            <!--                            <field name="special_needs_or_disabilities"/>-->
+                            <!--                            <field name="anxiety_or_phobia_information"/>-->
                             <field name="follow_up_appointments"/>
+                            <field name="treatment_consent"/>
+                            <field name="treatment_consent_label" readonly="1" nolabel="1"/>
                         </group>
 
                         <group>
@@ -71,15 +79,15 @@
                                 <field name="zip_code" placeholder="ZIP" class="o_address_zip"/>
                                 <field name="country_id" placeholder="Country" class="o_address_country"/>
                             </div>
-                            <field name="emergency_no"/>
-                            <field name="relation_patient"/>
-                            <field name="allergies"/>
                             <field name="followUp_date"/>
-                            <field name="patient_ins" placeholder="Ex: Consume only cold food"/>
+                            <!--                            <field name="patient_ins" placeholder="Ex: Consume only cold food"/>-->
                             <field name="recall_reminders_method"/>
                             <field name="recall_reminders_frequency"/>
-                            <field name="oral_hygiene_practices"/>
                             <field name="email_address"/>
+                            <!--                            <field name="family_med_history"/>-->
+                            <field name="pay_method_pref"/>
+
+
                         </group>
                     </group>
 
@@ -96,6 +104,8 @@
                                 <group>
                                     <field name="blood_type"/>
                                     <field name="current_insurance_id"/>
+                                    <field name="height"/>
+                                    <field name="weight"/>
                                 </group>
                                 <group>
                                     <field name="rh"/>
@@ -103,6 +113,16 @@
                                     <field name="primary_care_physician_id"/>
                                 </group>
                             </group>
+
+                            <group string="Emergency Contact Details">
+                                <group>
+                                    <field name="relation_name"/>
+                                    <field name="emergency_no"/>
+                                    <field name="relation_patient"/>
+
+                                </group>
+                            </group>
+
 
                             <group colspan="4"
                                    string="Patient Extra Information">
@@ -263,6 +283,8 @@
                                             <field name="eats_alone"/>
                                             <field name="coffee"/>
                                             <field name="coffee_cups"/>
+                                            <field name="diet_hab"/>
+
                                         </group>
                                         <group>
                                             <field name="soft_drinks"/>
@@ -325,41 +347,41 @@
                                     </notebook>
                                 </page>
 
-                                <page string="Sexuality">
-                                    <group>
-                                        <group>
-                                            <field
-                                                    name="sexual_preferences"/>
-                                            <field
-                                                    name="sexual_partners_number"/>
-                                            <field
-                                                    name="sexual_practices"/>
-                                        </group>
-                                        <group>
-                                            <field name="sexual_partners"/>
-                                            <field
-                                                    name="first_sexual_encounter"/>
-                                            <field name="anticonceptive"/>
-                                        </group>
-                                    </group>
-                                    <group>
-                                        <group
-                                                string="Other sexual practices">
-                                            <field name="sex_oral"/>
-                                            <field name="sex_anal"/>
-                                        </group>
-                                        <group string="Prostitution">
-                                            <field name="prostitute"/>
-                                            <field
-                                                    name="sex_with_prostitutes"/>
-                                        </group>
-                                    </group>
-                                    <group
-                                            string="Extra info about the patient sexuality">
-                                        <field nolabel="1"
-                                               name="sexuality_info" colspan="2"/>
-                                    </group>
-                                </page>
+                                <!--                                <page string="Sexuality">-->
+                                <!--                                    <group>-->
+                                <!--                                        <group>-->
+                                <!--                                            <field-->
+                                <!--                                                    name="sexual_preferences"/>-->
+                                <!--                                            <field-->
+                                <!--                                                    name="sexual_partners_number"/>-->
+                                <!--                                            <field-->
+                                <!--                                                    name="sexual_practices"/>-->
+                                <!--                                        </group>-->
+                                <!--                                        <group>-->
+                                <!--                                            <field name="sexual_partners"/>-->
+                                <!--                                            <field-->
+                                <!--                                                    name="first_sexual_encounter"/>-->
+                                <!--                                            <field name="anticonceptive"/>-->
+                                <!--                                        </group>-->
+                                <!--                                    </group>-->
+                                <!--                                    <group>-->
+                                <!--                                        <group-->
+                                <!--                                                string="Other sexual practices">-->
+                                <!--                                            <field name="sex_oral"/>-->
+                                <!--                                            <field name="sex_anal"/>-->
+                                <!--                                        </group>-->
+                                <!--                                        <group string="Prostitution">-->
+                                <!--                                            <field name="prostitute"/>-->
+                                <!--                                            <field-->
+                                <!--                                                    name="sex_with_prostitutes"/>-->
+                                <!--                                        </group>-->
+                                <!--                                    </group>-->
+                                <!--                                    <group-->
+                                <!--                                            string="Extra info about the patient sexuality">-->
+                                <!--                                        <field nolabel="1"-->
+                                <!--                                               name="sexuality_info" colspan="2"/>-->
+                                <!--                                    </group>-->
+                                <!--                                </page>-->
 
                                 <page string="Safety">
                                     <group string="Drive and Home Safety">
@@ -375,6 +397,14 @@
                                             <field
                                                     name="car_child_safety"/>
                                             <field name="home_safety"/>
+                                        </group>
+                                    </group>
+                                </page>
+                                <page string="Hygiene Practices">
+                                    <group string="Oral Hygiene Activities">
+                                        <group>
+                                            <field
+                                                    name="oral_hygiene_practices"/>
                                         </group>
                                     </group>
                                 </page>
@@ -473,5 +503,17 @@
         <field name="view_mode">tree,form</field>
         <field name="domain">[('patient_id', '=', active_id)]</field>
     </record>
+
+    <record id="action_invoice_order" model="ir.actions.act_window">
+        <field name="name">Invoices</field>
+        <field name="res_model">account.move</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="account.view_move_tree"/>
+        <field name="domain">[('move_type', '=', 'out_invoice')]</field>
+    </record>
+
+    <menuitem id="dental_invoice_child" action="action_invoice_order"
+              name="Invoices" parent="menu_patients" sequence="3"/>
+
 
 </odoo>
