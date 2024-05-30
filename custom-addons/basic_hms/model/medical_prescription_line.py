@@ -2,29 +2,34 @@
 # Part of BrowseInfo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models, _
-from datetime import date,datetime
+from datetime import date, datetime
+
 
 class medical_prescription_line(models.Model):
     _name = "medical.prescription.line"
     _description = 'medical prescription line'
 
-    name = fields.Many2one('medical.prescription.order','Prescription ID')
+    name = fields.Many2one('medical.prescription.order', 'Prescription ID')
     medicament_id = fields.Many2one('medical.medicament', 'Medication Name')
     indication = fields.Char('Indication')
     allow_substitution = fields.Boolean('Allow Substitution')
     form = fields.Char('Form')
     prnt = fields.Boolean('Print')
     route = fields.Char('Route of Administration')
-    end_treatement  = fields.Datetime('Administration Route')
+    end_treatement = fields.Datetime('Administration Route')
     dose = fields.Float('Dosage Form')
     dose_unit_id = fields.Many2one('medical.dose.unit', 'Dose Unit')
     qty = fields.Integer('Strength')
-    medication_dosage_id = fields.Many2one('medical.medication.dosage','Frequency')
-    admin_times = fields.Char('Admin Hours', size = 128)
+    medication_dosage_id = fields.Many2one('medical.medication.dosage', 'Frequency')
+    admin_times = fields.Char('Admin Hours', size=128)
     frequency = fields.Integer('Frequency')
-    frequency_unit = fields.Selection([('seconds','Seconds'),('minutes','Minutes'),('hours','hours'),('days','Days'),('weeks','Weeks'),('wr','When Required')], 'Unit')
+    frequency_unit = fields.Selection(
+        [('seconds', 'Seconds'), ('minutes', 'Minutes'), ('hours', 'hours'), ('days', 'Days'), ('weeks', 'Weeks'),
+         ('wr', 'When Required')], 'Unit')
     duration = fields.Integer('Duration')
-    duration_period = fields.Selection([('minutes','Minutes'),('hours','hours'),('days','Days'),('months','Months'),('years','Years'),('indefine','Indefine')],'Treatment Period')
+    duration_period = fields.Selection(
+        [('minutes', 'Minutes'), ('hours', 'hours'), ('days', 'Days'), ('months', 'Months'), ('years', 'Years'),
+         ('indefine', 'Indefine')], 'Treatment Period')
     quantity = fields.Integer('Quantity Prescribed')
     review = fields.Datetime('Review')
     refills = fields.Integer('Refills#')
@@ -49,6 +54,5 @@ class medical_prescription_line(models.Model):
             if prescription_order:
                 vals['patient_id'] = prescription_order.patient_id.id
         return super(MedicalPrescriptionLine, self).create(vals)
-
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
