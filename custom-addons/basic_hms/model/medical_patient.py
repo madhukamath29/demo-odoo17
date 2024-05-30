@@ -297,8 +297,6 @@ class medical_patient(models.Model):
     full_term = fields.Integer('Full Term')
     ses_notes = fields.Text('Notes')
     treatment_plan_ids = fields.One2many('project.task', 'patient_id', string='Treatment Plans')
-
-    prescription_line_id = fields.One2many('medical.prescription.line', 'patient_id', string="Prescription Line")
     language_preferences = fields.Char(string="Language Preferences")
     preferred_appointment_times = fields.Selection([
         ('morning', 'Morning'),
@@ -461,23 +459,5 @@ class medical_patient(models.Model):
             'context': {'default_patient_id': self.id},
 
         }
+
     # vim=expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
-
-
-class PrescriptionLine(models.Model):
-    _inherit = 'medical.prescription.line'
-
-    @api.model
-    def unlink(self):
-        # Get the related medication IDs
-        medication_ids = self.mapped('medicament_id')
-
-        # Perform the unlink operation
-        result = super(PrescriptionLine, self).unlink()
-
-        # Check if any medication does not have related prescription lines anymore
-        for medication in medication_ids:
-            if not medication.prescription_line_id:
-                medication.unlink()
-
-        return result

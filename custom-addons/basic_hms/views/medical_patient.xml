@@ -417,7 +417,15 @@
                             </field>
                         </page>
                         <page string="Medication">
-                            <field name="prescription_line_id" widget="section_and_note_one2many">
+                            <field name="medication_ids" widget="section_and_note_one2many">
+                                <tree>
+                                    <field name="medical_medicament_id"/>
+                                    <field name="indication_pathology_id"/>
+                                    <field name="start_treatment"/>
+                                    <field name="end_treatment"/>
+                                    <field name="is_active"/>
+                                    <field name="doctor_physician_id"/>
+                                </tree>
                             </field>
                         </page>
                         <page string="Vaccinations">
