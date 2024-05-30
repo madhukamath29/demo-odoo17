@@ -45,11 +45,29 @@ class create_prescription_invoice(models.TransientModel):
             list_of_vals = []
             for p_line in lab_req.prescription_line_ids:
 
+                # invoice_line_account_id = False
+                # if p_line.medicament_id.product_id.id:
+                #     invoice_line_account_id = p_line.medicament_id.product_id.property_account_income_id.id or p_line.medicament_id.product_id.categ_id.property_account_income_categ_id.id or False
+                # if not invoice_line_account_id:
+                #     invoice_line_account_id = ir_property_obj.get('property_account_income_categ_id', 'product.category')
+                # if not invoice_line_account_id:
+                #     raise UserError(
+                #         _('There is no income account defined for this product: "%s". You may have to install a chart of account from Accounting app, settings menu.') %
+                #         (p_line.medicament_id.product_id.name,))
                 invoice_line_account_id = False
                 if p_line.medicament_id.product_id.id:
                     invoice_line_account_id = p_line.medicament_id.product_id.property_account_income_id.id or p_line.medicament_id.product_id.categ_id.property_account_income_categ_id.id or False
+                    # if not invoice_line_account_id:
+                #     # invoice_line_account_id = ir_property_obj.get('property_account_income_categ_id', 'product.category')
+                #     prop = ir_property_obj.search([
+                #         ('name', '=', 'property_account_income_categ_id'),
+                #         ('res_id', '=', False),  # Property for all records in model
+                #         ('company_id', '=', self.env.company.id)
+                #     ], limit=1)
+                # invoice_line_account_id = int(prop.value_reference.split(',')[1])
                 if not invoice_line_account_id:
-                    # invoice_line_account_id = ir_property_obj.get('property_account_income_categ_id', 'product.category')
+                    invoice_line_account_id = ir_property_obj.get('property_account_income_categ_id',
+                                                                  'product.category')
                 prop = ir_property_obj.search([
                     ('name', '=', 'property_account_income_categ_id'),
                     ('res_id', '=', False),  # Property for all records in model
@@ -61,12 +79,6 @@ class create_prescription_invoice(models.TransientModel):
                 else:
                     raise ValueError(
                         "Property 'property_account_income_categ_id' not found for the current company.")
-                        l̥
-
-                if not invoice_line_account_id:
-                    raise UserError(
-                        _('There is no income account defined for this product: "%s". You may have to install a chart of account from Accounting app, settings menu.') %
-                        (p_line.medicament_id.product_id.name,))
 
             tax_ids = []
             taxes = p_line.medicament_id.product_id.taxes_id.filtered(lambda
