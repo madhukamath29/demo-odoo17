@@ -298,166 +298,200 @@ class medical_patient(models.Model):
     ses_notes = fields.Text('Notes')
     treatment_plan_ids = fields.One2many('project.task', 'patient_id', string='Treatment Plans')
 
-    language_preferences = fields.Char(string="Language Preferences")
-    preferred_appointment_times = fields.Selection([
-        ('morning', 'Morning'),
-        ('afternoon', 'Afternoon'),
-        ('evening', 'Evening'),
-    ], string="Preferred Appointment Times")
-    special_needs_or_disabilities = fields.Char(string="Special Needs or Disabilities")
-    anxiety_or_phobia_information = fields.Char(string="Anxiety or Phobia Information")
-    follow_up_appointments = fields.Date(string="Follow-Up Appointments")
-    recall_reminders_method = fields.Selection([
-        ('email', 'Email'),
-        ('sms', 'SMS'),
-        ('phone', 'Phone Call')
-    ], string="Recall Reminders Method")
-    recall_reminders_frequency = fields.Selection([
-        ('daily', 'Daily'),
-        ('weekly', 'Weekly'),
-        ('monthly', 'Monthly')
-    ], string="Recall Reminders Frequency")
-    oral_hygiene_practices = fields.Char(string="Oral Hygiene Practices")
-    email_address = fields.Char(string="Email Address")
-    family_med_history = fields.Char(string="Family Medical History")
-    diet_hab = fields.Char(string="Dietary Habits")
-    pay_method_pref = fields.Selection([
-        ('debit_card', 'Debit Card'),
-        ('credit_card', 'Credit Card'),
-        ('upi', 'UPI'),
-        ('cash', 'Cash')
-    ], string="Payment Method Preference")
-    # treatment_consent = fields.Boolean(string="Treatment Consent")
 
-    treatment_consent = fields.Boolean(string="Treatment Consent")
-    treatment_consent_label = fields.Char(string="", compute='_compute_treatment_consent_label')
+prescription_line_id = fields.One2many('medical.prescription.line', 'patient_id', string="Prescription Line")
+language_preferences = fields.Char(string="Language Preferences")
+preferred_appointment_times = fields.Selection([
+    ('morning', 'Morning'),
+    ('afternoon', 'Afternoon'),
+    ('evening', 'Evening'),
+], string="Preferred Appointment Times")
+special_needs_or_disabilities = fields.Char(string="Special Needs or Disabilities")
+anxiety_or_phobia_information = fields.Char(string="Anxiety or Phobia Information")
+follow_up_appointments = fields.Date(string="Follow-Up Appointments")
+recall_reminders_method = fields.Selection([
+    ('email', 'Email'),
+    ('sms', 'SMS'),
+    ('phone', 'Phone Call')
+], string="Recall Reminders Method")
+recall_reminders_frequency = fields.Selection([
+    ('daily', 'Daily'),
+    ('weekly', 'Weekly'),
+    ('monthly', 'Monthly')
+], string="Recall Reminders Frequency")
+oral_hygiene_practices = fields.Char(string="Oral Hygiene Practices")
+email_address = fields.Char(string="Email Address")
+family_med_history = fields.Char(string="Family Medical History")
+diet_hab = fields.Char(string="Dietary Habits")
+pay_method_pref = fields.Selection([
+    ('debit_card', 'Debit Card'),
+    ('credit_card', 'Credit Card'),
+    ('upi', 'UPI'),
+    ('cash', 'Cash')
+], string="Payment Method Preference")
+# treatment_consent = fields.Boolean(string="Treatment Consent")
 
-    @api.depends('treatment_consent')
-    def _compute_treatment_consent_label(self):
-        for record in self:
-            record.treatment_consent_label = "Yes" if record.treatment_consent else "No"
+treatment_consent = fields.Boolean(string="Treatment Consent")
+treatment_consent_label = fields.Char(string="", compute='_compute_treatment_consent_label')
 
-    # @api.onchange('govt_id_type')
-    # def _onchange_govt_id_type(self):
-    #     if self.govt_id_type:
-    #         self.govt_id = ''  # Reset the ID field when type changes
-    #     else:
-    #         self.govt_id = False  # Clear the ID field if no type is selected
 
-    def _valid_field_parameter(self, field, name):
-        return name == 'sort' or super()._valid_field_parameter(field, name)
+@api.depends('treatment_consent')
+def _compute_treatment_consent_label(self):
+    for record in self:
+        record.treatment_consent_label = "Yes" if record.treatment_consent else "No"
 
-    @api.model_create_multi
-    def create(self, vals_list):
-        for val in vals_list:
-            appointment = self._context.get('appointment_id')
-            res_partner_obj = self.env['res.partner']
-            if appointment:
-                val_1 = {'name': self.env['res.partner'].browse(val['patient_id']).name}
-                patient = res_partner_obj.create(val_1)
-                val.update({'patient_id': patient.id})
-            if val.get('date_of_birth'):
-                dt = val.get('date_of_birth')
-                d1 = datetime.strptime(str(dt), "%Y-%m-%d").date()
-                d2 = datetime.today().date()
-                rd = relativedelta(d2, d1)
-                age = str(rd.years) + "y" + " " + str(rd.months) + "m" + " " + str(rd.days) + "d"
-                val.update({'age': age})
 
-            patient_id = self.env['ir.sequence'].next_by_code('medical.patient')
-            if patient_id:
-                val.update({
-                    'name': patient_id,
-                })
+# @api.onchange('govt_id_type')
+# def _onchange_govt_id_type(self):
+#     if self.govt_id_type:
+#         self.govt_id = ''  # Reset the ID field when type changes
+#     else:
+#         self.govt_id = False  # Clear the ID field if no type is selected
 
-        return super(medical_patient, self).create(vals_list)
+def _valid_field_parameter(self, field, name):
+    return name == 'sort' or super()._valid_field_parameter(field, name)
 
-    @api.constrains('date_of_death')
-    def _check_date_death(self):
-        for rec in self:
-            if rec.date_of_birth:
-                if rec.deceased == True:
-                    if rec.date_of_death <= rec.date_of_birth:
-                        raise UserError(_('Date Of Death Can Not Less Than Date Of Birth.'))
 
-    def copy(self, default=None):
-        for rec in self:
-            raise UserError(_('You Can Not Duplicate Patient.'))
+@api.model_create_multi
+def create(self, vals_list):
+    for val in vals_list:
+        appointment = self._context.get('appointment_id')
+        res_partner_obj = self.env['res.partner']
+        if appointment:
+            val_1 = {'name': self.env['res.partner'].browse(val['patient_id']).name}
+            patient = res_partner_obj.create(val_1)
+            val.update({'patient_id': patient.id})
+        if val.get('date_of_birth'):
+            dt = val.get('date_of_birth')
+            d1 = datetime.strptime(str(dt), "%Y-%m-%d").date()
+            d2 = datetime.today().date()
+            rd = relativedelta(d2, d1)
+            age = str(rd.years) + "y" + " " + str(rd.months) + "m" + " " + str(rd.days) + "d"
+            val.update({'age': age})
 
-    def action_view_prescriptions(self):
-        return {
-            'name': _('Prescription Orders'),
-            'domain': [('patient_id', '=', self.id)],
-            'view_type': 'form',
-            'view_mode': 'tree,form',
-            'res_model': 'medical.prescription.order',
-            'type': 'ir.actions.act_window',
-            'context': {'default_patient_id': self.id},
-        }
+        patient_id = self.env['ir.sequence'].next_by_code('medical.patient')
+        if patient_id:
+            val.update({
+                'name': patient_id,
+            })
 
-    def action_create_project_task(self):
-        return {
-            'type': 'ir.actions.act_window',
-            'name': 'Create Task in Project',
-            'res_model': 'wizard.create.project.task',
-            'view_mode': 'form',
-            'view_id': self.env.ref('basic_hms.view_wizard_create_project_task').id,
-            'target': 'new',
-            'context': {
-                'default_task_name': self.patient_id.name,
-            },
-        }
+    return super(medical_patient, self).create(vals_list)
 
-    def action_view_patient_tasks(self):
-        return {
-            'type': 'ir.actions.act_window',
-            'name': 'Tasks',
-            'res_model': 'project.task',
-            'view_mode': 'tree,form',
-            'domain': [('patient_id', '=', self.id)],
-            'context': {'default_patient_id': self.id},
-        }
 
-    task_count = fields.Integer(string="Task Count", compute='_compute_task_count')
+@api.constrains('date_of_death')
+def _check_date_death(self):
+    for rec in self:
+        if rec.date_of_birth:
+            if rec.deceased == True:
+                if rec.date_of_death <= rec.date_of_birth:
+                    raise UserError(_('Date Of Death Can Not Less Than Date Of Birth.'))
 
-    def _compute_task_count(self):
-        for patient in self:
-            patient.task_count = self.env['project.task'].search_count([('patient_id', '=', patient.id)])
+                class PrescriptionLine(models.Model):
+                    _inherit = 'medical.prescription.line'
 
-    prescription_ids = fields.One2many(
-        comodel_name='medical.prescription.order',
-        inverse_name='patient_id',
-        string='Prescriptions'
-    )
-    appointment_ids = fields.One2many('medical.appointment', 'patient_id', string='Appointments')
-    appointment_count = fields.Integer(string='Appointment Count', compute='_compute_appointment_count', store=True)
+                    @api.model
+                    def unlink(self):
+                        # Get the related medication IDs
+                        medication_ids = self.mapped('medicament_id')
 
-    @api.depends('appointment_ids')
-    def _compute_appointment_count(self):
-        for patient in self:
-            patient.appointment_count = len(patient.appointment_ids)
+                        # Perform the unlink operation
+                        result = super(PrescriptionLine, self).unlink()
 
-    def action_create_appointment(self):
-        appointment_model = self.env['medical.appointment']
-        return {
-            'type': 'ir.actions.act_window',
-            'name': 'Create Appointment',
-            'res_model': 'medical.appointment',  # Replace with your actual appointment model name
-            'view_mode': 'form',
-            'context': {
-                'default_patient_id': self.id,
-                # You can add more default values here if needed
-            },
-        }
+                        # Check if any medication does not have related prescription lines anymore
+                        for medication in medication_ids:
+                            if not medication.prescription_line_id:
+                                medication.unlink()
 
-    def action_view_appointment(self):
-        return {
-            'type': 'ir.actions.act_window',
-            'name': 'Appointment',
-            'res_model': 'medical.appointment',
-            'view_mode': 'list',
-            'domain': [('patient_id', '=', self.id)],
-            'context': {'default_patient_id': self.id},
+                        return result
 
-        }
+
+def copy(self, default=None):
+    for rec in self:
+        raise UserError(_('You Can Not Duplicate Patient.'))
+
+
+def action_view_prescriptions(self):
+    return {
+        'name': _('Prescription Orders'),
+        'domain': [('patient_id', '=', self.id)],
+        'view_type': 'form',
+        'view_mode': 'tree,form',
+        'res_model': 'medical.prescription.order',
+        'type': 'ir.actions.act_window',
+        'context': {'default_patient_id': self.id},
+    }
+
+
+def action_create_project_task(self):
+    return {
+        'type': 'ir.actions.act_window',
+        'name': 'Create Task in Project',
+        'res_model': 'wizard.create.project.task',
+        'view_mode': 'form',
+        'view_id': self.env.ref('basic_hms.view_wizard_create_project_task').id,
+        'target': 'new',
+        'context': {
+            'default_task_name': self.patient_id.name,
+        },
+    }
+
+
+def action_view_patient_tasks(self):
+    return {
+        'type': 'ir.actions.act_window',
+        'name': 'Tasks',
+        'res_model': 'project.task',
+        'view_mode': 'tree,form',
+        'domain': [('patient_id', '=', self.id)],
+        'context': {'default_patient_id': self.id},
+    }
+
+
+task_count = fields.Integer(string="Task Count", compute='_compute_task_count')
+
+
+def _compute_task_count(self):
+    for patient in self:
+        patient.task_count = self.env['project.task'].search_count([('patient_id', '=', patient.id)])
+
+
+prescription_ids = fields.One2many(
+    comodel_name='medical.prescription.order',
+    inverse_name='patient_id',
+    string='Prescriptions'
+)
+appointment_ids = fields.One2many('medical.appointment', 'patient_id', string='Appointments')
+appointment_count = fields.Integer(string='Appointment Count', compute='_compute_appointment_count', store=True)
+
+
+@api.depends('appointment_ids')
+def _compute_appointment_count(self):
+    for patient in self:
+        patient.appointment_count = len(patient.appointment_ids)
+
+
+def action_create_appointment(self):
+    appointment_model = self.env['medical.appointment']
+    return {
+        'type': 'ir.actions.act_window',
+        'name': 'Create Appointment',
+        'res_model': 'medical.appointment',  # Replace with your actual appointment model name
+        'view_mode': 'form',
+        'context': {
+            'default_patient_id': self.id,
+            # You can add more default values here if needed
+        },
+    }
+
+
+def action_view_appointment(self):
+    return {
+        'type': 'ir.actions.act_window',
+        'name': 'Appointment',
+        'res_model': 'medical.appointment',
+        'view_mode': 'list',
+        'domain': [('patient_id', '=', self.id)],
+        'context': {'default_patient_id': self.id},
+
+    }
 # vim=expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
