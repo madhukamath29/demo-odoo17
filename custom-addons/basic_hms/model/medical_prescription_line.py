@@ -5,7 +5,7 @@ from odoo import api, fields, models, _
 from datetime import date, datetime
 
 
-class medical_prescription_line(models.Model):
+class MedicalPrescriptionLine(models.Model):
     _name = "medical.prescription.line"
     _description = 'medical prescription line'
 
@@ -36,7 +36,21 @@ class medical_prescription_line(models.Model):
     short_comment = fields.Char('Dosage Instructions', size=128)
     end_treatment = fields.Datetime('End of treatment')
     start_treatment = fields.Datetime('Start of treatment')
-
     instructions = fields.Char('Special Instructions')
+    patient_id = fields.Many2one('medical.patient', string="Patient", compute='_compute_patient_id', store=True)
+
+    @api.depends('name')
+    def _compute_patient_id(self):
+        for record in self:
+            record.patient_id = record.name.patient_id
+
+    @api.model
+    def create(self, vals):
+        # Automatically set patient_id based on the prescription order
+        if 'name' in vals:
+            prescription_order = self.env['medical.prescription.order'].browse(vals['name'])
+            if prescription_order:
+                vals['patient_id'] = prescription_order.patient_id.id
+        return super(MedicalPrescriptionLine, self).create(vals)
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

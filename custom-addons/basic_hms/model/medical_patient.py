@@ -297,6 +297,7 @@ class medical_patient(models.Model):
     full_term = fields.Integer('Full Term')
     ses_notes = fields.Text('Notes')
     treatment_plan_ids = fields.One2many('project.task', 'patient_id', string='Treatment Plans')
+    prescription_line_id = fields.One2many('medical.prescription.line', 'patient_id', string="Prescription Line")
     language_preferences = fields.Char(string="Language Preferences")
     preferred_appointment_times = fields.Selection([
         ('morning', 'Morning'),
@@ -377,6 +378,24 @@ class medical_patient(models.Model):
                 if rec.deceased == True:
                     if rec.date_of_death <= rec.date_of_birth:
                         raise UserError(_('Date Of Death Can Not Less Than Date Of Birth.'))
+
+                    class PrescriptionLine(models.Model):
+                        _inherit = 'medical.prescription.line'
+
+                        @api.model
+                        def unlink(self):
+                            # Get the related medication IDs
+                            medication_ids = self.mapped('medicament_id')
+
+                            # Perform the unlink operation
+                            result = super(PrescriptionLine, self).unlink()
+
+                            # Check if any medication does not have related prescription lines anymore
+                            for medication in medication_ids:
+                                if not medication.prescription_line_id:
+                                    medication.unlink()
+
+                            return result
 
     def copy(self, default=None):
         for rec in self:
@@ -459,4 +478,17 @@ class medical_patient(models.Model):
 
         }
 
-    # vim=expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+    def action_create_lab_test(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Create Lab Test',
+            'res_model': 'medical.patient.lab.test',
+            # Replace with your actual appointment model name
+            'view_mode': 'form',
+            'context': {
+                'default_patient_id': self.id,
+                # You can add more default values here if needed
+            },
+        }
+
+# vim=expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

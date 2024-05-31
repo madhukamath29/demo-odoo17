@@ -5,6 +5,7 @@
         <field name="name">medical.patients.form.view</field>
         <field name="model">medical.patient</field>
         <field name="arch" type="xml">
+
             <form string="Patient">
                 <header>
                     <button name="print_report" type="object"
@@ -15,6 +16,7 @@
                             class="oe_highlight"/>
                     <button name="action_create_appointment" type="object" string="Create Appointment"
                             class="oe_highlight"/>
+                    <button name="action_create_lab_test" type="object" string="Create Lab Test" class="oe_highlight"/>
 
                 </header>
                 <sheet>
@@ -26,7 +28,6 @@
                                 icon="fa-calendar">
                             <field name="appointment_count" widget="statinfo" string="Appointments"/>
                         </button>
-
                     </div>
 
                     <field name="photo" nolabel="1"
@@ -86,8 +87,6 @@
                             <field name="email_address"/>
                             <!--                            <field name="family_med_history"/>-->
                             <field name="pay_method_pref"/>
-
-
                         </group>
                     </group>
 
@@ -122,8 +121,6 @@
 
                                 </group>
                             </group>
-
-
                             <group colspan="4"
                                    string="Patient Extra Information">
                                 <field colspan="4" name="general_info"
@@ -284,7 +281,6 @@
                                             <field name="coffee"/>
                                             <field name="coffee_cups"/>
                                             <field name="diet_hab"/>
-
                                         </group>
                                         <group>
                                             <field name="soft_drinks"/>
@@ -411,21 +407,14 @@
                             </notebook>
                         </page>
 
+
                         <page string="Prescription">
                             <field name="prescription_ids" widget="section_and_note_one2many">
 
                             </field>
                         </page>
                         <page string="Medication">
-                            <field name="medication_ids" widget="section_and_note_one2many">
-                                <tree>
-                                    <field name="medical_medicament_id"/>
-                                    <field name="indication_pathology_id"/>
-                                    <field name="start_treatment"/>
-                                    <field name="end_treatment"/>
-                                    <field name="is_active"/>
-                                    <field name="doctor_physician_id"/>
-                                </tree>
+                            <field name="prescription_line_id" widget="section_and_note_one2many">
                             </field>
                         </page>
                         <page string="Vaccinations">
@@ -440,14 +429,12 @@
                                 </tree>
                             </field>
                         </page>
-
-
                         <page string="Treatment Plan">
                             <field name="treatment_plan_ids">
                                 <tree>
-                                    <field name="name"/>
-                                    <field name="project_id"/>
-                                    <field name="date_deadline"/>
+                                    <field name="name" string="Patient name"/>
+                                    <field name="project_id" string="Treatment Type"/>
+                                    <field name="date_deadline" string="Date"/>
                                 </tree>
                             </field>
                         </page>
@@ -511,6 +498,7 @@
         <field name="view_id" ref="account.view_move_tree"/>
         <field name="domain">[('move_type', '=', 'out_invoice')]</field>
     </record>
+
 
     <menuitem id="dental_invoice_child" action="action_invoice_order"
               name="Invoices" parent="menu_patients" sequence="3"/>
