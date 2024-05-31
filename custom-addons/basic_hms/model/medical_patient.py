@@ -305,7 +305,6 @@ class medical_patient(models.Model):
     ], string="Preferred Appointment Times")
     special_needs_or_disabilities = fields.Char(string="Special Needs or Disabilities")
     anxiety_or_phobia_information = fields.Char(string="Anxiety or Phobia Information")
-    follow_up_appointments = fields.Date(string="Follow-Up Appointments")
     recall_reminders_method = fields.Selection([
         ('email', 'Email'),
         ('sms', 'SMS'),

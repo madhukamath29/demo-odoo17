@@ -60,7 +60,7 @@
                             <field name="preferred_appointment_times"/>
                             <!--                            <field name="special_needs_or_disabilities"/>-->
                             <!--                            <field name="anxiety_or_phobia_information"/>-->
-                            <field name="follow_up_appointments"/>
+
                             <field name="treatment_consent"/>
                             <field name="treatment_consent_label" readonly="1" nolabel="1"/>
                         </group>

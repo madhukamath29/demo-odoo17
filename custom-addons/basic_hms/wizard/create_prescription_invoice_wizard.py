@@ -45,80 +45,66 @@ class create_prescription_invoice(models.TransientModel):
             list_of_vals = []
             for p_line in lab_req.prescription_line_ids:
 
-                # invoice_line_account_id = False
-                # if p_line.medicament_id.product_id.id:
-                #     invoice_line_account_id = p_line.medicament_id.product_id.property_account_income_id.id or p_line.medicament_id.product_id.categ_id.property_account_income_categ_id.id or False
-                # if not invoice_line_account_id:
-                #     invoice_line_account_id = ir_property_obj.get('property_account_income_categ_id', 'product.category')
-                # if not invoice_line_account_id:
-                #     raise UserError(
-                #         _('There is no income account defined for this product: "%s". You may have to install a chart of account from Accounting app, settings menu.') %
-                #         (p_line.medicament_id.product_id.name,))
                 invoice_line_account_id = False
                 if p_line.medicament_id.product_id.id:
                     invoice_line_account_id = p_line.medicament_id.product_id.property_account_income_id.id or p_line.medicament_id.product_id.categ_id.property_account_income_categ_id.id or False
-                    # if not invoice_line_account_id:
-                #     # invoice_line_account_id = ir_property_obj.get('property_account_income_categ_id', 'product.category')
-                #     prop = ir_property_obj.search([
-                #         ('name', '=', 'property_account_income_categ_id'),
-                #         ('res_id', '=', False),  # Property for all records in model
-                #         ('company_id', '=', self.env.company.id)
-                #     ], limit=1)
-                # invoice_line_account_id = int(prop.value_reference.split(',')[1])
                 if not invoice_line_account_id:
-                    invoice_line_account_id = ir_property_obj.get('property_account_income_categ_id',
-                                                                  'product.category')
-                prop = ir_property_obj.search([
-                    ('name', '=', 'property_account_income_categ_id'),
-                    ('res_id', '=', False),  # Property for all records in model
-                    ('company_id', '=', self.env.company.id)
-                ], limit=1)
+                    # invoice_line_account_id = ir_property_obj.get('property_account_income_categ_id', 'product.category')
+                    prop = ir_property_obj.search([
+                        ('name', '=', 'property_account_income_categ_id'),
+                        ('res_id', '=', False),  # Property for all records in model
+                        ('company_id', '=', self.env.company.id)
+                    ], limit=1)
 
-                if prop:
-                    invoice_line_account_id = int(prop.value_reference.split(',')[1])
-                else:
-                    raise ValueError(
-                        "Property 'property_account_income_categ_id' not found for the current company.")
+                    if prop:
+                        invoice_line_account_id = int(prop.value_reference.split(',')[1])
+                    else:
+                        raise ValueError(
+                            "Property 'property_account_income_categ_id' not found for the current company.")
 
-            tax_ids = []
-            taxes = p_line.medicament_id.product_id.taxes_id.filtered(lambda
-                                                                          r: not p_line.medicament_id.product_id.company_id or r.company_id == p_line.medicament_id.product_id.company_id)
-            tax_ids = taxes.ids
+                if not invoice_line_account_id:
+                    raise UserError(
+                        _('There is no income account defined for this product: "%s". You may have to install a chart of account from Accounting app, settings menu.') %
+                        (p_line.medicament_id.product_id.name,))
 
-            invoice_line_vals = {
-                'name': p_line.medicament_id.product_id.display_name or '',
-                'move_name': p_line.name or '',
-                'account_id': invoice_line_account_id,
-                'price_unit': p_line.medicament_id.product_id.lst_price,
-                'product_uom_id': p_line.medicament_id.product_id.uom_id.id,
-                'quantity': 1,
-                'product_id': p_line.medicament_id.product_id.id,
-            }
-            list_of_vals.append((0, 0, invoice_line_vals))
+                tax_ids = []
+                taxes = p_line.medicament_id.product_id.taxes_id.filtered(lambda
+                                                                              r: not p_line.medicament_id.product_id.company_id or r.company_id == p_line.medicament_id.product_id.company_id)
+                tax_ids = taxes.ids
 
-        res1 = res.write({'invoice_line_ids': list_of_vals})
+                invoice_line_vals = {
+                    'name': p_line.medicament_id.product_id.display_name or '',
+                    'move_name': p_line.name or '',
+                    'account_id': invoice_line_account_id,
+                    'price_unit': p_line.medicament_id.product_id.lst_price,
+                    'product_uom_id': p_line.medicament_id.product_id.uom_id.id,
+                    'quantity': 1,
+                    'product_id': p_line.medicament_id.product_id.id,
+                }
+                list_of_vals.append((0, 0, invoice_line_vals))
 
-        inv_list.append(res.id)
-        if res:
-            imd = self.env['ir.model.data']
-            lab_reqs.write({'is_invoiced': True})
-            action = self.env.ref('account.action_move_out_invoice_type')
-            list_view_id = imd._xmlid_to_res_id('account.view_invoice_tree')
-            form_view_id = imd._xmlid_to_res_id('account.view_move_form')
-            result = {
+            res1 = res.write({'invoice_line_ids': list_of_vals})
 
-                'name': action.name,
-                'help': action.help,
-                'type': action.type,
-                'views': [(list_view_id, 'tree'), (form_view_id, 'form')],
-                'target': action.target,
-                'context': action.context,
-                'res_model': action.res_model,
-            }
-
+            inv_list.append(res.id)
             if res:
-                result['domain'] = "[('id','in',%s)]" % inv_list
+                imd = self.env['ir.model.data']
+                lab_reqs.write({'is_invoiced': True})
+                action = self.env.ref('account.action_move_out_invoice_type')
+                list_view_id = imd._xmlid_to_res_id('account.view_invoice_tree')
+                form_view_id = imd._xmlid_to_res_id('account.view_move_form')
+                result = {
 
-            return result
+                    'name': action.name,
+                    'help': action.help,
+                    'type': action.type,
+                    'views': [(list_view_id, 'tree'), (form_view_id, 'form')],
+                    'target': action.target,
+                    'context': action.context,
+                    'res_model': action.res_model,
+                }
 
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+                if res:
+                    result['domain'] = "[('id','in',%s)]" % inv_list
+        return result
+
+    # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
