@@ -134,7 +134,7 @@ access_medical_appointments_invoice_wizard,medical.appointments.invoice.wizard,m
 access_create_prescription_invoice,create.prescription.invoice,model_create_prescription_invoice,base.group_user,1,1,1,1
 access_medical_lab_test_create,medical.lab.test.create,model_medical_lab_test_create,base.group_user,1,1,1,1
 access_medical_lab_test_invoice,medical.lab.test.invoice,model_medical_lab_test_invoice,base.group_user,1,1,1,1
-
+access_wizard_create_project_task,wizard.create.project.task,model_wizard_create_project_task,,1,1,1,1
 
 
 basic_hms.access_create_prescription_shipment,access_create_prescription_shipment,basic_hms.model_create_prescription_shipment,base.group_user,1,1,1,1

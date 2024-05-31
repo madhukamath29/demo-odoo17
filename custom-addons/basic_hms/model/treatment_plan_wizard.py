@@ -1,11 +1,13 @@
 from odoo import models, fields, api
 
+
 class WizardCreateProjectTask(models.TransientModel):
     _name = 'wizard.create.project.task'
     _description = 'Wizard to create a task in a selected project'
 
     project_id = fields.Many2one('project.project', string="Treatment Type", required=True)
-    task_name = fields.Char(string="Patient Name", required=True, default=lambda self: self.env.context.get('default_task_name', ''))
+    task_name = fields.Char(string="Patient Name", required=True,
+                            default=lambda self: self.env.context.get('default_task_name', ''))
 
     def create_task(self):
         self.ensure_one()
@@ -34,4 +36,4 @@ class ProjectTask(models.Model):
     _inherit = 'project.task'
 
     patient_id = fields.Many2one('medical.patient', string="Patient")
-
+    doctor_id = fields.Many2one('medical.physician', 'Prescribing Doctor')
