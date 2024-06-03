@@ -512,7 +512,7 @@
                 <attribute name="string">Treatment Type</attribute>
             </xpath>
             <xpath expr="//page[@name='extra_info']" position="after">
-                <page name="build_info" string="Mana">
+                <page name="build_info" string="Manufacturing">
                     <!--                    <group>-->
                     <!--&lt;!&ndash;                        <field name="product_id"/>&ndash;&gt;-->
                     <!--                        <field name="bom_ids"/>-->
