@@ -513,11 +513,6 @@
             </xpath>
             <xpath expr="//page[@name='extra_info']" position="after">
                 <page name="build_info" string="Manufacturing">
-                    <!--                    <group>-->
-                    <!--&lt;!&ndash;                        <field name="product_id"/>&ndash;&gt;-->
-                    <!--                        <field name="bom_ids"/>-->
-                    <!--                        &lt;!&ndash; Your fields for Build Info go here &ndash;&gt;-->
-                    <!--                    </group>-->
                     <group>
                         <field name="product_id"/>
                         <field name="bom_id"/>
@@ -531,6 +526,38 @@
                 </page>
             </xpath>
         </field>
+    </record>
+    <record id="project.menu_main_pm" model="ir.ui.menu">
+        <field name="name">Treatment</field>
+    </record>
+    <record id="project.menu_projects" model="ir.ui.menu">
+        <field name="name">Treatment Plans</field>
+    </record>
+    <record id="project.menu_projects_config" model="ir.ui.menu">
+        <field name="name">Treatment Plans</field>
+    </record>
+    <record id="project.open_view_project_all" model="ir.actions.act_window">
+        <field name="name">Treatment Type</field>
+    </record>
+    <record id="project.open_view_project_all_group_stage" model="ir.actions.act_window">
+        <field name="name">Treatment Type</field>
+    </record>
+    <record id="project.open_create_project" model="ir.actions.act_window">
+        <field name="name">Create a Treatment Plan</field>
+    </record>
+
+    <record id="project_project_view_form_simplified_footer_inherit" model="ir.ui.view">
+        <field name="name">project.project.view.form.simplified.footer.inherit</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.project_project_view_form_simplified_footer"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_view_tasks']" position="attributes">
+                <attribute name="string">Create Treatment Plan</attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="project.open_view_project_all_config" model="ir.actions.act_window">
+        <field name="name">Treatment Plan Stages</field>
     </record>
     <menuitem id="dental_invoice_child" action="action_invoice_order"
               name="Invoices" parent="menu_patients" sequence="3"/>
