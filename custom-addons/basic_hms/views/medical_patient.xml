@@ -511,18 +511,29 @@
             <xpath expr="//group//field[@name='project_id']" position="attributes">
                 <attribute name="string">Treatment Type</attribute>
             </xpath>
+            <xpath expr="//page[@name='extra_info']" position="after">
+                <page name="build_info" string="Manufacturing">
+                    <group>
+                        <field name="product_id"/>
+                        <field name="bom_id"/>
+                        <field name="quantity"/>
+
+                    </group>
+                    <button string="Create Manufacturing Order" type="object" name="create_manufacturing_order"
+                            class="oe_highlight"/>
+                    <div style="display:inline-block; width: 10px;"></div>
+                    <button string="Cancel" class="btn-secondary" special="cancel" style="padding:10px"/>
+                </page>
+            </xpath>
         </field>
     </record>
     <record id="project.menu_main_pm" model="ir.ui.menu">
-        <field name="name">Treatment Plan</field>
+        <field name="name">Treatment</field>
     </record>
     <record id="project.menu_projects" model="ir.ui.menu">
         <field name="name">Treatment Plans</field>
     </record>
     <record id="project.menu_projects_config" model="ir.ui.menu">
-        <field name="name">Treatment Plans</field>
-    </record>
-    <record id="project.menu_project_config_project_stage" model="ir.ui.menu">
         <field name="name">Treatment Plans</field>
     </record>
     <record id="project.open_view_project_all" model="ir.actions.act_window">
@@ -544,6 +555,9 @@
                 <attribute name="string">Create Treatment Plan</attribute>
             </xpath>
         </field>
+    </record>
+    <record id="project.open_view_project_all_config" model="ir.actions.act_window">
+        <field name="name">Treatment Plan Stages</field>
     </record>
     <menuitem id="dental_invoice_child" action="action_invoice_order"
               name="Invoices" parent="menu_patients" sequence="3"/>
