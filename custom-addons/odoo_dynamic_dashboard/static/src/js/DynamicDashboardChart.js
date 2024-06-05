@@ -1,7 +1,7 @@
 /** @odoo-module */
 
 import { registry } from '@web/core/registry';
-import { loadJS, loadCSS } from '@web/core/assets';
+import { loadJS } from '@web/core/assets';
 import { getColor } from "@web/core/colors/colors";
 const { Component, xml, onWillStart, useRef, useState, onMounted } = owl;
 
@@ -28,50 +28,10 @@ export class DynamicDashboardChart extends Component {
 
         onWillStart(async () => {
             await loadJS("https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.0/chart.min.js");
-            this.injectStyles();
         });
 
         onMounted(() => this.renderChart());
     }
-
-    injectStyles() {
-    const style = `
-        .circle-button {
-            border: none;
-            padding: 1px;
-            margin: 0px 5px;
-            background: none;
-
-        }
-
-        .circle-base {
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-        }
-
-        .bg-primary {
-            background-color: #007bff;
-        }
-
-        .circle-icon {
-            color: white;
-        }
-
-        h3 {
-            margin: 0;
-            font-size: 1.5em;
-            font-weight: bold;
-        }
-    `;
-    const styleElement = document.createElement('style');
-    styleElement.innerHTML = style;
-    document.head.appendChild(styleElement);
-}
-
 
     async changeChartType(type) {
         console.log('Changing chart type to:', type);  // Debugging line
@@ -266,7 +226,7 @@ DynamicDashboardChart.template = xml`
                                 <i class="fa fa-circle-thin circle-icon"></i>
                             </div>
                         </button>
-                        <button class="btn circle-button" t-on-click="()=> this.changeChartType('radar')">
+                        <button class="btn circle-button" t-on-click="() => this.changeChartType('radar')">
                             <div class="circle-base">
                                 <i class="fa fa-bullseye circle-icon"></i>
                             </div>
@@ -292,6 +252,40 @@ DynamicDashboardChart.template = xml`
 </div>
 `;
 
-DynamicDashboardChart.style = ``; // Empty string since we're injecting styles dynamically
+DynamicDashboardChart.style = `
+.circle-button {
+    border: none;
+    padding: 20px;
+    margin: 4px 2px;
+    background: none;
+    border-radius: 50%;
+}
+
+.circle-base {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.bg-primary {
+    background-color: #007bff;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+}
+
+.circle-icon {
+    color: white;
+}
+
+h3 {
+    margin: 0;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+`;
 
 registry.category("components").add("DynamicDashboardChart", DynamicDashboardChart);
