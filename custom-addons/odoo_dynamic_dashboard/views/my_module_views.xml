@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Inherit the existing Sales menu -->
+        <record id="action_Employees" model="ir.actions.report">
+            <field name="name">Employees</field>
+            <field name="model">sale.report.invoice</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">sale_report_advanced.invoice_analysis_view</field>
+            <field name="report_file">sale_report_advanced.invoice_analysis_view</field>
+        </record>
+        <!-- Add more custom menu items as needed -->
+    </data>
+</odoo>

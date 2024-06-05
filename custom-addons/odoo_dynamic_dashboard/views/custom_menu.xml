@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<!--    Menu for advanced sale report  -->
+    <menuitem id="sale_advanced_report_root"
+              parent="sale.menu_sale_report"
+              name="Sale Advanced Reports"
+              sequence="45"/>
+    <menuitem id="sale_advanced_report_menu"
+              parent="sale_advanced_report_root"
+              name="Employees"
+              action="action_Employees"
+              sequence="45"/>
+</odoo>
+
+
