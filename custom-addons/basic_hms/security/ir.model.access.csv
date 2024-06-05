@@ -135,7 +135,8 @@ access_create_prescription_invoice,create.prescription.invoice,model_create_pres
 access_medical_lab_test_create,medical.lab.test.create,model_medical_lab_test_create,base.group_user,1,1,1,1
 access_medical_lab_test_invoice,medical.lab.test.invoice,model_medical_lab_test_invoice,base.group_user,1,1,1,1
 access_wizard_create_project_task,wizard.create.project.task,model_wizard_create_project_task,,1,1,1,1
-
+access_patient_diseases,medical.group.patient.diseases,model_medical_patient_disease,group_receptionist,1,1,1,1
+access_vaccination,medical.group.vaccination,model_medical_vaccination,group_receptionist,1,1,1,1
 
 basic_hms.access_create_prescription_shipment,access_create_prescription_shipment,basic_hms.model_create_prescription_shipment,base.group_user,1,1,1,1
 basic_hms.access_medical_health_service_invoice,access_medical_health_service_invoice,basic_hms.model_medical_health_service_invoice,base.group_user,1,1,1,1
