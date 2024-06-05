@@ -1,7 +1,7 @@
 /** @odoo-module */
 
 import { registry } from '@web/core/registry';
-import { loadJS } from '@web/core/assets';
+import { loadJS, loadCSS } from '@web/core/assets';
 import { getColor } from "@web/core/colors/colors";
 const { Component, xml, onWillStart, useRef, useState, onMounted } = owl;
 
@@ -28,10 +28,50 @@ export class DynamicDashboardChart extends Component {
 
         onWillStart(async () => {
             await loadJS("https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.0/chart.min.js");
+            this.injectStyles();
         });
 
         onMounted(() => this.renderChart());
     }
+
+    injectStyles() {
+    const style = `
+        .circle-button {
+            border: none;
+            padding: 1px;
+            margin: 0px 5px;
+            background: none;
+
+        }
+
+        .circle-base {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .bg-primary {
+            background-color: #007bff;
+        }
+
+        .circle-icon {
+            color: white;
+        }
+
+        h3 {
+            margin: 0;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+    `;
+    const styleElement = document.createElement('style');
+    styleElement.innerHTML = style;
+    document.head.appendChild(styleElement);
+}
+
 
     async changeChartType(type) {
         console.log('Changing chart type to:', type);  // Debugging line
@@ -49,6 +89,12 @@ export class DynamicDashboardChart extends Component {
 
                 const x_axis = this.props.widget.x_axis;
                 const y_axis = this.props.widget.y_axis;
+
+                if (!x_axis || !y_axis) {
+                    console.error('x_axis or y_axis is undefined:', { x_axis, y_axis });
+                    return;
+                }
+
                 const data = x_axis.map((key, index) => ({ key, value: y_axis[index] }));
 
                 this.chartInstance = new Chart(this.chartRef.el, {
@@ -196,33 +242,33 @@ DynamicDashboardChart.template = xml`
                     <div style="float:right;">
                         <!-- Chart type buttons -->
                         <button class="btn circle-button" t-on-click="downloadDetails">
-                            <div class="circle-base circle1 bg-primary">
-                                <i class="angle_icon rounded-circle fa fa-download circle-icon"></i>
+                            <div class="circle-base bg-primary">
+                                <i class="fa fa-download circle-icon"></i>
                             </div>
                         </button>
                         <button class="btn circle-button" t-on-click="() => this.changeChartType('bar')">
-                            <div class="circle-base circle1 bg-primary">
-                                <i class="angle_icon rounded-circle fa fa-bar-chart circle-icon"></i>
+                            <div class="circle-base bg-primary">
+                                <i class="fa fa-bar-chart circle-icon"></i>
                             </div>
                         </button>
                         <button class="btn circle-button" t-on-click="() => this.changeChartType('line')">
-                            <div class="circle-base circle1 bg-primary">
-                                <i class="angle_icon rounded-circle fa fa-line-chart circle-icon"></i>
+                            <div class="circle-base bg-primary">
+                                <i class="fa fa-line-chart circle-icon"></i>
                             </div>
                         </button>
                         <button class="btn circle-button" t-on-click="() => this.changeChartType('pie')">
-                            <div class="circle-base circle1 bg-primary">
-                                <i class="angle_icon rounded-circle fa fa-pie-chart circle-icon"></i>
+                            <div class="circle-base bg-primary">
+                                <i class="fa fa-pie-chart circle-icon"></i>
                             </div>
                         </button>
                         <button class="btn circle-button" t-on-click="() => this.changeChartType('doughnut')">
-                            <div class="circle-base circle1 bg-primary">
-                                <i class="angle_icon rounded-circle fa fa-circle-thin circle-icon"></i>
+                            <div class="circle-base bg-primary">
+                                <i class="fa fa-circle-thin circle-icon"></i>
                             </div>
                         </button>
-                        <button class="btn circle-button" t-on-click="() => this.changeChartType('radar')">
-                            <div class="circle-base circle1 bg-primary">
-                                <i class="angle_icon rounded-circle fa fa-bullseye circle-icon"></i>
+                        <button class="btn circle-button" t-on-click="()=> this.changeChartType('radar')">
+                            <div class="circle-base">
+                                <i class="fa fa-bullseye circle-icon"></i>
                             </div>
                         </button>
                     </div>
@@ -238,7 +284,7 @@ DynamicDashboardChart.template = xml`
                         <option value="last_3_months">Last 3 Months</option>
                         <option value="last_year">Last Year</option>
                     </select>
-                    <canvas t-ref="chart" width="500" height="300"></canvas>
+                    <canvas t-ref="chart" style="width:100%"></canvas>
                 </div>
             </div>
         </div>
@@ -246,56 +292,6 @@ DynamicDashboardChart.template = xml`
 </div>
 `;
 
-DynamicDashboardChart.styles = `
-.card {
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
+DynamicDashboardChart.style = ``; // Empty string since we're injecting styles dynamically
 
-.card-header {
-    background-color: #f7f7f7;
-    border-bottom: 1px solid #e0e0e0;
-    padding: 15px;
-}
-
-.card-body {
-    padding: 20px;
-}
-
-.circle-button {
-    padding: 10px;
-    border: none;
-    background: transparent;
-    margin: 5px;
-    cursor: pointer;
-}
-
-.circle-icon {
-    color: white;
-    font-size: 1.2em;
-}
-
-.circle-base {
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.bg-primary {
-    background-color: #007bff !important;
-}
-
-h3 {
-    margin: 0;
-    font-size: 1.5em;
-    font-weight: bold;
-}
-`;
-
-DynamicDashboardChart.components = {};
-
-registry.category("web_components").add("DynamicDashboardChart", DynamicDashboardChart);
+registry.category("components").add("DynamicDashboardChart", DynamicDashboardChart);
