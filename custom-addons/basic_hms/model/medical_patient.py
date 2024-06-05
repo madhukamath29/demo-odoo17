@@ -461,6 +461,7 @@ class medical_patient(models.Model):
             'name': 'Create Appointment',
             'res_model': 'medical.appointment',  # Replace with your actual appointment model name
             'view_mode': 'form',
+            'domain': [('patient_id', '=', self.patient_id.id)],
             'context': {
                 'default_patient_id': self.id,
                 # You can add more default values here if needed
