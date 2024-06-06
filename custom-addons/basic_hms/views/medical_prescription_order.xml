@@ -45,7 +45,7 @@
                             <field name="prescription_date"
                                    required="1"/>
                             <field name="pharmacy_partner_id"/>
-                            <field name="ph_no" readonly="1"/>
+                            <field name="mobile" />
                             <field name="diagnosis"/>
                             <field name="allergies" readonly="1"/>
                         </group>

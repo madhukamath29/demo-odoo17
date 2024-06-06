@@ -46,22 +46,21 @@
 				<table class="table table-condensed">
 					<thead>
 						<tr>
-							<th>Medicament</th>
+                            <th>Medication Name</th>
 							<th>Indication</th>
 							<th>Start</th>
 							<th>End</th>
-							<th>Act</th>
 							<th>Doctor</th>
 						</tr>
 					</thead>
 					<tbody class="sale_tbody">
-						<t t-foreach="doc.medication_ids" t-as="l">
+                        <t t-foreach="doc.prescription_line_id" t-as="l">
 							<tr>
 								<td>
-									<span t-field="l.medical_medicament_id.product_id.name"/>
+                                    <span t-field="l.medicament_id"/>
 								</td>
 								<td>
-									<span t-field="l.indication_pathology_id.name"/>
+                                    <span t-field="l.indication"/>
 								</td>
 								<td>
 									<span t-field="l.start_treatment"/>
@@ -69,11 +68,11 @@
 								<td>
 									<span t-field="l.end_treatment"/>
 								</td>
+                                <!--								<td>-->
+                                <!--									<span t-field="l.is_active"/>-->
+                                <!--								</td>-->
 								<td>
-									<span t-field="l.is_active"/>
-								</td>
-								<td>
-									<span t-field="l.doctor_physician_id.partner_id.name"/>
+                                    <span t-field="l.name.doctor_id"/>
 								</td>
 
 							</tr>

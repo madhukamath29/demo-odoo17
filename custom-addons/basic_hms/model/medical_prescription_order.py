@@ -35,7 +35,7 @@ class medical_prescription_order(models.Model):
 
     height = fields.Float(related='patient_id.height', string="Height", readonly=True)
     weight = fields.Float(related='patient_id.weight', string="Weight", readonly=True)
-    ph_no = fields.Char(related='patient_id.ph_no', string="Phone Number", readonly=True)
+    mobile = fields.Char(related='patient_id.mobile', string="Phone Number", readonly=False)
     # diagnosis = fields.Char(related='patient_id.diagnosis', string="Diagnosis", readonly=True)
     diagnosis = fields.Char(string="Diagnosis")
     allergies = fields.Char(related='patient_id.allergies', string="Allergies", readonly=True)

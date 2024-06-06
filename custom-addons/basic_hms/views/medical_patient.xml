@@ -51,7 +51,7 @@
                             <field name="name"/>
                             <field name="date_of_birth"/>
                             <field name="occupation"/>
-                            <field name="ph_no"/>
+                            <field name="mobile"/>
                             <field name="govt_id_type"/>
                             <field name="govt_id" modifiers="{'invisible': [('govt_id_type', '=', False)]}"
                                    options='{"no_label": True}'/>

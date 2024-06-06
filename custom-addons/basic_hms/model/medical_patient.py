@@ -71,7 +71,7 @@ class medical_patient(models.Model):
 
     height = fields.Float(string="Height", )
     weight = fields.Float(string="Weight", )
-    ph_no = fields.Char(string="Phone Number", )
+    mobile = fields.Char(related='patient_id.mobile', readonly=False, string="Mobile")
     # diagnosis = fields.Char(string="Diagnosis", )
     allergies = fields.Char(string="Allergies")
     followUp_date = fields.Date(string="Follow-Up Appointments")
