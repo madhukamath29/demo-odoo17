@@ -51,7 +51,7 @@
 													t-out="'%s' %  o.patient_id.state_id.name if  o.patient_id.state_id.name  else ''" />
 												<br></br>
 												<b>Phone No:</b>
-												<span t-field='o.patient_id.phone' />
+												<span t-field='o.mobile' />
 												<br></br>
 											</div>
 										</td>
