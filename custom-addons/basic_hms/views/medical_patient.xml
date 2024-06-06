@@ -559,8 +559,24 @@
     <record id="project.open_view_project_all_config" model="ir.actions.act_window">
         <field name="name">Treatment Plan Stages</field>
     </record>
+
     <menuitem id="dental_invoice_child" action="action_invoice_order"
               name="Invoices" parent="menu_patients" sequence="3"/>
+    <menuitem id="dental_inventory_child" action="stock.stock_picking_type_action"
+              name="Inventory" parent="menu_hospital_inventory" sequence="1"/>
+    <menuitem id="dental_products_child" action="mrp.product_template_action"
+              name="Products" parent="menu_hospital_inventory" sequence="2"/>
+    <menuitem id="dental_products_variants_child" action="mrp.mrp_product_variant_action"
+              name="Product Variants" parent="menu_hospital_inventory" sequence="3"/>
+    <menuitem id="dental_Bills_of_materials_child_two" action="mrp.mrp_bom_form_action"
+              name="Bills of Materials" parent="menu_hospital_inventory" sequence="4"/>
+
+    <menuitem id="dental_Bills_of_materials_child" action="purchase.purchase_rfq"
+              name="Requests for Quotation" parent="menu_hospital_purchase" sequence="1"/>
+    <menuitem id="dental_Purchase_Order_child" action="purchase.purchase_form_action"
+              name="Purchase Order" parent="menu_hospital_purchase" sequence="2"/>
+    <menuitem id="dental_vendors_child" action="account.res_partner_action_supplier"
+              name="Vendors" parent="menu_hospital_purchase" sequence="3"/>
 
 
 </odoo>
