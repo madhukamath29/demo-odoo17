@@ -29,7 +29,7 @@ class medical_appointment(models.Model):
         ('c', 'Medical Emergency'),
     ], 'Urgency Level', sort=False, default="b")
     appointment_date = fields.Datetime('Appointment Date', required=True, default=fields.Datetime.now)
-    appointment_end = fields.Datetime('Appointment End', required=True)
+    appointment_end = fields.Datetime('Appointment End')
     doctor_id = fields.Many2one('medical.physician', 'Doctor', required=True)
     no_invoice = fields.Boolean(string='Invoice exempt', default=True)
     validity_status = fields.Selection([

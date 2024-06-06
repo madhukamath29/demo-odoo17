@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 
 
 class WizardCreateProjectTask(models.TransientModel):
@@ -38,9 +39,9 @@ class ProjectTask(models.Model):
     patient_id = fields.Many2one('medical.patient', string="Patient")
     doctor_id = fields.Many2one('medical.physician', 'Prescribing Doctor')
 
-    product_id = fields.Many2one('product.product', string='Product', required=True)
+    product_id = fields.Many2one('product.product', string='Product' )
     bom_id = fields.Many2one('mrp.bom', string='Bill of Materials', compute='_compute_bom', store=True)
-    quantity = fields.Float(string='Quantity', default=1.0, required=True)
+    quantity = fields.Float(string='Quantity', default=1.0)
 
     @api.depends('product_id')
     def _compute_bom(self):

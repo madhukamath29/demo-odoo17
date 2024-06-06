@@ -70,7 +70,7 @@
                             <field name="sex"/>
                             <field name="age" readonly="1"/>
                             <field name="partner_address_id" invisible="1"/>
-                            <label for="partner_address_id" name="partner_address_id"/>
+                            <label for="partner_address_id" string="Address" name="partner_address_id"/>
                             <div class="o_address_format">
                                 <field name="street" placeholder="Street..." class="o_address_street"/>
                                 <field name="street2" placeholder="Street 2..." class="o_address_street"/>
@@ -80,7 +80,7 @@
                                 <field name="zip_code" placeholder="ZIP" class="o_address_zip"/>
                                 <field name="country_id" placeholder="Country" class="o_address_country"/>
                             </div>
-                            <field name="followUp_date"/>
+<!--                            <field name="followUp_date"/>-->
                             <!--                            <field name="patient_ins" placeholder="Ex: Consume only cold food"/>-->
                             <field name="recall_reminders_method"/>
                             <field name="recall_reminders_frequency"/>
@@ -142,151 +142,151 @@
                         </page>
 
 
-                        <page string="Socioeconomics">
-                            <notebook>
-                                <page string="Main">
-                                    <group string="General">
-                                        <group>
-                                            <field name="ses"/>
-                                            <field name="education"/>
-                                            <field name="housing"/>
-                                        </group>
-                                        <group>
-                                            <field name="works_at_home"/>
-                                            <field name="hours_outside"/>
-                                            <field name="hostile_area"/>
-                                        </group>
-                                    </group>
-                                    <group string="Infrastructure">
-                                        <group>
-                                            <field name="sewers"/>
-                                            <field name="water"/>
-                                            <field name="trash"/>
-                                            <field name="electricity"/>
-                                        </group>
-                                        <group>
-                                            <field name="gas"/>
-                                            <field name="telephone"/>
-                                            <field name="television"/>
-                                            <field name="internet"/>
-                                        </group>
-                                    </group>
-                                    <group string="Extra Info">
-                                        <field name="ses_notes"
-                                               nolabel="1" colspan="2"/>
-                                    </group>
-                                </page>
-                                <page string="Family">
-                                    <group string="Family APGAR">
-                                        <group>
-                                            <field name="fam_apgar_help"/>
-                                            <field
-                                                    name="fam_apgar_discussion"/>
-                                            <field
-                                                    name="fam_apgar_decisions"/>
-                                        </group>
-                                        <group>
-                                            <field
-                                                    name="fam_apgar_timesharing"/>
-                                            <field
-                                                    name="fam_apgar_affection"/>
-                                        </group>
-                                    </group>
-                                    <group string="Other Family Issues">
-                                        <group>
-                                            <field name="single_parent"/>
-                                            <field
-                                                    name="domestic_violence"/>
-                                            <field
-                                                    name="working_children"/>
-                                            <field
-                                                    name="teenage_pregnancy"/>
-                                            <field name="sexual_abuse"/>
-                                        </group>
-                                        <group>
-                                            <field name="drug_addiction"/>
-                                            <field
-                                                    name="school_withdrawal"/>
-                                            <field name="prison_past"/>
-                                            <field name="prison_current"/>
-                                            <field
-                                                    name="relative_in_prison"/>
-                                        </group>
-                                    </group>
-                                </page>
-                            </notebook>
-                        </page>
-                        <page string="Gyneco / Obs"
-                              invisible="sex == 'm'">
-                            <group string="Gyneco">
-                                <group string="General">
-                                    <field name="fertile"/>
-                                    <field name="currently_pregnant"/>
-                                    <field name="menarche"/>
-                                    <field name="menopausal"/>
-                                    <field name="menopause"/>
-                                </group>
-                                <group string="Prevention and Screening">
-                                    <field name="breast_self_examination"/>
-                                    <newline/>
-                                    <field name="mammography"/>
-                                    <field name="mammography_last"/>
-                                    <field name="pap_test"/>
-                                    <field name="pap_test_last"/>
-                                    <field name="colposcopy"/>
-                                    <field name="colposcopy_last"/>
-                                </group>
-                            </group>
-                            <group string="Obstetrics">
-                                <group>
-                                    <field name="gpa"/>
-                                    <field name="full_term"/>
-                                    <field name="deaths_1st_week"/>
-                                    <field name="deaths_2nd_week"/>
-                                </group>
-                                <group>
-                                    <field name="gravida"/>
-                                    <field name="born_alive"/>
-                                    <field name="premature"/>
-                                    <field name="abortions"/>
-                                </group>
-                            </group>
-                            <notebook>
-                                <page string="Perinatal">
-                                    <field name="perinatal_ids"
-                                           nolabel="1" widget="section_and_note_one2many"/>
-                                </page>
-                            </notebook>
-                        </page>
+<!--                        <page string="Socioeconomics">-->
+<!--                            <notebook>-->
+<!--                                <page string="Main">-->
+<!--                                    <group string="General">-->
+<!--                                        <group>-->
+<!--                                            <field name="ses"/>-->
+<!--                                            <field name="education"/>-->
+<!--                                            <field name="housing"/>-->
+<!--                                        </group>-->
+<!--                                        <group>-->
+<!--                                            <field name="works_at_home"/>-->
+<!--                                            <field name="hours_outside"/>-->
+<!--                                            <field name="hostile_area"/>-->
+<!--                                        </group>-->
+<!--                                    </group>-->
+<!--                                    <group string="Infrastructure">-->
+<!--                                        <group>-->
+<!--                                            <field name="sewers"/>-->
+<!--                                            <field name="water"/>-->
+<!--                                            <field name="trash"/>-->
+<!--                                            <field name="electricity"/>-->
+<!--                                        </group>-->
+<!--                                        <group>-->
+<!--                                            <field name="gas"/>-->
+<!--                                            <field name="telephone"/>-->
+<!--                                            <field name="television"/>-->
+<!--                                            <field name="internet"/>-->
+<!--                                        </group>-->
+<!--                                    </group>-->
+<!--                                    <group string="Extra Info">-->
+<!--                                        <field name="ses_notes"-->
+<!--                                               nolabel="1" colspan="2"/>-->
+<!--                                    </group>-->
+<!--                                </page>-->
+<!--                                <page string="Family">-->
+<!--                                    <group string="Family APGAR">-->
+<!--                                        <group>-->
+<!--                                            <field name="fam_apgar_help"/>-->
+<!--                                            <field-->
+<!--                                                    name="fam_apgar_discussion"/>-->
+<!--                                            <field-->
+<!--                                                    name="fam_apgar_decisions"/>-->
+<!--                                        </group>-->
+<!--                                        <group>-->
+<!--                                            <field-->
+<!--                                                    name="fam_apgar_timesharing"/>-->
+<!--                                            <field-->
+<!--                                                    name="fam_apgar_affection"/>-->
+<!--                                        </group>-->
+<!--                                    </group>-->
+<!--                                    <group string="Other Family Issues">-->
+<!--                                        <group>-->
+<!--                                            <field name="single_parent"/>-->
+<!--                                            <field-->
+<!--                                                    name="domestic_violence"/>-->
+<!--                                            <field-->
+<!--                                                    name="working_children"/>-->
+<!--                                            <field-->
+<!--                                                    name="teenage_pregnancy"/>-->
+<!--                                            <field name="sexual_abuse"/>-->
+<!--                                        </group>-->
+<!--                                        <group>-->
+<!--                                            <field name="drug_addiction"/>-->
+<!--                                            <field-->
+<!--                                                    name="school_withdrawal"/>-->
+<!--                                            <field name="prison_past"/>-->
+<!--                                            <field name="prison_current"/>-->
+<!--                                            <field-->
+<!--                                                    name="relative_in_prison"/>-->
+<!--                                        </group>-->
+<!--                                    </group>-->
+<!--                                </page>-->
+<!--                            </notebook>-->
+<!--                        </page>-->
+<!--                        <page string="Gyneco / Obs"-->
+<!--                              invisible="sex == 'm'">-->
+<!--                            <group string="Gyneco">-->
+<!--                                <group string="General">-->
+<!--                                    <field name="fertile"/>-->
+<!--                                    <field name="currently_pregnant"/>-->
+<!--                                    <field name="menarche"/>-->
+<!--                                    <field name="menopausal"/>-->
+<!--                                    <field name="menopause"/>-->
+<!--                                </group>-->
+<!--                                <group string="Prevention and Screening">-->
+<!--                                    <field name="breast_self_examination"/>-->
+<!--                                    <newline/>-->
+<!--                                    <field name="mammography"/>-->
+<!--                                    <field name="mammography_last"/>-->
+<!--                                    <field name="pap_test"/>-->
+<!--                                    <field name="pap_test_last"/>-->
+<!--                                    <field name="colposcopy"/>-->
+<!--                                    <field name="colposcopy_last"/>-->
+<!--                                </group>-->
+<!--                            </group>-->
+<!--                            <group string="Obstetrics">-->
+<!--                                <group>-->
+<!--                                    <field name="gpa"/>-->
+<!--                                    <field name="full_term"/>-->
+<!--                                    <field name="deaths_1st_week"/>-->
+<!--                                    <field name="deaths_2nd_week"/>-->
+<!--                                </group>-->
+<!--                                <group>-->
+<!--                                    <field name="gravida"/>-->
+<!--                                    <field name="born_alive"/>-->
+<!--                                    <field name="premature"/>-->
+<!--                                    <field name="abortions"/>-->
+<!--                                </group>-->
+<!--                            </group>-->
+<!--                            <notebook>-->
+<!--                                <page string="Perinatal">-->
+<!--                                    <field name="perinatal_ids"-->
+<!--                                           nolabel="1" widget="section_and_note_one2many"/>-->
+<!--                                </page>-->
+<!--                            </notebook>-->
+<!--                        </page>-->
 
                         <page string="Lifestyle">
                             <notebook>
                                 <page string="Diet and Excersice">
-                                    <group>
-                                        <group string="Physical Excersise">
-                                            <field name="excercise"/>
-                                            <field
-                                                    name="excercise_minutes_day"/>
-                                        </group>
-                                        <group string="Sleep">
-                                            <field name="sleep_hours"/>
-                                            <field
-                                                    name="sleep_during_daytime"/>
-                                        </group>
-                                    </group>
+<!--                                    <group>-->
+<!--                                        <group string="Physical Excersise">-->
+<!--                                            <field name="excercise"/>-->
+<!--                                            <field-->
+<!--                                                    name="excercise_minutes_day"/>-->
+<!--                                        </group>-->
+<!--                                        <group string="Sleep">-->
+<!--                                            <field name="sleep_hours"/>-->
+<!--                                            <field-->
+<!--                                                    name="sleep_during_daytime"/>-->
+<!--                                        </group>-->
+<!--                                    </group>-->
                                     <group string="Diet info">
                                         <group>
                                             <field name="number_of_meals"/>
-                                            <field name="eats_alone"/>
+<!--                                            <field name="eats_alone"/>-->
                                             <field name="coffee"/>
                                             <field name="coffee_cups"/>
-                                            <field name="diet_hab"/>
+<!--                                            <field name="diet_hab"/>-->
                                         </group>
                                         <group>
                                             <field name="soft_drinks"/>
-                                            <field name="salt"/>
-                                            <field name="diet"/>
-                                            <field name="diet_info"/>
+<!--                                            <field name="salt"/>-->
+<!--                                            <field name="diet"/>-->
+<!--                                            <field name="diet_info"/>-->
                                         </group>
                                     </group>
                                     <group string="Lifestyle Information">
@@ -379,23 +379,23 @@
                                 <!--                                    </group>-->
                                 <!--                                </page>-->
 
-                                <page string="Safety">
-                                    <group string="Drive and Home Safety">
-                                        <group>
-                                            <field
-                                                    name="motorcycle_rider"/>
-                                            <field name="helmet"/>
-                                            <field name="traffic_laws"/>
-                                            <field name="car_revision"/>
-                                        </group>
-                                        <group>
-                                            <field name="car_seat_belt"/>
-                                            <field
-                                                    name="car_child_safety"/>
-                                            <field name="home_safety"/>
-                                        </group>
-                                    </group>
-                                </page>
+<!--                                <page string="Safety">-->
+<!--                                    <group string="Drive and Home Safety">-->
+<!--                                        <group>-->
+<!--                                            <field-->
+<!--                                                    name="motorcycle_rider"/>-->
+<!--                                            <field name="helmet"/>-->
+<!--                                            <field name="traffic_laws"/>-->
+<!--                                            <field name="car_revision"/>-->
+<!--                                        </group>-->
+<!--                                        <group>-->
+<!--                                            <field name="car_seat_belt"/>-->
+<!--                                            <field-->
+<!--                                                    name="car_child_safety"/>-->
+<!--                                            <field name="home_safety"/>-->
+<!--                                        </group>-->
+<!--                                    </group>-->
+<!--                                </page>-->
                                 <page string="Hygiene Practices">
                                     <group string="Oral Hygiene Activities">
                                         <group>
@@ -417,18 +417,18 @@
                             <field name="prescription_line_id" widget="section_and_note_one2many">
                             </field>
                         </page>
-                        <page string="Vaccinations">
+<!--                        <page string="Vaccinations">-->
 
-                            <field name="medical_vaccination_ids"
-                                   nolabel="1">
-                                <tree>
-                                    <field name="vaccine_product_id"/>
-                                    <field name="dose"/>
-                                    <field name="date"/>
-                                    <field name="observations"/>
-                                </tree>
-                            </field>
-                        </page>
+<!--                            <field name="medical_vaccination_ids"-->
+<!--                                   nolabel="1">-->
+<!--                                <tree>-->
+<!--                                    <field name="vaccine_product_id"/>-->
+<!--                                    <field name="dose"/>-->
+<!--                                    <field name="date"/>-->
+<!--                                    <field name="observations"/>-->
+<!--                                </tree>-->
+<!--                            </field>-->
+<!--                        </page>-->
                         <page string="Treatment Plan">
                             <field name="treatment_plan_ids">
                                 <tree>
@@ -512,14 +512,14 @@
                 <attribute name="string">Treatment Type</attribute>
             </xpath>
             <xpath expr="//page[@name='extra_info']" position="after">
-                <page name="build_info" string="Manufacturing">
+                <page name="build_info" string="Fabrication">
                     <group>
                         <field name="product_id"/>
                         <field name="bom_id"/>
                         <field name="quantity"/>
 
                     </group>
-                    <button string="Create Manufacturing Order" type="object" name="create_manufacturing_order"
+                    <button string="Create Fabrication Order" type="object" name="create_manufacturing_order"
                             class="oe_highlight"/>
                     <div style="display:inline-block; width: 10px;"></div>
                     <button string="Cancel" class="btn-secondary" special="cancel" style="padding:10px"/>
@@ -561,21 +561,6 @@
     </record>
     <menuitem id="dental_invoice_child" action="action_invoice_order"
               name="Invoices" parent="menu_patients" sequence="3"/>
-    <menuitem id="dental_inventory_child" action="stock.stock_picking_type_action"
-              name="Inventory" parent="menu_hospital_inventory" sequence="1"/>
-    <menuitem id="dental_products_child" action="mrp.product_template_action"
-              name="Products" parent="menu_hospital_inventory" sequence="2"/>
-    <menuitem id="dental_products_variants_child" action="mrp.mrp_product_variant_action"
-              name="Product Variants" parent="menu_hospital_inventory" sequence="3"/>
-    <menuitem id="dental_Bills_of_materials_child_two" action="mrp.mrp_bom_form_action"
-              name="Bills of Materials" parent="menu_hospital_inventory" sequence="4"/>
-
-    <menuitem id="dental_Bills_of_materials_child" action="purchase.purchase_rfq"
-              name="Requests for Quotation" parent="menu_hospital_purchase" sequence="1"/>
-    <menuitem id="dental_Purchase_Order_child" action="purchase.purchase_form_action"
-              name="Purchase Order" parent="menu_hospital_purchase" sequence="2"/>
-    <menuitem id="dental_vendors_child" action="account.res_partner_action_supplier"
-              name="Vendors" parent="menu_hospital_purchase" sequence="3"/>
 
 
 </odoo>
