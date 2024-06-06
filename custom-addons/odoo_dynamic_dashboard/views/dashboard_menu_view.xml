@@ -55,9 +55,9 @@
               sequence="3"/>
     <menuitem name="Dashboard" id="menu_dynamic_dashboard_mrp_acc" parent="odoo_dynamic_dashboard.menu_dynamic_dashboard_Accounting"
               sequence="3" action="odoo_accounting_dashboard.accounting_dashboard_action"/>
-<!--    <menuitem name="Treatments" id="menu_dynamic_dashboard_Treatments" parent="odoo_dynamic_dashboard.menu_dynamic_dashboard_configuration"-->
-<!--              sequence="3"/>-->
-<!--    <menuitem name="Dashboard" id="menu_dynamic_dashboard_mrp_treat" parent="odoo_dynamic_dashboard.menu_dynamic_dashboard_Treatments"-->
-<!--              sequence="3" action="project.project_dashboard_action"/>-->
+    <menuitem name="Inventory" id="menu_dynamic_dashboard_Treatments" parent="odoo_dynamic_dashboard.menu_dynamic_dashboard_configuration"
+              sequence="3"/>
+    <menuitem name="Dashboard" id="menu_dynamic_dashboard_mrp_treat" parent="odoo_dynamic_dashboard.menu_dynamic_dashboard_Treatments"
+              sequence="3" action="inventory_stock_dashboard_odoo.dashboard_action"/>
 
 </odoo>
