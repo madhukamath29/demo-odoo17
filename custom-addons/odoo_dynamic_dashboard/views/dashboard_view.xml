@@ -9,5 +9,5 @@
     <menuitem name="Dash" id="menu_dashboard" sequence="0" web_icon="odoo_dynamic_dashboard,static/description/icon.png"/>
     <!--    Menu Item to show the dashboards menu in the dashboard module-->
     <menuitem name="Dashboard" id="menu_dynamic_dashboard" parent="basic_hms.main_menu_hospital_management"
-              sequence="0" action="dynamic_dashboard_action"/>
+              sequence="-10" action="dynamic_dashboard_action"/>
 </odoo>
