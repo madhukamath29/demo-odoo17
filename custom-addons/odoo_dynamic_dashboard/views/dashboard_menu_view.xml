@@ -41,9 +41,7 @@
     <menuitem name="Reporting" id="menu_dynamic_dashboard_configuration" parent="basic_hms.main_menu_hospital_management"
               sequence="3"/>
     <!--    Menu item to show the dynamic menus in module dynamic dashboard-->
-    <menuitem name="Purchase" id="menu_dynamic_dashboard_Purchase" parent="odoo_dynamic_dashboard.menu_dynamic_dashboard_configuration"
-              sequence="3"/>
-    <menuitem name="Purchase" id="menu_dynamic_dashboard_menu" parent="odoo_dynamic_dashboard.menu_dynamic_dashboard_Purchase"
+    <menuitem name="Purchase" id="menu_dynamic_dashboard_menu" parent="odoo_dynamic_dashboard.menu_dynamic_dashboard_configuration"
               sequence="3" action="purchase.action_purchase_order_report_all"/>
     <menuitem name="Manufacturing" id="menu_dynamic_dashboard_Manufacturing" parent="odoo_dynamic_dashboard.menu_dynamic_dashboard_configuration"
               sequence="3"/>
@@ -51,13 +49,13 @@
               sequence="4" action="mrp.mrp_workorder_report"/>
     <menuitem name="Overall Equipment Effectiveness" id="menu_dynamic_dashboard_mrp_ovl" parent="odoo_dynamic_dashboard.menu_dynamic_dashboard_Manufacturing"
               sequence="3" action="mrp.mrp_workcenter_productivity_report"/>
-    <menuitem name="Accounting" id="menu_dynamic_dashboard_Accounting" parent="odoo_dynamic_dashboard.menu_dynamic_dashboard_configuration"
-              sequence="3"/>
-    <menuitem name="Dashboard" id="menu_dynamic_dashboard_mrp_acc" parent="odoo_dynamic_dashboard.menu_dynamic_dashboard_Accounting"
+    <menuitem name="Accounting" id="menu_dynamic_dashboard_mrp_acc" parent="odoo_dynamic_dashboard.menu_dynamic_dashboard_configuration"
               sequence="3" action="odoo_accounting_dashboard.accounting_dashboard_action"/>
-    <menuitem name="Inventory" id="menu_dynamic_dashboard_Treatments" parent="odoo_dynamic_dashboard.menu_dynamic_dashboard_configuration"
-              sequence="3"/>
-    <menuitem name="Dashboard" id="menu_dynamic_dashboard_mrp_treat" parent="odoo_dynamic_dashboard.menu_dynamic_dashboard_Treatments"
+    <menuitem name="Inventory" id="menu_dynamic_dashboard_mrp_treat" parent="odoo_dynamic_dashboard.menu_dynamic_dashboard_configuration"
               sequence="3" action="inventory_stock_dashboard_odoo.dashboard_action"/>
+    <menuitem name="Treatment" id="menu_dynamic_dashboard_inv_das" parent="odoo_dynamic_dashboard.menu_dynamic_dashboard_configuration"
+              sequence="3" action="project_dashboard_odoo.project_dashboard_action"/>
+     <menuitem name="Purchase" id="menu_dynamic_dashboard_menu" parent="odoo_dynamic_dashboard.menu_dynamic_dashboard_configuration"
+              sequence="4" action="purchase.action_purchase_order_report_all"/>
 
 </odoo>
