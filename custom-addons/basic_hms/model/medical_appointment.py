@@ -53,7 +53,7 @@ class medical_appointment(models.Model):
         ('no_show', 'No Show'),
         ('check_in', 'Check-in'),
         ('completed', 'Completed')
-    ], string='Status', default='booked')
+    ], string='Status', default='booked', track_visibility='onchange')
 
     def _valid_field_parameter(self, field, name):
         return name == 'sort' or super()._valid_field_parameter(field, name)
@@ -141,6 +141,16 @@ class medical_appointment(models.Model):
             raise UserError(_(' The Appointment is invoice exempt'))
         return result
 
+    def checkin_action(self):
+        for appointment in self:
+            if appointment.status == 'booked':
+                appointment.status = 'check_in'
+                msg_body = 'Appointment checked in'
+            elif appointment.status == 'check_in':
+                appointment.status = 'completed'
+                msg_body = 'Appointment completed'
+            appointment.message_post(body=msg_body)
+        return True
 
     def action_noshow_appointment(self):
         for appointment in self:
@@ -149,12 +159,11 @@ class medical_appointment(models.Model):
         action = self.env.ref('basic_hms.action_medical_appointment').read()[0]
         return action
 
-
     def action_cancel_appointment(self):
         for appointment in self:
             appointment.write({'status': 'cancel'})
 
-    # Define the action to return
+        # Define the action to return
         action = self.env.ref('basic_hms.action_medical_appointment').read()[0]
         return action
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

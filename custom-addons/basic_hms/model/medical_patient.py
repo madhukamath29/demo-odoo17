@@ -61,7 +61,7 @@ class medical_patient(models.Model):
         ('aadhar', 'Aadhar Card'),
         ('driving', 'Driving Licence'),
         ('election', 'Election Card')
-    ], string="Identification Proof Type", required=True)
+    ], string="Identification Proof Type")
 
     govt_id = fields.Char(string="Identification No:", )
 
@@ -330,6 +330,7 @@ class medical_patient(models.Model):
 
     treatment_consent = fields.Boolean(string="Treatment Consent")
     treatment_consent_label = fields.Char(string="", compute='_compute_treatment_consent_label')
+    invoice_count = fields.Integer(string='Invoices', compute='_compute_invoice_count')
 
     @api.depends('treatment_consent')
     def _compute_treatment_consent_label(self):
@@ -492,4 +493,14 @@ class medical_patient(models.Model):
             },
         }
 
+    def _compute_invoice_count(self):
+        for patient in self:
+            patient.invoice_count = self.env['account.move'].search_count([('partner_id', '=', patient.patient_id.id)])
+
+    def action_view_invoices(self):
+        invoices = self.env['account.move'].search([('partner_id', '=', self.patient_id.id)])
+        action = self.env.ref('account.action_move_out_invoice_type').read()[0]
+        action['domain'] = [('id', 'in', invoices.ids)]
+        action['context'] = {'default_partner_id': self.patient_id.id}
+        return action
 # vim=expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

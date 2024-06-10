@@ -9,14 +9,17 @@
                     <button
                             name="%(basic_hms.action_medical_appointments_invoice_wizard)d"
                             string="Create Invoice" type="action" class="oe_highlight"
-                            modifiers="{'invisible': [('status', '!=', 'Completed')]}"
+                            invisible="status != 'completed'"
                             help="Invoice creation available only for completed appointments."/>
-
+                    <button name="checkin_action" string="Check-in" type="object" class="oe_highlight"
+                            invisible="status != 'booked'"/>
+                    <button name="checkin_action" string="Done" type="object" class="oe_highlight"
+                            invisible="status != 'check_in'"/>
                     <button name="action_noshow_appointment" string="No Show" type="object" class="oe_highlight"/>
                     <field name="status" widget="statusbar"/>
-
                     <button name="action_cancel_appointment" string="Cancel Appointment" type="object"
                             class="oe_highlight"/>
+                    <field name="status" widget="statusbar"/>
                 </header>
                 <sheet>
                     <group>
@@ -38,12 +41,12 @@
                         <group>
                             <field name="doctor_id"/>
                             <field name="appointment_date"/>
-<!--                            <field name="appointment_end"/>-->
+                            <!--                            <field name="appointment_end"/>-->
                             <field name="patient_status"/>
                             <field name="no_invoice"/>
                             <field name="validity_status"
                                    readonly="1"/>
-<!--                            <field name="appointment_validity_date"/>-->
+                            <!--                            <field name="appointment_validity_date"/>-->
                         </group>
                         <group>
                             <field name="institution_partner_id"/>
@@ -98,7 +101,7 @@
                 <field name="patient_status"/>
                 <field name="urgency_level"/>
                 <field name="appointment_date"/>
-<!--                <field name="appointment_end"/>-->
+                <!--                <field name="appointment_end"/>-->
                 <field name="doctor_id"/>
                 <field name="institution_partner_id"/>
                 <field name="status"/>
