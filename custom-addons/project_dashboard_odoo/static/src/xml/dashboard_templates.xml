@@ -29,7 +29,7 @@
                     <p>Treatments :</p>
                     <p>
                         <select class="inner_select" id="project_selection" t-on-change="(ev) => this._onchangeFilter(ev)">
-                            <option value="null">All Projects</option>
+                            <option value="null">All Treatments</option>
                         </select>
                     </p>
                     <p>Employees :</p>
@@ -155,15 +155,15 @@
             <div class="row main-section">
                 <div class="col-sm-7 col-lg-7">
                     <div class="graph_view" style="box-shadow:5px 11px 30px;">
-                        <div class="text-color hr-chart-1">
-                            <div class="oh-card-body pb-0"
-                                 style="text-align:center;">
-                                <h2 style="margin-left:45%;padding-top:2%;">Treatment Task Analysis</h2>
-                            </div>
-                            <canvas id="project_doughnut"
-                                    style="background:#fff;" width="200"
-                                    height="120"/>
-                        </div>
+<!--                        <div class="text-color hr-chart-1">-->
+<!--                            <div class="oh-card-body pb-0"-->
+<!--                                 style="text-align:center;">-->
+<!--                                <h2 style="margin-left:45%;padding-top:2%;">Project Task Analysis</h2>-->
+<!--                            </div>-->
+<!--                            <canvas id="project_doughnut"-->
+<!--                                    style="background:#fff;" width="200"-->
+<!--                                    height="120"/>-->
+<!--                        </div>-->
                     </div>
                     <div class="selling_product_graph_view"
                          style="box-shadow:5px 11px 30px;">
@@ -174,50 +174,196 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 col-sm-5 col-xs-5 col-lg-4"
-                     style="margin-left: 5%;box-shadow:5px 11px 30px;">
-                    <div class="graph_view hr-chart-2">
-                        <div class="oh-card-body pb-0"
-                             style="text-align:center;">
-                            <h2 style="padding-top:2%;">Margin Analysis</h2>
+                <div class="col-md-4 col-lg-4" style="top: 82px;right: -100px;">
+                    <div class="hr_notification" style="background: #fff;transition: transform 0.2s ease, box-shadow 0.2s ease;will-change: transform, box-shadow;box-shadow: 0 10px 40px 0 rgba(62,57,107,0.07), 0 2px 9px 0 rgba(62,57,107,0.06);
+                    height: 763px;margin-bottom: 15px;margin-top: 15px;box-shadow:5px 11px 30px;">
+                        <div class="hr_notification_head"
+                             style="font-size: 17px;text-align: center;padding: 12px 0;color: #fff;font-weight: 300;background: #000080;margin-bottom: 9px;">
+                            Treatment Task Details
                         </div>
-                        <canvas id="chartProjectMargin" style="background:#fff;" width="200" height="450"/>
+                        <div class="col-sm-12 col-lg-12" style="padding:0;">
+                            <div class="text-color">
+                                <div class="media"
+                                     style="overflow-y: auto;height: 704px;">
+                                    <div class="media-body">
+                                        <table class="table table-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th rowspan="14">Treatment Name</th>
+                                                    <th rowspan="14">Task Name</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <t t-foreach="task_data"
+                                                   t-as="proj" t-key="proj">
+                                                    <tr>
+                                                        <td>
+                                                            <t t-if="flag_user == 1">
+                                                                <t t-esc="proj[1]['en_US']"/>
+                                                            </t>
+                                                            <t t-els="">
+                                                                <t t-esc="proj[1]"/>
+                                                            </t>
+                                                        </td>
+                                                        <td>
+                                                            <t t-esc="proj[0]"/>
+                                                        </td>
+                                                    </tr>
+                                                </t>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hr_notification" style="background: #fff;transition: transform 0.2s ease, box-shadow 0.2s ease;will-change: transform, box-shadow;box-shadow: 0 10px 40px 0 rgba(62,57,107,0.07), 0 2px 9px 0 rgba(62,57,107,0.06);
+                            overflow-y: scroll;vertical-align: middle;overflow-x: clip;max-height: 37%;margin-bottom: 15px;box-shadow:5px 11px 30px;">
+                        <div class="hr_notification_head"
+                             style="font-size: 17px;text-align: center;padding: 12px 0;color: #fff;font-weight: 300;background: #000080;margin-bottom: 9px;">
+                            Hours Recorded
+                        </div>
+                        <!-- Updated code with right-aligned values for all tables -->
+                        <div class="col-sm-12 col-lg-12" style="padding: 0;">
+                            <div class="text-color">
+                                <div class="">
+                                    <div class="media">
+                                        <div class="media-body">
+                                            <!-- Table 1: Billed on Timesheet -->
+                                            <table class="table table-sm">
+                                                <thead>
+                                                    <tr>
+                                                        <th rowspan="14">Billed on Timesheet</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <t t-foreach="hour_recorde" t-as="hour_recorde" t-key="hour_recorde">
+                                                        <tr>
+                                                            <td>
+                                                                <!-- Right-align the value -->
+                                                                <h2 class="text-color display-6" style="font-size: 15px; text-align: right; margin-left: 400px; margin-top: -30px;">
+                                                                    <t t-esc="hour_recorde"/>
+                                                                </h2>
+                                                            </td>
+                                                        </tr>
+                                                    </t>
+                                                </tbody>
+                                            </table>
+                                            <!-- Table 2: Billed at a Fixed Price -->
+                                            <table class="table table-sm">
+                                                <thead>
+                                                    <tr>
+                                                        <th rowspan="14">Billed at a Fixed Price</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <t t-foreach="billable_fix" t-as="billable_fix" t-key="billable_fix">
+                                                        <tr>
+                                                            <td>
+                                                                <!-- Right-align the value -->
+                                                                <h2 class="text-color display-6" style="font-size: 15px; text-align: right; margin-left: 400px; margin-top: -30px;">
+                                                                    <t t-esc="billable_fix"/>
+                                                                </h2>
+                                                            </td>
+                                                        </tr>
+                                                    </t>
+                                                </tbody>
+                                            </table>
+
+                                            <!-- Table 3: No Task Found -->
+                                            <table class="table table-sm">
+                                                <thead>
+                                                    <tr>
+                                                        <th rowspan="14">No Task Found</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <t t-foreach="hour_recorded" t-as="hour_recorded" t-key="hour_recorded">
+                                                        <tr>
+                                                            <td>
+                                                                <!-- Right-align the value -->
+                                                                <h2 class="text-color display-6" style="font-size: 15px; text-align: right; margin-left: 400px; margin-top: -30px;">
+                                                                    <t t-esc="hour_recorded"/>
+                                                                </h2>
+                                                            </td>
+                                                        </tr>
+                                                    </t>
+                                                </tbody>
+                                            </table>
+
+                                            <!-- Table 4: Non Billable Tasks -->
+                                            <table class="table table-sm">
+                                                <thead>
+                                                    <tr>
+                                                        <th rowspan="14">Non Billable Tasks</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <t t-foreach="non_billable" t-as="non_billable" t-key="non_billable">
+                                                        <tr>
+                                                            <td>
+                                                                <!-- Right-align the value -->
+                                                                <h2 class="text-color display-6" style="font-size: 15px; text-align: right; margin-left: 400px; margin-top: -30px;">
+                                                                    <t t-esc="non_billable"/>
+                                                                </h2>
+                                                            </td>
+                                                        </tr>
+                                                    </t>
+                                                </tbody>
+                                            </table>
+                                            <!-- Table 5: Total -->
+                                            <table class="table table-sm">
+                                                <thead>
+                                                    <tr>
+                                                        <th rowspan="14">Total:</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <t t-foreach="total_hr" t-as="total_hr" t-key="total_hr">
+                                                        <tr>
+                                                            <td>
+                                                                <!-- Right-align the value -->
+                                                                <h2 class="text-color display-6" style="font-size: 15px; text-align: right; margin-left: 400px; margin-top: -30px;">
+                                                                    <t t-esc="total_hr"/>
+                                                                </h2>
+                                                            </td>
+                                                        </tr>
+                                                    </t>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hr_notification" style="background: #fff;transition: transform 0.2s ease, box-shadow 0.2s ease;will-change: transform, box-shadow;box-shadow: 0 10px 40px 0 rgba(62,57,107,0.07), 0 2px 9px 0 rgba(62,57,107,0.06);
+                            height: auto;padding-bottom: 15px;box-shadow:5px 11px 30px;">
+                            <div class="hr_notification_head"
+                                 style="font-size: 17px;text-align: center;padding: 12px 0;color: #fff;font-weight: 300;background: #000080;margin-bottom: 9px;">
+                                Stage Wise Total Treatment
+                            </div>
+                            <table id="table_status" style="width">
+                                <tr>
+                                    <th/>
+                                    <th/>
+                                </tr>
+                                <t t-foreach="project_stage_list"
+                                   t-as="data" t-key="project_stage_list">
+                                    <tr>
+                                        <td style="text-align:center;">
+                                            <h4 t-esc="data['name']"/>
+                                        </td>
+                                        <td style="text-align:center;">
+                                            <h4 class="fleet-pill"
+                                                t-esc="data['projects']"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
-            <t t-if="flag_user == 1">
-                <div class="row main-section">
-                    <div class="col-sm-7 col-lg-7"
-                         style="box-shadow:5px 11px 30px;">
-                        <div class="graph_view">
-                            <div class="text-color">
-                                <div class="oh-card-body pb-0"
-                                     style="text-align:center;">
-                                    <h2 style="margin-left:45%;padding-top:2%;">Treatments
-                                        Revenue Analysis</h2>
-                                </div>
-                                <canvas id="project_revenue"
-                                        style="background:#fff;" width="200"
-                                        height="120"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-sm-5 col-xs-5 col-lg-4"
-                         style="margin-left: 5%;box-shadow:5px 11px 30px;">
-                        <div class="graph_view">
-                            <div class="text-color">
-                                <div class="oh-card-body pb-0"
-                                     style="text-align:center;">
-                                    <h2 style="padding-top:2%;">Customer Analysis</h2>
-                                </div>
-                                <canvas id="project_bar"
-                                        style="background:#fff;" width="200"
-                                        height="450"/>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </t>
         </div>
     </t>
 </templates>

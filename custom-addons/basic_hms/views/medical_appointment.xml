@@ -16,7 +16,6 @@
                     <button name="checkin_action" string="Done" type="object" class="oe_highlight"
                             invisible="status != 'check_in'"/>
                     <button name="action_noshow_appointment" string="No Show" type="object" class="oe_highlight"/>
-                    <field name="status" widget="statusbar"/>
                     <button name="action_cancel_appointment" string="Cancel Appointment" type="object"
                             class="oe_highlight"/>
                     <field name="status" widget="statusbar"/>
