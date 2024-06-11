@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Define the report template -->
+    <template id="report_medical_patient_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <div class="page">
+                    <h2>Patient Report: <span t-esc="doc.name"/></h2>
+                    <h3>Tooth Details</h3>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Tooth Position</th>
+                                <th>Tooth Type</th>
+                                <th>Problem Type</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="doc.tooth_ids" t-as="tooth">
+                                <tr>
+                                    <td t-if="tooth.image_field">
+                                        <img t-att-src="'data:image/png;base64,%s' % (tooth.image_field)" alt="X-ray Image"/>
+                                    </td>
+                                    <td t-if="not tooth.image_field">No Image Available</td>
+                                    <td><span t-esc="dict(tooth.fields_get(allfields=['upper_right'])['upper_right']['selection'])[tooth.upper_right]"/></td>
+                                    <td><span t-esc="dict(tooth._get_tooth_type_selection())[tooth.tooth_type]"/></td>
+                                    <td><span t-esc="dict(tooth._get_problem_type_selection())[tooth.problem_type]"/></td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

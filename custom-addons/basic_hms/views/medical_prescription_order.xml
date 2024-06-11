@@ -32,9 +32,9 @@
                 <header>
                     <button name="prescription_report" type="object"
                             string="Print Prescription" class="oe_highlight"/>
-<!--                    <button-->
-<!--                            name="%(action_create_prescription_invoice1)d"-->
-<!--                            type="action" string="Create Invoice" class="oe_highlight"/>-->
+                    <!--                    <button-->
+                    <!--                            name="%(action_create_prescription_invoice1)d"-->
+                    <!--                            type="action" string="Create Invoice" class="oe_highlight"/>-->
 
                 </header>
                 <sheet>
@@ -45,7 +45,7 @@
                             <field name="prescription_date"
                                    required="1"/>
                             <field name="pharmacy_partner_id"/>
-                            <field name="mobile" />
+                            <field name="mobile"/>
                             <field name="diagnosis"/>
                             <field name="allergies" readonly="1"/>
                         </group>

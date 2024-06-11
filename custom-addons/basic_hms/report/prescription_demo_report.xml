@@ -2,150 +2,156 @@
 	<openerp>
         <template id="basic_hms.prescription_demo_report_template">
 			<t t-call="web.external_layout">
-				<div class="page">
-					<div class="oe_structure"/>
-					  <br/><br/><br/><br/>
-						<h3 class="text-center mb32">
-							<strong>PRESCRIPTION REPORT</strong>
-						</h3>
-					<br/>
-					<table class="table table-condensed"> 
-                        <tr> 
-                            <th style="border: 0px ;" class="text-left">Prescription ID : 
-                            	<br/>
+                <div class="page">
+                    <div class="oe_structure"/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <h3 class="text-center mb32">
+                        <strong>PRESCRIPTION REPORT</strong>
+                    </h3>
+                    <br/>
+                    <table class="table table-condensed">
+                        <tr>
+                            <th style="border: 0px ;" class="text-left">Prescription ID :
+                                <br/>
                                 <span style="font-weight:normal;" t-field="doc.name"/>
-                            </th> 
+                            </th>
 
-                            <th style="border: 0px ;" class="text-left">Prescription Date : 
-                            	<br/>
+                            <th style="border: 0px ;" class="text-left">Prescription Date :
+                                <br/>
                                 <span style="font-weight:normal;" t-field="doc.prescription_date"/>
                             </th>
 
-                            <th style="border: 0px ;" class="text-left">Prescribing Doctor : 
-                            	<br/>
+                            <th style="border: 0px ;" class="text-left">Prescribing Doctor :
+                                <br/>
                                 <span style="font-weight:normal;" t-field="doc.doctor_id.partner_id.name"/>
                             </th>
- 
 
-                            <th style="border: 0px ;" class="text-left">Patient Contact Information: 
+
+                            <th style="border: 0px ;" class="text-left">Patient Contact Information:
                                 <br/>
-                                <span style="font-weight:normal;" t-field="doc.patient_id"/><br/>
-                                <span style="font-weight:normal;" t-field="doc.patient_id.mobile"/><br/>
+                                <span style="font-weight:normal;" t-field="doc.patient_id"/>
+                                <br/>
+                                <span style="font-weight:normal;" t-field="doc.patient_id.mobile"/>
+                                <br/>
                                 <span style="font-weight:normal;" t-field="doc.patient_id.patient_id.email"/>
                             </th>
 
-                        </tr> 
+                        </tr>
                     </table>
-					<br>
-					<br/>
-					</br>
-					<div>
-						<table class="table table-condensed">
-							<thead>
-								<div>
-									<strong>Prescription Details</strong>
-								</div>
-							</thead>
-							 <tbody class="sale_tbody">
-                            <!-- Print the labels only once -->
-                            <tr>
-                                <th>
-                                    <strong>Medication Name</strong>
-                                </th>
-                                <th>
-                                    <strong>Qty</strong>
-                                </th>
-                                <!--                                <th>-->
-                                <!--                                    <strong>Substitution</strong>-->
-                                <!--                                </th>-->
-                                <th>
-                                    <strong>Start Treatment</strong>
-                                </th>
-                                <td t-if="doc.prescription_line_ids and doc.prescription_line_ids.filtered('end_treatment')">
-                                    <strong>Stop Treatment</strong>
-                                </td>
-                                <!--                                <th>-->
-                                <!--                                    <strong>Form</strong>-->
-                                <!--                                </th>-->
-                                <!--                                <th>-->
-                                <!--                                    <strong>Indication</strong>-->
-                                <!--                                </th>-->
-                                <!--        <td t-if="doc.prescription_line_ids and doc.prescription_line_ids.filtered('route')">-->
-                                <!--            <strong>Route</strong>-->
-                                <!--        </td>-->
-                                <!--                                <th>-->
-                                <!--                                    <strong>Common Dosage</strong>-->
-                                <!--                                </th>-->
-                                <th>
-                                    <strong>Frequency</strong>
-                                </th>
-                                <td>
-                                    <strong>Treatment</strong>
-                                </td>
-                                <td t-if="doc.prescription_line_ids and doc.prescription_line_ids.filtered('review')">
-                                    <strong>Review</strong>
-                                </td>
-                                <!--        <td t-if="doc.prescription_line_ids and doc.prescription_line_ids.filtered('refills')">-->
-                                <!--            <strong>Refills</strong>-->
-                                <!--        </td>-->
-                                <th>
-                                    <strong>Remarks</strong>
-                                </th>
-                            </tr>
-                            <!-- Iterate over prescription lines to print the values -->
-                            <t t-foreach="doc.prescription_line_ids" t-as="test">
+                    <br>
+                        <br/>
+                    </br>
+                    <div>
+                        <table class="table table-condensed">
+                            <thead>
+                                <div>
+                                    <strong>Prescription Details</strong>
+                                </div>
+                            </thead>
+                            <tbody class="sale_tbody">
+                                <!-- Print the labels only once -->
                                 <tr>
-                                    <td t-if="test.medicament_id">
-                                        <span t-field="test.medicament_id"/>
+                                    <th>
+                                        <strong>Medication Name</strong>
+                                    </th>
+                                    <th>
+                                        <strong>Qty</strong>
+                                    </th>
+                                    <!--                                <th>-->
+                                    <!--                                    <strong>Substitution</strong>-->
+                                    <!--                                </th>-->
+                                    <th>
+                                        <strong>Start Treatment</strong>
+                                    </th>
+                                    <td t-if="doc.prescription_line_ids and doc.prescription_line_ids.filtered('end_treatment')">
+                                        <strong>Stop Treatment</strong>
                                     </td>
-                                    <td t-if="test.quantity">
-                                        <span t-field="test.quantity"/>
-                                    </td>                                   </td>-->
-                                    <td t-if="test.start_treatment">
-                                        <span t-field="test.start_treatment"/>
+                                    <!--                                <th>-->
+                                    <!--                                    <strong>Form</strong>-->
+                                    <!--                                </th>-->
+                                    <!--                                <th>-->
+                                    <!--                                    <strong>Indication</strong>-->
+                                    <!--                                </th>-->
+                                    <!--        <td t-if="doc.prescription_line_ids and doc.prescription_line_ids.filtered('route')">-->
+                                    <!--            <strong>Route</strong>-->
+                                    <!--        </td>-->
+                                    <!--                                <th>-->
+                                    <!--                                    <strong>Common Dosage</strong>-->
+                                    <!--                                </th>-->
+                                    <th>
+                                        <strong>Frequency</strong>
+                                    </th>
+                                    <td>
+                                        <strong>Treatment</strong>
                                     </td>
-                                    <td t-if="test.end_treatment">
-                                        <span t-field="test.end_treatment"/>
-                                    </td>                 </td>-->
-                                    <td t-if="test.frequency">Every
-                                        <span t-field="test.frequency"/>
-                                        <span t-field="test.frequency_unit"/>
+                                    <td t-if="doc.prescription_line_ids and doc.prescription_line_ids.filtered('review')">
+                                        <strong>Review</strong>
                                     </td>
-                                    <td t-if="test.duration">Take during
-                                        <span t-field="test.duration"/>
-                                        <span t-field="test.duration_period"/>
-                                    </td>
-                                    <td t-if="test.review">
-                                        <span t-field="test.review"/>
-                                    <td t-if="test.short_comment">
-                                        <span t-field="test.short_comment"/>
-                                    </td>
+                                    <!--        <td t-if="doc.prescription_line_ids and doc.prescription_line_ids.filtered('refills')">-->
+                                    <!--            <strong>Refills</strong>-->
+                                    <!--        </td>-->
+                                    <th>
+                                        <strong>Remarks</strong>
+                                    </th>
                                 </tr>
-                            </t>
-                        </tbody>
-						</table>
-					</div>
-					<br>
-						<br>
-							<br>
-								<br/>
-							</br>
-						</br>
-					</br>
-					<div class="row mt32 mb32" id="informations">
-						<div class="col-xs-3">
-							<strong>Notes:</strong>
-							<span t-field="doc.notes"/>
-						</div>
-					</div>
+                                <!-- Iterate over prescription lines to print the values -->
+                                <t t-foreach="doc.prescription_line_ids" t-as="test">
+                                    <tr>
+                                        <td t-if="test.medicament_id">
+                                            <span t-field="test.medicament_id"/>
+                                        </td>
+                                        <td t-if="test.quantity">
+                                            <span t-field="test.quantity"/>
+                                        </td>
+                                        <td t-if="test.start_treatment">
+                                            <span t-field="test.start_treatment"/>
+                                        </td>
+                                        <td t-if="test.end_treatment">
+                                            <span t-field="test.end_treatment"/>
+                                        </td>
+                                        <td t-if="test.frequency">Every
+                                            <span t-field="test.frequency"/>
+                                            <span t-field="test.frequency_unit"/>
+                                        </td>
+                                        <td t-if="test.duration">Take during
+                                            <span t-field="test.duration"/>
+                                            <span t-field="test.duration_period"/>
+                                        </td>
+                                        <td t-if="test.review">
+                                            <span t-field="test.review"/>
+                                        </td>
+                                        <td t-if="test.short_comment">
+                                            <span t-field="test.short_comment"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                    <br>
+                        <br>
+                            <br>
+                                <br/>
+                            </br>
+                        </br>
+                    </br>
+                    <div class="row mt32 mb32" id="informations">
+                        <div class="col-xs-3">
+                            <strong>Notes:</strong>
+                            <span t-field="doc.notes"/>
+                        </div>
+                    </div>
 
-					<br>
-					</br>
-					<div class="text-right mb32">
-						<strong>Doctor Signature:</strong>
-					</div>
-				</div>
-			</t>
+                    <br>
+                    </br>
+                    <div class="text-right mb32">
+                        <strong>Doctor Signature:</strong>
+                    </div>
+                </div>
+            </t>
         </template>
         <template id="prescription_demo_report">
                 <t t-call="web.html_container">
