@@ -471,7 +471,7 @@
                 <group>
                     <div>
                         <img src="/basic_hms/static/src/img/Snip20230302_1.png"
-                             alt="Patient Image" style="width: 550px; height: 500px; object-fit: contain;"/>
+                             alt="Patient Image" style="width: 500px; height: 450px; object-fit: contain;"/>
                     </div>
                 </group>
                 <group>
