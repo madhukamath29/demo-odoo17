@@ -95,7 +95,7 @@
         'report/patient_medications_document_report.xml',
         'report/patient_vaccinations_document_report.xml',
         'report/prescription_demo_report.xml',
-        'report/report_medical_tooth',
+        'report/report_medical_tooth.xml',
     ],
     "author": "BrowseInfo",
     "website": "https://www.browseinfo.com",

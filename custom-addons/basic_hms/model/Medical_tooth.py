@@ -5,7 +5,7 @@ class MedicalTooth(models.Model):
     _name = 'medical.tooth'
     _description = 'Medical Tooth'
 
-    image_field = fields.Binary(string="Image")
+    image_field = fields.Binary(string="Upload X-ray Image")
 
     # upper_left = fields.Selection(
     #     [('s', 'Upper Right Quadrant'), ('m', 'Upper Left Quadrant'),
