@@ -7,10 +7,10 @@ class MedicalTooth(models.Model):
 
     image_field = fields.Binary(string="Image")
 
-    upper_left = fields.Selection(
-        [('s', 'Upper Right Quadrant'), ('m', 'Upper Left Quadrant'),
-         ('w', 'Lower Left Quadrant'), ('d', 'Lower Right Quadrant')],
-        string='Tooth Position', required=True)
+    # upper_left = fields.Selection(
+    #     [('s', 'Upper Right Quadrant'), ('m', 'Upper Left Quadrant'),
+    #      ('w', 'Lower Left Quadrant'), ('d', 'Lower Right Quadrant')],
+    #     string='Tooth Position', required=True)
     upper_right = fields.Selection(
         [('s', 'Upper Right Quadrant'), ('m', 'Upper Left Quadrant'),
          ('w', 'Lower Left Quadrant'), ('d', 'Lower Right Quadrant')],
