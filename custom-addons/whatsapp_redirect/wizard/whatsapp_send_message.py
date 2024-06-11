@@ -20,6 +20,8 @@
 #
 #############################################################################
 from odoo import fields, models, api, _
+from pytz import timezone
+import pytz
 
 
 class WhatsappSendMessage(models.TransientModel):
@@ -33,15 +35,20 @@ class WhatsappSendMessage(models.TransientModel):
     appointment_id = fields.Many2one('medical.appointment', string="Appointment")
     res_company = fields.Many2one('res.company', string="Company", default=lambda self: self.env.user.company_id)
 
-    @api.depends('user_id.name', 'appointment_id.doctor_id')
+    @api.depends('user_id.name', 'appointment_id.doctor_id', 'appointment_id.appointment_date')
     def _compute_message(self):
         for record in self:
+            ist = timezone('Asia/Kolkata')
+            appointment_date_ist = record.appointment_id.appointment_date.astimezone(
+                ist) if record.appointment_id.appointment_date else ''
+            formatted_date = appointment_date_ist.strftime('%d-%m-%Y %H:%M:%S') if appointment_date_ist else ''
             record.message = ("Dear %s,\n\n"
                               "This is %s. Your appointment with Dr.%s  is scheduled for %s.\n\n"
                               "Please reply 'YES' to confirm or call us at %s to reschedule.\n\n"
                               "Thank you.") % (
-                             record.user_id.name or '', record.res_company.name or '', record.appointment_id.doctor_id.partner_id.name or '',
-                             record.appointment_id.appointment_date or '', record.res_company.phone or '')
+                                 record.user_id.name or '', record.res_company.name or '',
+                                 record.appointment_id.doctor_id.partner_id.name or '',
+                                 formatted_date, record.res_company.phone or '')
 
     def action_send_message(self):
         """This method is called to send the WhatsApp message using the provided details."""
