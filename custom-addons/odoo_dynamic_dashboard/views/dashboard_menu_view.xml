@@ -57,5 +57,7 @@
               sequence="3" action="project_dashboard_odoo.project_dashboard_action"/>
      <menuitem name="Purchase" id="menu_dynamic_dashboard_menu" parent="odoo_dynamic_dashboard.menu_dynamic_dashboard_configuration"
               sequence="4" action="purchase.action_purchase_order_report_all"/>
+    <menuitem name="Maintenance" id="menu_dynamic_dashboard_maintain" parent="odoo_dynamic_dashboard.menu_dynamic_dashboard_configuration"
+          sequence="4" action="maintenance.maintenance_request_action_reports"/>
 
 </odoo>
