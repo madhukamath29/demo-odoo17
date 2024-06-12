@@ -620,6 +620,27 @@
               name="Purchase Order" parent="menu_hospital_purchase" sequence="2"/>
     <menuitem id="dental_vendors_child" action="account.res_partner_action_supplier"
               name="Vendors" parent="menu_hospital_purchase" sequence="3"/>
+    <menuitem id="dental_maintenance_child" action="maintenance.maintenance_dashboard_action"
+              name="Maintenance" parent="menu_hospital_maintenance" sequence="1"/>
+    <menuitem id="dental_maintenance_child2" action="maintenance.hr_equipment_request_action"
+              name="Maintenance Requests" parent="menu_hospital_maintenance" sequence="2"/>
+     <menuitem id="dental_maintenance_child3" action="maintenance.hr_equipment_request_action_cal"
+              name="Maintenance Calender" parent="menu_hospital_maintenance" sequence="3"/>
+    <menuitem id="dental_maintenance_child4" action="maintenance.hr_equipment_action"
+              name="Equipment" parent="menu_hospital_maintenance" sequence="4"/>
 
+     <menuitem id="menu_Maintenance" name="Maintenance"
+        parent="main_menu_configartion" sequence="18"/>
+
+    <menuitem id="menu_medical_Maintenance" parent="menu_Maintenance"
+        action="maintenance.action_maintenance_configuration" sequence="19"/>
+    <menuitem id="menu_medical_Maintenance1" parent="menu_Maintenance"
+        action="maintenance.maintenance_team_action_settings" sequence="20" name="Maintenance Teams"/>
+    <menuitem id="menu_medical_Maintenance2" parent="menu_Maintenance"
+        action="maintenance.hr_equipment_category_action" sequence="21"/>
+    <menuitem id="menu_medical_Maintenance3" parent="menu_Maintenance"
+        action="maintenance.hr_equipment_stage_action" sequence="22" name="Maintenance Stages"/>
+    <menuitem id="menu_medical_Maintenance4" parent="menu_Maintenance"
+        action="maintenance.mail_activity_type_action_config_maintenance" sequence="23"/>
 
 </odoo>

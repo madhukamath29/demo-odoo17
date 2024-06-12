@@ -13,7 +13,7 @@
                             help="Invoice creation available only for completed appointments."/>
                     <button name="checkin_action" string="Check-in" type="object" class="oe_highlight"
                             invisible="status != 'booked'"/>
-                    <button name="checkin_action" string="Done" type="object" class="oe_highlight"
+                    <button name="checkin_action" string="Completed" type="object" class="oe_highlight"
                             invisible="status != 'check_in'"/>
                     <button name="action_noshow_appointment" string="No Show" type="object" class="oe_highlight"/>
                     <button name="action_cancel_appointment" string="Cancel Appointment" type="object"
@@ -87,6 +87,19 @@
                 <field name="patient_id"/>
                 <field name="doctor_id"/>
             </calendar>
+        </field>
+    </record>
+    <record id="view_patient_filter" model="ir.ui.view">
+        <field name="name">medical.appointment.select</field>
+        <field name="model">medical.appointment</field>
+        <field name="arch" type="xml">
+            <search string="Search Partner">
+                <filter string="Appointment Date" name="filter_appointment_date" date="appointment_date"/>
+                <group expand="0" string="Group By">
+                    <filter string="Doctors" name="group_doctor" domain="[]"
+                            context="{'group_by': 'doctor_id'}"/>
+                </group>
+            </search>
         </field>
     </record>
 
