@@ -97,6 +97,8 @@
         <field name="arch" type="xml">
             <search string="Search Partner">
                 <filter string="Appointment Date" name="filter_appointment_date" date="appointment_date"/>
+                <filter string="Completed" name="filter_completed" domain="[('status', '=', 'completed')]"/>
+                <filter string="Booked" name="filter_booked" domain="[('status', '=', 'booked')]"/>
                 <group expand="0" string="Group By">
                     <filter string="Doctors" name="group_doctor" domain="[]"
                             context="{'group_by': 'doctor_id'}"/>

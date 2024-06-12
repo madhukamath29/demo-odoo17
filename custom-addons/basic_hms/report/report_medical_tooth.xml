@@ -19,7 +19,7 @@
                         <br/>
                             <table class="table table-bordered">
                                 <tr>
-                                    <th class="text-left">Patient Name :</th>
+                                    <th class="text-left">Patient Name</th>
                                     <td class="text-left">
                                         <t t-if="doc.patient_id.name">
                                             <span style="font-weight:normal;" t-esc="doc.patient_id.name"/>
@@ -29,7 +29,7 @@
                                 </tr>
                                 <tr>
                                     <br/>
-                                    <th class="text-left">Patient Email :</th>
+                                    <th class="text-left">Patient Email</th>
                                     <td>
                                         <t t-if="doc.patient_id.email">
                                             <span style="font-weight:normal;" t-field="doc.patient_id.email"/>
@@ -38,7 +38,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th class="text-left">Patient Mobile :</th>
+                                    <th class="text-left">Patient Mobile</th>
                                     <td>
                                         <t t-if="doc.patient_id.mobile">
                                             <span style="font-weight:normal;" t-field="doc.patient_id.mobile"/>
