@@ -71,7 +71,7 @@
             <field name="binding_type">report</field>
         </record>
         <record id="action_report_medical_patient" model="ir.actions.report">
-            <field name="name">Medical Patient Report</field>
+            <field name="name">Tooth Report</field>
             <field name="model">medical.patient</field>
             <field name="report_type">qweb-pdf</field>
             <field name="report_name">basic_hms.report_medical_patient_template</field>
