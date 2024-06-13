@@ -333,6 +333,7 @@ class medical_patient(models.Model):
     treatment_consent_label = fields.Char(string="", compute='_compute_treatment_consent_label')
     tooth_ids = fields.One2many('medical.tooth', inverse_name='patient_id', string='Tooth' ,readonly=True)
     # all_child_tooth_ids = fields.One2many('medical.tooth', 'patient_id', string="Prescription Line")
+    invoice_count = fields.Integer(string='Invoices', compute='_compute_invoice_count')
 
     @api.depends('treatment_consent')
     def _compute_treatment_consent_label(self):
