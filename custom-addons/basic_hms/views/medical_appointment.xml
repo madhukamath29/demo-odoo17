@@ -65,6 +65,19 @@
                                 <field name="comments" nolabel="1" colspan="2"/>
                             </group>
                         </page>
+                        <page string="Tooth Details">
+                        <field name="tooth_ids">
+                            <tree>
+                                <field name="upper_right"/>
+                                <field name="tooth_type"/>
+                                <field name="problem_type"/>
+                                <field name="patient_id"/>
+                                <field name="solution"/>
+                                <!--                                    <field name="project_id" string="Treatment Type"/>-->
+                                <!--                                    <field name="date_deadline" string="Date"/>-->
+                            </tree>
+                        </field>
+                    </page>
                     </notebook>
                 </sheet>
                 <div class="oe_chatter">

@@ -23,6 +23,7 @@ class medical_appointment(models.Model):
         ('inpatient', 'Inpatient'),
     ], 'Patient status', sort=False, default='outpatient')
     patient_id = fields.Many2one('medical.patient', 'Patient', required=True)
+    tooth_ids = fields.One2many('medical.tooth', inverse_name='patient_id', string='Tooth')
     urgency_level = fields.Selection([
         ('a', 'Normal'),
         ('b', 'Urgent'),
