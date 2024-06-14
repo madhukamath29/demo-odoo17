@@ -9,7 +9,7 @@
     <menuitem name="Configuration"
               id="main_menu_configartion"
               parent="main_menu_hospital_management"
-              sequence='16'
+              sequence='17'
     />
 
 
@@ -80,5 +80,11 @@
         name="Maintenance"
         parent="main_menu_hospital_management"
         sequence="15"
+    />
+    <menuitem
+        id="menu_hospital_treatment"
+        name="Treatment"
+        parent="main_menu_hospital_management"
+        sequence="16"
     />
 </openerp>

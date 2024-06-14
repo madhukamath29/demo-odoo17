@@ -669,4 +669,6 @@
     <menuitem id="menu_medical_Maintenance4" parent="menu_Maintenance"
         action="maintenance.mail_activity_type_action_config_maintenance" sequence="23"/>
 
+    <menuitem id="menu_medical_treatment" parent="menu_hospital_treatment"
+        action="project.open_view_project_all" sequence="1"/>
 </odoo>
