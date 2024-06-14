@@ -448,7 +448,8 @@ class medical_patient(models.Model):
     prescription_ids = fields.One2many(
         comodel_name='medical.prescription.order',
         inverse_name='patient_id',
-        string='Prescriptions'
+        string='Prescriptions',
+        readonly='True'
     )
     appointment_ids = fields.One2many('medical.appointment', 'patient_id', string='Appointments')
     appointment_count = fields.Integer(string='Appointment Count', compute='_compute_appointment_count', store=True)

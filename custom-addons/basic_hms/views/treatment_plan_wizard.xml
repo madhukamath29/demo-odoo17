@@ -24,5 +24,31 @@
         <field name="target">new</field>
         <field name="view_id" ref="basic_hms.view_wizard_create_project_task"/>
     </record>
+    <record id="view_task_form_inherit" model="ir.ui.view">
+        <field name="name">task.form.inherit.prescription</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='extra_info']" position="after">
+                <page name="prescription" string="Prescription" invisible="not parent_id">
+                    <field name="prescription_ids" widget="section_and_note_one2many"/>
+                    <field name="is_subtask" invisible="1"/>
+                </page>
+                <page name="prescription" string="Prescription" invisible="parent_id">
+                    <field name="all_child_prescription_ids" widget="section_and_note_one2many"/>
+                </page>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_task_inherit" model="ir.ui.view">
+        <field name="name">task.inherit.prescription</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group//group//field[@name='company_id']" position="after">
+                <field name="treatment_stages" widget="many2many_tags"/>
+            </xpath>
+        </field>
+    </record>
 </odoo>
 

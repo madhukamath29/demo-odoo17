@@ -1,0 +1,35 @@
+<odoo>
+    <record id="view_medical_treatment_stages_tree" model="ir.ui.view">
+        <field name="name">medical.treatment.stages.tree</field>
+        <field name="model">medical.treatment.stages</field>
+        <field name="arch" type="xml">
+            <tree string="Treatment Stages">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_medical_treatment_stages_form" model="ir.ui.view">
+        <field name="name">medical.treatment.stages.form</field>
+        <field name="model">medical.treatment.stages</field>
+        <field name="arch" type="xml">
+            <form string="Treatment Stages">
+                <group>
+                    <field name="name"/>
+                </group>
+            </form>
+        </field>
+    </record>
+    <record id="medical_treatment_stages_action" model="ir.actions.act_window">
+        <field name="name">Treatment Stages</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">medical.treatment.stages</field>
+        <field name="view_mode">tree,form</field>
+        <field name="binding_view_types">form</field>
+    </record>
+
+    <menuitem id="medical_treatment_stages_menu" name="Treatment Subtask" parent="project.menu_project_config"
+              action="basic_hms.medical_treatment_stages_action"/>
+
+
+</odoo>
