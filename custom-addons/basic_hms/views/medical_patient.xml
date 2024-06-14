@@ -31,6 +31,9 @@
                         <button name="action_view_invoices" type="object" class="oe_stat_button" icon="fa-file-text">
                             <field name="invoice_count" widget="statinfo" string="Invoices"/>
                         </button>
+                        <button name="action_view_tooth_report" type="object" class="oe_stat_button" icon="fa-tasks">
+                            <field name="appointment_count" widget="statinfo" string="Tooth Reports"/>
+                        </button>
                         <!--                        <field name="invoice_count" widget="statinfo" string="Invoices"/>-->
                     </div>
 
@@ -628,7 +631,6 @@
     <record id="project.open_view_project_all_config" model="ir.actions.act_window">
         <field name="name">Treatment Plan Stages</field>
     </record>
-
     <menuitem id="dental_invoice_child" action="action_invoice_order"
               name="Invoices" parent="menu_patients" sequence="3"/>
     <menuitem id="dental_inventory_child" action="stock.stock_picking_type_action"

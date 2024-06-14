@@ -225,5 +225,115 @@
             </t>
         </t>
     </template>
+        <template id="report_medical_patient_appoitment">
+        <t t-call="web.external_layout">
+            <t t-foreach="docs" t-as="doc">
+                <main>
+                    <div class="page">
+                        <div class="oe_structure"/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <h3 class="text-center">
+                            <strong>TOOTH REPORT</strong>
+                        </h3>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <table class="table table-bordered">
+                            <tr>
+                                <th class="text-left">Patient Name :</th>
+                                <td class="text-left">
+                                    <t t-if="doc.patient_id.patient_id.name">
+                                        <span style="font-weight:normal;" t-esc="doc.patient_id.patient_id.name"/>
+                                    </t>
+                                    <t t-if="not doc.patient_id.patient_id.name">Name Not Available</t>
+                                </td>
+                            </tr>
+                            <tr>
+                                <br/>
+                                <th class="text-left">Patient Email</th>
+                                <td>
+                                    <t t-if="doc.patient_id.patient_id.email">
+                                        <span style="font-weight:normal;" t-field="doc.patient_id.patient_id.email"/>
+                                    </t>
+                                    <t t-if="not doc.patient_id.patient_id.email">N/A</t>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-left">Patient Mobile :</th>
+                                <td>
+                                    <t t-if="doc.patient_id.patient_id.mobile">
+                                        <span style="font-weight:normal;" t-field="doc.patient_id.patient_id.mobile"/>
+                                    </t>
+                                    <t t-if="not doc.patient_id.patient_id.mobile">N/A</t>
+                                </td>
+                            </tr>
+
+                        </table>
+                        <br/>
+                        <br/>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>X-Ray Image</th>
+                                    <th>Tooth Position</th>
+                                    <th>Tooth Type</th>
+                                    <th>Problem Type</th>
+                                    <th>Solution</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="doc.tooth_ids" t-as="tooth">
+                                    <tr>
+                                        <!-- Within the <td> tag for displaying images -->
+                                        <td>
+                                            <t t-if="tooth.image_field">
+                                                <!--                                                <img t-att-src="'/image/medical.tooth/image_field/' + str(tooth.id)"-->
+                                                <!--                                                     alt="X-ray Image" style="max-width: 100px; max-height: 100px;"/>-->
+                                                <img t-att-src="image_data_uri(tooth.image_field)"
+                                                     style="max-height:75pt;max-width:190%" alt="X-Ray Image"/>
+                                            </t>
+                                            <t t-else="">
+                                                <p>No Image Available</p>
+                                            </t>
+                                        </td>
+
+                                        <td>
+                                            <t t-if="tooth.upper_right">
+                                                <span t-esc="dict(tooth.fields_get(allfields=['upper_right'])['upper_right']['selection'])[tooth.upper_right]"/>
+                                            </t>
+                                            <t t-if="not tooth.upper_right">N/A</t>
+                                        </td>
+                                        <td>
+                                            <t t-if="tooth.tooth_type">
+                                                <span t-esc="dict(tooth._get_tooth_type_selection())[tooth.tooth_type]"/>
+                                            </t>
+                                            <t t-if="not tooth.tooth_type">N/A</t>
+                                        </td>
+                                        <td>
+                                            <t t-if="tooth.problem_type">
+                                                <span t-esc="dict(tooth._get_problem_type_selection())[tooth.problem_type]"/>
+                                            </t>
+                                            <t t-if="not tooth.problem_type">N/A</t>
+                                        </td>
+                                        <td>
+                                            <t t-if="tooth.solution">
+                                                <span t-field="tooth.solution"/>
+                                            </t>
+                                            <t t-if="not tooth.solution">N/A</t>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                        <br/>
+                        <br/>
+                    </div>
+                </main>
+            </t>
+        </t>
+    </template>
 
 </odoo>
