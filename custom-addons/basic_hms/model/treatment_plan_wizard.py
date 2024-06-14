@@ -37,13 +37,15 @@ class Project(models.Model):
     _inherit = 'project.project'
 
     treatment_stages = fields.Many2many('medical.treatment.stages', string='treatment Stages')
+
+
 class ProjectTask(models.Model):
     _inherit = 'project.task'
 
     patient_id = fields.Many2one('medical.patient', string="Patient")
     doctor_id = fields.Many2one('medical.physician', 'Prescribing Doctor')
 
-    product_id = fields.Many2one('product.product', string='Product' )
+    product_id = fields.Many2one('product.product', string='Product')
     bom_id = fields.Many2one('mrp.bom', string='Bill of Materials', compute='_compute_bom', store=True)
     quantity = fields.Float(string='Quantity', default=1.0)
 
@@ -81,13 +83,15 @@ class ProjectTask(models.Model):
             'type': 'ir.actions.act_window',
             'res_id': mo.id,
         }
-         parent_id = fields.Many2one(
+
+    parent_id = fields.Many2one(
         'project.task',
         string='Parent Task',
         index=True,
         domain="['!', ('id', 'child_of', id)]",
         tracking=True
     )
+
     child_ids = fields.One2many(
         'project.task',
         'parent_id',
@@ -144,4 +148,3 @@ class ProjectTask(models.Model):
                 })
 
         return task
-
