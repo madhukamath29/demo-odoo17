@@ -453,6 +453,32 @@
                                     <!--                <field name="project_id" string="Treatment Type"/>-->
                                     <!--                <field name="date_deadline" string="Date"/>-->
                                 </tree>
+                                <form string="Medical Tooth">
+                                    <header>
+                                        <button name="action_generate_tooth_report" string="Generate Tooth Report"
+                                                type="object" class="oe_highlight"/>
+                                    </header>
+                                    <group>
+                                        <group>
+                                            <div>
+                                                <img src="/basic_hms/static/src/img/Snip20230302_1.png"
+                                                     alt="Patient Image"
+                                                     style="width: 550px; height: 500px; object-fit: contain;"/>
+                                            </div>
+                                        </group>
+                                        <group>
+                                            <field name="image_field" widget="image"
+                                                   class="oe_left oe_avatar oe_big_image"/>
+                                            <field name="upper_right"/>
+                                            <field name="tooth_type"/>
+                                            <field name="problem_type"/>
+                                            <field name="patient_id"/>
+                                            <field name="solution"/>
+                                        </group>
+                                    </group>
+                                </form>
+
+
                             </field>
                         </page>
 
@@ -463,29 +489,29 @@
         </field>
     </record>
     <record id="view_medical_tooth_form" model="ir.ui.view">
-    <field name="name">medical.tooth.form</field>
-    <field name="model">medical.tooth</field>
-    <field name="arch" type="xml">
-        <form string="Medical Tooth">
-            <group>
+        <field name="name">medical.tooth.form</field>
+        <field name="model">medical.tooth</field>
+        <field name="arch" type="xml">
+            <form string="Medical Tooth">
                 <group>
-                    <div>
-                        <img src="/basic_hms/static/src/img/Snip20230302_1.png"
-                             alt="Patient Image" style="width: 550px; height: 500px; object-fit: contain;"/>
-                    </div>
+                    <group>
+                        <div>
+                            <img src="/basic_hms/static/src/img/Snip20230302_1.png"
+                                 alt="Patient Image" style="width: 550px; height: 500px; object-fit: contain;"/>
+                        </div>
+                    </group>
+                    <group>
+                        <field name="image_field" widget="image" class="oe_left oe_avatar oe_big_image"/>
+                        <field name="upper_right"/>
+                        <field name="tooth_type"/>
+                        <field name="problem_type"/>
+                        <field name="patient_id"/>
+                        <field name="solution"/>
+                    </group>
                 </group>
-                <group>
-                    <field name="image_field" widget="image" class="oe_left oe_avatar oe_big_image"/>
-                    <field name="upper_right"/>
-                    <field name="tooth_type"/>
-                    <field name="problem_type"/>
-                    <field name="patient_id"/>
-                    <field name="solution"/>
-                </group>
-            </group>
-        </form>
-    </field>
-</record>
+            </form>
+        </field>
+    </record>
 
 
     <record id="medical_patients_tree_view" model="ir.ui.view">

@@ -88,3 +88,12 @@ class MedicalTooth(models.Model):
     @api.onchange('tooth_type')
     def _onchange_tooth_type(self):
         self.problem_type = False  # Reset the problem type when tooth type changes
+
+
+    def action_generate_tooth_report(self):
+        # Assuming 'self' contains the current record (medical tooth details)
+        # Fetch necessary data, context, and prepare for report generation
+        data = {}  # Include any additional data needed for the report template
+
+        # Return the action to render the report using the specified template
+        return self.env.ref('basic_hms.report_print_patient_card').report_action(self)

@@ -17,35 +17,35 @@
                         <br/>
                         <br/>
                         <br/>
-                            <table class="table table-bordered">
-                                <tr>
-                                    <th class="text-left">Patient Name</th>
-                                    <td class="text-left">
-                                        <t t-if="doc.patient_id.name">
-                                            <span style="font-weight:normal;" t-esc="doc.patient_id.name"/>
-                                        </t>
-                                        <t t-if="not doc.name">Name Not Available</t>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <br/>
-                                    <th class="text-left">Patient Email</th>
-                                    <td>
-                                        <t t-if="doc.patient_id.email">
-                                            <span style="font-weight:normal;" t-field="doc.patient_id.email"/>
-                                        </t>
-                                        <t t-if="not doc.patient_id.email">N/A</t>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th class="text-left">Patient Mobile</th>
-                                    <td>
-                                        <t t-if="doc.patient_id.mobile">
-                                            <span style="font-weight:normal;" t-field="doc.patient_id.mobile"/>
-                                        </t>
-                                        <t t-if="not doc.patient_id.mobile">N/A</t>
-                                    </td>
-                                </tr>
+                        <table class="table table-bordered">
+                            <tr>
+                                <th class="text-left">Patient Name :</th>
+                                <td class="text-left">
+                                    <t t-if="doc.patient_id.name">
+                                        <span style="font-weight:normal;" t-esc="doc.patient_id.name"/>
+                                    </t>
+                                    <t t-if="not doc.name">Name Not Available</t>
+                                </td>
+                            </tr>
+                            <tr>
+                                <br/>
+                                <th class="text-left">Patient Email</th>
+                                <td>
+                                    <t t-if="doc.patient_id.email">
+                                        <span style="font-weight:normal;" t-field="doc.patient_id.email"/>
+                                    </t>
+                                    <t t-if="not doc.patient_id.email">N/A</t>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-left">Patient Mobile :</th>
+                                <td>
+                                    <t t-if="doc.patient_id.mobile">
+                                        <span style="font-weight:normal;" t-field="doc.patient_id.mobile"/>
+                                    </t>
+                                    <t t-if="not doc.patient_id.mobile">N/A</t>
+                                </td>
+                            </tr>
 
                         </table>
                         <br/>
@@ -111,4 +111,119 @@
             </t>
         </t>
     </template>
+
+    <template id="report_medical_tooth_template_single">
+        <t t-call="web.external_layout">
+            <t t-if="docs">
+                <main>
+                    <div class="page">
+                        <div class="oe_structure"/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <h3 class="text-center">
+                            <strong>TOOTH REPORT</strong>
+                        </h3>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <table class="table table-bordered">
+                            <tr>
+                                <th class="text-left">Patient Name :</th>
+                                <td class="text-left">
+                                    <t t-if="docs.patient_id and docs.patient_id.name">
+                                        <span style="font-weight:normal;" t-esc="docs.patient_id.name"/>
+                                    </t>
+                                    <t t-else="">
+                                        N/A
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-left">Patient Email :</th>
+                                <td>
+                                    <t t-if="docs.patient_id and docs.patient_id.patient_id.email">
+                                        <span style="font-weight:normal;" t-field="docs.patient_id.patient_id.email"/>
+                                    </t>
+                                    <t t-else="">
+                                        N/A
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-left">Patient Mobile :</th>
+                                <td>
+                                    <t t-if="docs.patient_id and docs.patient_id.patient_id.mobile">
+                                        <span style="font-weight:normal;" t-field="docs.patient_id.patient_id.mobile"/>
+                                    </t>
+                                    <t t-else="">
+                                        N/A
+                                    </t>
+                                </td>
+                            </tr>
+                        </table>
+                        <br/>
+                        <br/>
+                        <t t-if="docs.patient_id.tooth_ids">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>X-Ray Image</th>
+                                        <th>Tooth Position</th>
+                                        <th>Tooth Type</th>
+                                        <th>Problem Type</th>
+                                        <th>Solution</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <tr>
+                                        <!-- Within the <td> tag for displaying images -->
+                                        <td>
+                                            <t t-if="docs.image_field">
+                                                <img t-att-src="image_data_uri(docs.image_field)"
+                                                     style="max-height:75pt;max-width:190%" alt="X-Ray Image"/>
+                                            </t>
+                                            <t t-else="">
+                                                <p>No Image Available</p>
+                                            </t>
+                                        </td>
+                                        <td>
+                                            <t t-if="docs.upper_right">
+                                                <span t-esc="dict(docs.fields_get(allfields=['upper_right'])['upper_right']['selection'])[docs.upper_right]"/>
+                                            </t>
+                                            <t t-else="">N/A</t>
+                                        </td>
+                                        <td>
+                                            <t t-if="docs.tooth_type">
+                                                <span t-esc="dict(docs._get_tooth_type_selection())[docs.tooth_type]"/>
+                                            </t>
+                                            <t t-else="">N/A</t>
+                                        </td>
+                                        <td>
+                                            <t t-if="docs.problem_type">
+                                                <span t-esc="dict(docs._get_problem_type_selection())[docs.problem_type]"/>
+                                            </t>
+                                            <t t-else="">N/A</t>
+                                        </td>
+                                        <td>
+                                            <t t-if="docs.solution">
+                                                <span t-field="docs.solution"/>
+                                            </t>
+                                            <t t-else="">N/A</t>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </t>
+                        <br/>
+                        <br/>
+                    </div>
+                </main>
+            </t>
+        </t>
+    </template>
+
 </odoo>
