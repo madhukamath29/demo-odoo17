@@ -36,7 +36,7 @@ class WizardCreateProjectTask(models.TransientModel):
 class Project(models.Model):
     _inherit = 'project.project'
 
-    treatment_stages = fields.Many2many('medical.treatment.stages', string='treatment Stages')
+    treatment_stages = fields.Many2many('medical.treatment.stages', string='Treatment Stages')
 
 
 class ProjectTask(models.Model):
@@ -91,7 +91,6 @@ class ProjectTask(models.Model):
         domain="['!', ('id', 'child_of', id)]",
         tracking=True
     )
-
     child_ids = fields.One2many(
         'project.task',
         'parent_id',
