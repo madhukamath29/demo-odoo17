@@ -127,31 +127,32 @@
                             <tr>
                                 <td class="text-left">
                                     <strong>Patient Name :</strong>
-                                    <t t-if="doc.patient_id.name">
-                                        <span style="font-weight:normal;" t-esc="doc.patient_id.name"/>
+                                    <t t-if="doc.patient_id.patient_id.name">
+                                        <span style="font-weight:normal;" t-esc="doc.patient_id.patient_id.name"/>
                                     </t>
-                                    <t t-if="not doc.patient_id.name">Name Not Available</t>
+                                    <t t-if="not doc.patient_id.patient_id.name">Name Not Available</t>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="text-left">
                                     <strong>Patient Email :</strong>
-                                    <t t-if="doc.patient_id.email">
-                                        <span style="font-weight:normal;" t-field="doc.patient_id.email"/>
+                                    <t t-if="doc.patient_id.patient_id.email">
+                                        <span style="font-weight:normal;" t-field="doc.patient_id.patient_id.email"/>
                                     </t>
-                                    <t t-if="not doc.patient_id.email">N/A</t>
+                                    <t t-if="not doc.patient_id.patient_id.email">N/A</t>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="text-left">
                                     <strong>Patient Mobile :</strong>
-                                    <t t-if="doc.patient_id.mobile">
-                                        <span style="font-weight:normal;" t-field="doc.patient_id.mobile"/>
+                                    <t t-if="doc.patient_id.patient_id.mobile">
+                                        <span style="font-weight:normal;" t-field="doc.patient_id.patient_id.mobile"/>
                                     </t>
-                                    <t t-if="not doc.patient_id.mobile">N/A</t>
+                                    <t t-if="not doc.patient_id.patient_id.mobile">N/A</t>
                                 </td>
                             </tr>
                         </table>
+
                         <br/>
                         <br/>
                         <table class="table table-bordered">
