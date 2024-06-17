@@ -5,6 +5,7 @@
         <t t-call="web.external_layout">
             <t t-foreach="docs" t-as="doc">
                 <main>
+                    <t t-set="display_image" t-value="any(tooth.image_field for tooth in doc.tooth_ids)"/>
                     <div class="page">
                         <div class="oe_structure"/>
                         <br/>
@@ -53,7 +54,7 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th>X-Ray Image</th>
+                                    <th t-if="display_image">X-Ray Image</th>
                                     <th>Tooth Position</th>
                                     <th>Tooth Type</th>
                                     <th>Problem Type</th>
@@ -63,11 +64,8 @@
                             <tbody>
                                 <t t-foreach="doc.tooth_ids" t-as="tooth">
                                     <tr>
-                                        <!-- Within the <td> tag for displaying images -->
-                                        <td>
+                                        <td t-if="display_image">
                                             <t t-if="tooth.image_field">
-                                                <!--                                                <img t-att-src="'/image/medical.tooth/image_field/' + str(tooth.id)"-->
-                                                <!--                                                     alt="X-ray Image" style="max-width: 100px; max-height: 100px;"/>-->
                                                 <img t-att-src="image_data_uri(tooth.image_field)"
                                                      style="max-height:75pt;max-width:190%" alt="X-Ray Image"/>
                                             </t>
@@ -75,7 +73,6 @@
                                                 <p>No Image Available</p>
                                             </t>
                                         </td>
-
                                         <td>
                                             <t t-if="tooth.upper_right">
                                                 <span t-esc="dict(tooth.fields_get(allfields=['upper_right'])['upper_right']['selection'])[tooth.upper_right]"/>
@@ -112,120 +109,7 @@
         </t>
     </template>
 
-    <template id="report_medical_tooth_template_single">
-        <t t-call="web.external_layout">
-            <t t-if="docs">
-                <main>
-                    <div class="page">
-                        <div class="oe_structure"/>
-                        <br/>
-                        <br/>
-                        <br/>
-                        <br/>
-                        <h3 class="text-center">
-                            <strong>TOOTH REPORT</strong>
-                        </h3>
-                        <br/>
-                        <br/>
-                        <br/>
-                        <table class="table table-bordered">
-                            <tr>
-                                <th class="text-left">Patient Name :</th>
-                                <td class="text-left">
-                                    <t t-if="docs.patient_id and docs.patient_id.name">
-                                        <span style="font-weight:normal;" t-esc="docs.patient_id.name"/>
-                                    </t>
-                                    <t t-else="">
-                                        N/A
-                                    </t>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th class="text-left">Patient Email :</th>
-                                <td>
-                                    <t t-if="docs.patient_id and docs.patient_id.patient_id.email">
-                                        <span style="font-weight:normal;" t-field="docs.patient_id.patient_id.email"/>
-                                    </t>
-                                    <t t-else="">
-                                        N/A
-                                    </t>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th class="text-left">Patient Mobile :</th>
-                                <td>
-                                    <t t-if="docs.patient_id and docs.patient_id.patient_id.mobile">
-                                        <span style="font-weight:normal;" t-field="docs.patient_id.patient_id.mobile"/>
-                                    </t>
-                                    <t t-else="">
-                                        N/A
-                                    </t>
-                                </td>
-                            </tr>
-                        </table>
-                        <br/>
-                        <br/>
-                        <t t-if="docs.patient_id.tooth_ids">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>X-Ray Image</th>
-                                        <th>Tooth Position</th>
-                                        <th>Tooth Type</th>
-                                        <th>Problem Type</th>
-                                        <th>Solution</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-
-                                    <tr>
-                                        <!-- Within the <td> tag for displaying images -->
-                                        <td>
-                                            <t t-if="docs.image_field">
-                                                <img t-att-src="image_data_uri(docs.image_field)"
-                                                     style="max-height:75pt;max-width:190%" alt="X-Ray Image"/>
-                                            </t>
-                                            <t t-else="">
-                                                <p>No Image Available</p>
-                                            </t>
-                                        </td>
-                                        <td>
-                                            <t t-if="docs.upper_right">
-                                                <span t-esc="dict(docs.fields_get(allfields=['upper_right'])['upper_right']['selection'])[docs.upper_right]"/>
-                                            </t>
-                                            <t t-else="">N/A</t>
-                                        </td>
-                                        <td>
-                                            <t t-if="docs.tooth_type">
-                                                <span t-esc="dict(docs._get_tooth_type_selection())[docs.tooth_type]"/>
-                                            </t>
-                                            <t t-else="">N/A</t>
-                                        </td>
-                                        <td>
-                                            <t t-if="docs.problem_type">
-                                                <span t-esc="dict(docs._get_problem_type_selection())[docs.problem_type]"/>
-                                            </t>
-                                            <t t-else="">N/A</t>
-                                        </td>
-                                        <td>
-                                            <t t-if="docs.solution">
-                                                <span t-field="docs.solution"/>
-                                            </t>
-                                            <t t-else="">N/A</t>
-                                        </td>
-                                    </tr>
-
-                                </tbody>
-                            </table>
-                        </t>
-                        <br/>
-                        <br/>
-                    </div>
-                </main>
-            </t>
-        </t>
-    </template>
-        <template id="report_medical_patient_appoitment">
+    <template id="report_medical_patient_appoitment">
         <t t-call="web.external_layout">
             <t t-foreach="docs" t-as="doc">
                 <main>
@@ -277,7 +161,9 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th>X-Ray Image</th>
+                                    <t t-if="doc.tooth_ids and any(tooth.image_field for tooth in doc.tooth_ids)">
+                                        <th>X-Ray Image</th>
+                                    </t>
                                     <th>Tooth Position</th>
                                     <th>Tooth Type</th>
                                     <th>Problem Type</th>
@@ -287,19 +173,13 @@
                             <tbody>
                                 <t t-foreach="doc.tooth_ids" t-as="tooth">
                                     <tr>
-                                        <!-- Within the <td> tag for displaying images -->
-                                        <td>
-                                            <t t-if="tooth.image_field">
-                                                <!--                                                <img t-att-src="'/image/medical.tooth/image_field/' + str(tooth.id)"-->
-                                                <!--                                                     alt="X-ray Image" style="max-width: 100px; max-height: 100px;"/>-->
+                                        <!-- Conditionally render the image column -->
+                                        <t t-if="tooth.image_field">
+                                            <td>
                                                 <img t-att-src="image_data_uri(tooth.image_field)"
                                                      style="max-height:75pt;max-width:190%" alt="X-Ray Image"/>
-                                            </t>
-                                            <t t-else="">
-                                                <p>No Image Available</p>
-                                            </t>
-                                        </td>
-
+                                            </td>
+                                        </t>
                                         <td>
                                             <t t-if="tooth.upper_right">
                                                 <span t-esc="dict(tooth.fields_get(allfields=['upper_right'])['upper_right']['selection'])[tooth.upper_right]"/>
