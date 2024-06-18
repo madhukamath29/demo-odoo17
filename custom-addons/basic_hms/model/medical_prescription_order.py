@@ -15,6 +15,7 @@ class medical_prescription_order(models.Model):
         string='Patient Name',
         required=True
     )
+    task_id = fields.Many2one('project.task', string='Task', required=True)
     prescription_date = fields.Datetime('Prescription Date', default=fields.Datetime.now)
     user_id = fields.Many2one('res.users', 'Login User', readonly=True, default=lambda self: self.env.user)
     no_invoice = fields.Boolean('Invoice exempt')

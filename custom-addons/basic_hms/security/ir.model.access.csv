@@ -140,6 +140,9 @@ access_vaccination,medical.group.vaccination,model_medical_vaccination,group_rec
 access_medical_medication_dosage_doctor,medical.group.medication.dosage,model_medical_medication_dosage,bi_group_doctor,1,1,1,1
 access_tooth,medical.group.tooth,model_medical_tooth,group_receptionist,1,1,1,1
 access_tooth_doctor,medical.group.tooth.doctor,model_medical_tooth,bi_group_doctor,1,1,1,1
+access_treatment_stages,medical.group.treatment,model_medical_treatment_stages,group_receptionist,1,1,1,1
+access_treatment_stages,medical.treatment.stages,model_medical_treatment_stages,bi_group_doctor,1,1,1,1
+
 basic_hms.access_create_prescription_shipment,access_create_prescription_shipment,basic_hms.model_create_prescription_shipment,base.group_user,1,1,1,1
 basic_hms.access_medical_health_service_invoice,access_medical_health_service_invoice,basic_hms.model_medical_health_service_invoice,base.group_user,1,1,1,1
 basic_hms.access_medical_patient_diseases,access_medical_patient_diseases,basic_hms.model_medical_patient_diseases,base.group_user,1,1,1,1

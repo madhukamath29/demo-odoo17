@@ -68,6 +68,7 @@ from . import res_partner
 from . import employee
 from . import treatment_plan_wizard
 from . import Medical_tooth
+from . import medical_treatment_stages
 
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:s

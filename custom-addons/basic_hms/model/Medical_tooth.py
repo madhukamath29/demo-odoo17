@@ -20,7 +20,8 @@ class MedicalTooth(models.Model):
 
     problem_type = fields.Selection(
         selection='_get_problem_type_selection', string='Problem Type')
-    patient_id = fields.Many2one('medical.patient', string="Patient")
+    patient_id = fields.Many2one('medical.patient', string='Patient', required=True)
+    appointment_id = fields.Many2one('medical.appointment', string='Appointment', required=True)
     solution = fields.Text(string='Solution')
 
     @api.model
@@ -89,11 +90,10 @@ class MedicalTooth(models.Model):
     def _onchange_tooth_type(self):
         self.problem_type = False  # Reset the problem type when tooth type changes
 
-
     def action_generate_tooth_report(self):
         # Assuming 'self' contains the current record (medical tooth details)
         # Fetch necessary data, context, and prepare for report generation
         data = {}  # Include any additional data needed for the report template
 
         # Return the action to render the report using the specified template
-        return self.env.ref('basic_hms.report_print_patient_card').report_action(self)
+        return self.env.ref('basic_hms.report_print_patient_tooth_single').report_action(self)

@@ -31,6 +31,9 @@
                         <button name="action_view_invoices" type="object" class="oe_stat_button" icon="fa-file-text">
                             <field name="invoice_count" widget="statinfo" string="Invoices"/>
                         </button>
+                        <button name="action_view_tooth_report" type="object" class="oe_stat_button" icon="fa-tasks">
+                            <field name="appointment_count" widget="statinfo" string="Tooth Reports"/>
+                        </button>
                         <!--                        <field name="invoice_count" widget="statinfo" string="Invoices"/>-->
                     </div>
 
@@ -455,8 +458,8 @@
                                 </tree>
                                 <form string="Medical Tooth">
                                     <header>
-                                        <button name="action_generate_tooth_report" string="Generate Tooth Report"
-                                                type="object" class="oe_highlight"/>
+                                        <!--                                        <button name="action_generate_tooth_report" string="Generate Tooth Report"-->
+                                        <!--                                                type="object" class="oe_highlight"/>-->
                                     </header>
                                     <group>
                                         <group>
@@ -628,7 +631,6 @@
     <record id="project.open_view_project_all_config" model="ir.actions.act_window">
         <field name="name">Treatment Plan Stages</field>
     </record>
-
     <menuitem id="dental_invoice_child" action="action_invoice_order"
               name="Invoices" parent="menu_patients" sequence="3"/>
     <menuitem id="dental_inventory_child" action="stock.stock_picking_type_action"
@@ -650,23 +652,32 @@
               name="Maintenance" parent="menu_hospital_maintenance" sequence="1"/>
     <menuitem id="dental_maintenance_child2" action="maintenance.hr_equipment_request_action"
               name="Maintenance Requests" parent="menu_hospital_maintenance" sequence="2"/>
-     <menuitem id="dental_maintenance_child3" action="maintenance.hr_equipment_request_action_cal"
+    <menuitem id="dental_maintenance_child3" action="maintenance.hr_equipment_request_action_cal"
               name="Maintenance Calender" parent="menu_hospital_maintenance" sequence="3"/>
     <menuitem id="dental_maintenance_child4" action="maintenance.hr_equipment_action"
               name="Equipment" parent="menu_hospital_maintenance" sequence="4"/>
 
-     <menuitem id="menu_Maintenance" name="Maintenance"
-        parent="main_menu_configartion" sequence="18"/>
+    <menuitem id="menu_Maintenance" name="Maintenance"
+              parent="main_menu_configartion" sequence="18"/>
 
     <menuitem id="menu_medical_Maintenance" parent="menu_Maintenance"
-        action="maintenance.action_maintenance_configuration" sequence="19"/>
+              action="maintenance.action_maintenance_configuration" sequence="19"/>
     <menuitem id="menu_medical_Maintenance1" parent="menu_Maintenance"
-        action="maintenance.maintenance_team_action_settings" sequence="20" name="Maintenance Teams"/>
+              action="maintenance.maintenance_team_action_settings" sequence="20" name="Maintenance Teams"/>
     <menuitem id="menu_medical_Maintenance2" parent="menu_Maintenance"
-        action="maintenance.hr_equipment_category_action" sequence="21"/>
+              action="maintenance.hr_equipment_category_action" sequence="21"/>
     <menuitem id="menu_medical_Maintenance3" parent="menu_Maintenance"
-        action="maintenance.hr_equipment_stage_action" sequence="22" name="Maintenance Stages"/>
+              action="maintenance.hr_equipment_stage_action" sequence="22" name="Maintenance Stages"/>
     <menuitem id="menu_medical_Maintenance4" parent="menu_Maintenance"
-        action="maintenance.mail_activity_type_action_config_maintenance" sequence="23"/>
+              action="maintenance.mail_activity_type_action_config_maintenance" sequence="23"/>
+
+    <menuitem id="menu_medical_treatment" parent="menu_hospital_treatment"
+              action="project.open_view_project_all" sequence="1"/>
+    <menuitem id="menu_medical_treatment1" parent="menu_hospital_treatment"
+              action="project.open_view_project_all_config" sequence="2" name="Treatment Plans"/>
+    <menuitem id="menu_medical_treatment2" parent="menu_hospital_treatment"
+              action="project.open_task_type_form" sequence="3"/>
+    <menuitem id="menu_medical_treatment3" parent="menu_hospital_treatment"
+              action="basic_hms.medical_treatment_stages_action" sequence="4" name="Treatment Subtask"/>
 
 </odoo>

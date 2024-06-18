@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*-
 # Part of BrowseInfo. See LICENSE file for full copyright and licensing details.
 
@@ -331,9 +330,18 @@ class medical_patient(models.Model):
 
     treatment_consent = fields.Boolean(string="Treatment Consent")
     treatment_consent_label = fields.Char(string="", compute='_compute_treatment_consent_label')
-    tooth_ids = fields.One2many('medical.tooth', inverse_name='patient_id', string='Tooth' ,readonly=True)
+    tooth_ids = fields.One2many('medical.tooth', inverse_name='patient_id', compute='_compute_tooth_details',
+                                string='Tooth', readonly=True)
+
     # all_child_tooth_ids = fields.One2many('medical.tooth', 'patient_id', string="Prescription Line")
     invoice_count = fields.Integer(string='Invoices', compute='_compute_invoice_count')
+
+    @api.depends('appointment_ids.tooth_ids')
+    def _compute_tooth_details(self):
+
+        for patient in self:
+            tooth_details = self.env['medical.tooth'].search([('patient_id', '=', patient.id)])
+            patient.tooth_ids = [(6, 0, tooth_details.ids)]
 
     @api.depends('treatment_consent')
     def _compute_treatment_consent_label(self):
@@ -448,7 +456,8 @@ class medical_patient(models.Model):
     prescription_ids = fields.One2many(
         comodel_name='medical.prescription.order',
         inverse_name='patient_id',
-        string='Prescriptions'
+        string='Prescriptions',
+        readonly='True'
     )
     appointment_ids = fields.One2many('medical.appointment', 'patient_id', string='Appointments')
     appointment_count = fields.Integer(string='Appointment Count', compute='_compute_appointment_count', store=True)
@@ -481,6 +490,16 @@ class medical_patient(models.Model):
             'domain': [('patient_id', '=', self.id)],
             'context': {'default_patient_id': self.id},
 
+        }
+
+    def action_view_tooth_report(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Tooth Report',
+            'res_model': 'medical.appointment',
+            'view_mode': 'list',
+            'domain': [('patient_id', '=', self.id)],
+            'context': {'default_patient_id': self.id},
         }
 
     def action_create_lab_test(self):
