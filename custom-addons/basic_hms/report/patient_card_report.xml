@@ -1,66 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
 		<template id="report_patient_card_document">
-			<t t-call="web.html_container">
-				<t t-call="web.internal_layout">
+        <t t-call="web.external_layout">
 					<div class="page">
-						<br></br>
-						<br></br>
-						<br></br>
-						<br></br>
+                <div class="oe_structure"/>
 						<div>
-							<table>
-								<tbody>
+                    <h3 class="text-center">
+                        <strong>PATIENT CARD</strong>
+                    </h3>
+                </div>
+                <br/>
+                <br/>
+                <br/>
+
+                <table class="table table-condensed">
 									<tr>
-										<td>
-										</td>
-										<td style="vertical-align: top;">
-											<div
-												style="margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 10px; font-size:16px">
-												<b>
-													Patient ID:
-													<span t-field='o.name' />
-												</b>
-												<br></br>
-												<b>Title:</b>
-												<span t-field='o.patient_id.title' />
-												<br></br>
-												<b>Name:</b>
-												<span t-field='o.patient_id.name' />
-												<br></br>
-												<b>Gender :</b>
-												<span t-field='o.sex' />
-												<br></br>
-												<b>Date of Birth :</b>
-												<span t-field='o.date_of_birth' />
-												<br></br>
-												<b>Age:</b>
-												<span t-field='o.age' />
-												<br></br>
-												<b>Blood Group:</b>
-												<span t-field='o.blood_type' />
-												<br></br>
-												<b>Address:</b>
-												<span
+                        <th style="border: 0px;" class="text-left">Patient ID:
+                            <span style="font-weight:normal;" t-field="o.name"/>
+                        </th>
+                        <th style="border: 0px;" class="text-left">Title:
+                            <span style="font-weight:normal;" t-field="o.patient_id.title"/>
+                        </th>
+                        <th style="border: 0px;" class="text-left">Name:
+                            <span style="font-weight:normal;" t-field="o.patient_id.name"/>
+                        </th>
+                    </tr>
+
+                    <tr>
+                        <th style="border: 0px;" class="text-left">Gender:
+                            <span style="font-weight:normal;" t-field="o.sex"/>
+                        </th>
+                        <th style="border: 0px;" class="text-left">Date of Birth:
+                            <span style="font-weight:normal;" t-field="o.date_of_birth"/>
+                        </th>
+                        <th style="border: 0px;" class="text-left">Age:
+                            <span style="font-weight:normal;" t-field="o.age"/>
+                        </th>
+                    </tr>
+
+                    <tr>
+                        <th style="border: 0px;" class="text-left">Blood Group:
+                            <span style="font-weight:normal;" t-field="o.blood_type"/>
+                        </th>
+                        <th style="border: 0px;" class="text-left">Address:
+                            <span style="font-weight:normal;"
 													t-out="'%s' % o.patient_id.street if  o.patient_id.street  else ''" />
-												<span
+                            <span style="font-weight:normal;"
 													t-out="'%s' %  o.patient_id.street2 if  o.patient_id.street2  else ''" />
-												<span
+                            <span style="font-weight:normal;"
 													t-out="'%s' %  o.patient_id.country_id.name if o.patient_id.country_id.name  else ''" />
-												<span
+                            <span style="font-weight:normal;"
 													t-out="'%s' %  o.patient_id.state_id.name if  o.patient_id.state_id.name  else ''" />
-												<br></br>
-												<b>Phone No:</b>
-												<span t-field='o.mobile' />
-												<br></br>
-											</div>
-										</td>
+                        </th>
+                        <th style="border: 0px;" class="text-left">Phone No:
+                            <span style="font-weight:normal;" t-field="o.mobile"/>
+                        </th>
 									</tr>
-								</tbody>
 							</table>
 						</div>
-					</div>
-				</t>
 			</t>
 		</template>
 
