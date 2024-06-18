@@ -52,11 +52,19 @@
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
+<<<<<<< HEAD
+                                    <th t-if="display_image" style="width: 20%;">X-Ray Image</th>
+                                    <th style="width: 15%;">Tooth Position</th>
+                                    <th style="width: 15%;">Tooth Type</th>
+                                    <th style="width: 25%;">Problem Type</th>
+                                    <th style="width: 25%;">Solution</th>
+=======
                                     <th t-if="display_image">X-Ray Image</th>
                                     <th>Tooth Position</th>
                                     <th>Tooth Type</th>
                                     <th>Problem Type</th>
                                     <th>Solution</th>
+>>>>>>> 99f5b2fcae33144bb4e21fde483694df97fd87cd
                                 </tr>
                             </thead>
                             <tbody>
@@ -65,7 +73,7 @@
                                         <td t-if="display_image">
                                             <t t-if="tooth.image_field">
                                                 <img t-att-src="image_data_uri(tooth.image_field)"
-                                                     style="max-height:75pt;max-width:190%" alt="X-Ray Image"/>
+                                                     style="max-height:75pt; max-width:100%;" alt="X-Ray Image"/>
                                             </t>
                                             <t t-else="">
                                                 <p>No Image Available</p>
@@ -159,12 +167,21 @@
                             <thead>
                                 <tr>
                                     <t t-if="doc.tooth_ids and any(tooth.image_field for tooth in doc.tooth_ids)">
+<<<<<<< HEAD
+                                        <th style="width: 20%;">X-Ray Image</th>
+                                    </t>
+                                    <th style="width: 15%;">Tooth Position</th>
+                                    <th style="width: 15%;">Tooth Type</th>
+                                    <th style="width: 25%;">Problem Type</th>
+                                    <th style="width: 25%;">Solution</th>
+=======
                                         <th>X-Ray Image</th>
                                     </t>
                                     <th>Tooth Position</th>
                                     <th>Tooth Type</th>
                                     <th>Problem Type</th>
                                     <th>Solution</th>
+>>>>>>> 99f5b2fcae33144bb4e21fde483694df97fd87cd
                                 </tr>
                             </thead>
                             <tbody>
@@ -174,7 +191,11 @@
                                         <t t-if="tooth.image_field">
                                             <td>
                                                 <img t-att-src="image_data_uri(tooth.image_field)"
+<<<<<<< HEAD
+                                                     style="max-height:75pt; max-width:100%;" alt="X-Ray Image"/>
+=======
                                                      style="max-height:75pt;max-width:190%" alt="X-Ray Image"/>
+>>>>>>> 99f5b2fcae33144bb4e21fde483694df97fd87cd
                                             </td>
                                         </t>
                                         <td>
