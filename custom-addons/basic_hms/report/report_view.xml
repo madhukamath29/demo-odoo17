@@ -41,15 +41,15 @@
             <field name="binding_type">report</field>
         </record>
 
-        <record id="report_print_patient_vaccinations_document" model="ir.actions.report">
-            <field name="name">Vaccinations History New</field>
-            <field name="model">medical.patient</field>
-            <field name="report_type">qweb-pdf</field>
-            <field name="report_name">basic_hms.patient_vaccinations</field>
-            <field name="report_file">basic_hms.patient_vaccinations</field>
-            <field name="binding_model_id" ref="model_medical_patient"/>
-            <field name="binding_type">report</field>
-        </record>
+<!--        <record id="report_print_patient_vaccinations_document" model="ir.actions.report">-->
+<!--            <field name="name">Vaccinations History New</field>-->
+<!--            <field name="model">medical.patient</field>-->
+<!--            <field name="report_type">qweb-pdf</field>-->
+<!--            <field name="report_name">basic_hms.patient_vaccinations</field>-->
+<!--            <field name="report_file">basic_hms.patient_vaccinations</field>-->
+<!--            <field name="binding_model_id" ref="model_medical_patient"/>-->
+<!--            <field name="binding_type">report</field>-->
+<!--        </record>-->
 
         <record id="report_print_patient_diseases_document" model="ir.actions.report">
             <field name="name">Diseases Report New</field>

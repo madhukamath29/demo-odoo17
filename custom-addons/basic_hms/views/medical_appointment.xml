@@ -98,7 +98,7 @@
             <calendar string="Appointments" color="doctor_id"
                       quick_create="False" date_start="appointment_date">
                 <field name="status" filters="1" invisible="1"/>
-                <field name="doctor_id"  filters="1" invisible="1"/>
+                <field name="doctor_id" filters="1" invisible="1"/>
                 <field name="patient_id"/>
                 <field name="doctor_id"/>
             </calendar>
@@ -165,7 +165,7 @@
     </record>
 
     <menuitem id="menu_medical_appointment" action="action_medical_appointment"
-              parent="basic_hms.menu_appointment"
+              parent="basic_hms.menu_patients"
               sequence="1"/>
 
 </odoo>

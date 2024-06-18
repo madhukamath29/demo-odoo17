@@ -28,7 +28,7 @@
         <field name="binding_view_types">form</field>
     </record>
 
-    <menuitem id="medical_treatment_stages_menu" name="Treatment Subtask" parent="project.menu_project_config"
+    <menuitem id="medical_treatment_stages_menu" name="Treatment Stages" parent="project.menu_project_config"
               action="basic_hms.medical_treatment_stages_action"/>
 
 

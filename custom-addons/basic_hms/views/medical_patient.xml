@@ -421,7 +421,7 @@
                             </field>
                         </page>
                         <page string="Medication">
-                            <field name="prescription_line_id" widget="section_and_note_one2many">
+                            <field name="prescription_line_id" widget="section_and_note_one2many" readonly="1">
                             </field>
                         </page>
                         <!--                        <page string="Vaccinations">-->
@@ -633,21 +633,28 @@
     </record>
     <menuitem id="dental_invoice_child" action="action_invoice_order"
               name="Invoices" parent="menu_patients" sequence="3"/>
+
+     <menuitem id="menu_inventory" name="Inventory"
+        parent="menu_hospital_inventory" sequence="5"/>
     <menuitem id="dental_inventory_child" action="stock.stock_picking_type_action"
-              name="Inventory" parent="menu_hospital_inventory" sequence="1"/>
+              name="Inventory" parent="menu_inventory" sequence="1"/>
     <menuitem id="dental_products_child" action="mrp.product_template_action"
-              name="Products" parent="menu_hospital_inventory" sequence="2"/>
+              name="Products" parent="menu_inventory" sequence="2"/>
     <menuitem id="dental_products_variants_child" action="mrp.mrp_product_variant_action"
-              name="Product Variants" parent="menu_hospital_inventory" sequence="3"/>
+              name="Product Variants" parent="menu_inventory" sequence="3"/>
     <menuitem id="dental_Bills_of_materials_child_two" action="mrp.mrp_bom_form_action"
-              name="Bills of Materials" parent="menu_hospital_inventory" sequence="4"/>
+              name="Bills of Materials" parent="menu_inventory" sequence="4"/>
+
+ <menuitem id="menu_purchase" name="Purchase"
+        parent="menu_hospital_inventory" sequence="5"/>
 
     <menuitem id="dental_Bills_of_materials_child" action="purchase.purchase_rfq"
-              name="Requests for Quotation" parent="menu_hospital_purchase" sequence="1"/>
+              name="Requests for Quotation" parent="menu_purchase" sequence="6"/>
     <menuitem id="dental_Purchase_Order_child" action="purchase.purchase_form_action"
-              name="Purchase Order" parent="menu_hospital_purchase" sequence="2"/>
+              name="Purchase Order" parent="menu_purchase" sequence="7"/>
     <menuitem id="dental_vendors_child" action="account.res_partner_action_supplier"
-              name="Vendors" parent="menu_hospital_purchase" sequence="3"/>
+              name="Vendors" parent="menu_purchase" sequence="8"/>
+
     <menuitem id="dental_maintenance_child" action="maintenance.maintenance_dashboard_action"
               name="Maintenance" parent="menu_hospital_maintenance" sequence="1"/>
     <menuitem id="dental_maintenance_child2" action="maintenance.hr_equipment_request_action"
@@ -677,7 +684,7 @@
               action="project.open_view_project_all_config" sequence="2" name="Treatment Plans"/>
     <menuitem id="menu_medical_treatment2" parent="menu_hospital_treatment"
               action="project.open_task_type_form" sequence="3"/>
-<!--    <menuitem id="menu_medical_treatment3" parent="menu_hospital_treatment"-->
-<!--              action="basic_hms.medical_treatment_stages_action" sequence="4" name="Treatment Subtask"/>-->
+    <menuitem id="menu_medical_treatment3" parent="menu_hospital_treatment"
+              action="basic_hms.medical_treatment_stages_action" sequence="4"/>
 
 </odoo>
