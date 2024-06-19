@@ -29,9 +29,9 @@ class WizardCreateProjectTask(models.TransientModel):
         return {
             'type': 'ir.actions.act_window',
             'name': 'Project',
-            'res_model': 'project.project',
+            'res_model': 'project.task',
             'view_mode': 'form',
-            'res_id': self.project_id.id,
+            'res_id': task.id,
             'target': 'current',
         }
 

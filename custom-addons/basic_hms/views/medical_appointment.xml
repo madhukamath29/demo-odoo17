@@ -18,6 +18,8 @@
                     <button name="action_noshow_appointment" string="No Show" type="object" class="oe_highlight"/>
                     <button name="action_cancel_appointment" string="Cancel Appointment" type="object"
                             class="oe_highlight"/>
+                    <button name="action_create_project_task" type="object" string="Create Treatment Plan"
+                            class="oe_highlight"/>
                     <field name="status" widget="statusbar"/>
                 </header>
                 <sheet>

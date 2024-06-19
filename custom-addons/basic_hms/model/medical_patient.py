@@ -424,25 +424,25 @@ class medical_patient(models.Model):
             'context': {'default_patient_id': self.id},
         }
 
-    def action_create_project_task(self):
-        return {
-            'type': 'ir.actions.act_window',
-            'name': 'Create Task in Project',
-            'res_model': 'wizard.create.project.task',
-            'view_mode': 'form',
-            'view_id': self.env.ref('basic_hms.view_wizard_create_project_task').id,
-            'target': 'new',
-            'context': {
-                'default_task_name': self.patient_id.name,
-            },
-        }
+    # def action_create_project_task(self):
+    #     return {
+    #         'type': 'ir.actions.act_window',
+    #         'name': 'Create Task in Project',
+    #         'res_model': 'wizard.create.project.task',
+    #         'view_mode': 'form',
+    #         'view_id': self.env.ref('basic_hms.view_wizard_create_project_task').id,
+    #         'target': 'new',
+    #         'context': {
+    #             'default_task_name': self.patient_id.name,
+    #         },
+    #     }
 
     def action_view_patient_tasks(self):
         return {
             'type': 'ir.actions.act_window',
             'name': 'Tasks',
             'res_model': 'project.task',
-            'view_mode': 'tree,form',
+            'view_mode': 'kanban,tree,form',
             'domain': [('patient_id', '=', self.id)],
             'context': {'default_patient_id': self.id},
         }
