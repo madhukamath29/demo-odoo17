@@ -18,7 +18,7 @@ class WizardCreateProjectTask(models.TransientModel):
         patient_id = self.env.context.get('active_id')
         patient = self.env['medical.patient'].browse(patient_id)
         if not patient:
-            raise UserError(_("Patient not found."))
+            return
 
         task = self.env['project.task'].create({
             'name': self.task_name,
@@ -52,6 +52,36 @@ class ProjectTask(models.Model):
     bom_id = fields.Many2one('mrp.bom', string='Bill of Materials', compute='_compute_bom', store=True)
     quantity = fields.Float(string='Quantity', default=1.0)
 
+    @api.depends('product_id')
+    def _compute_bom(self):
+        for record in self:
+            if record.product_id:
+                bom = self.env['mrp.bom'].search([('product_tmpl_id', '=', record.product_id.product_tmpl_id.id)],
+                                                 limit=1)
+                record.bom_id = bom if bom else False
+
+    def create_manufacturing_order(self):
+        self.ensure_one()
+        if not self.bom_id:
+            raise UserError('No Bill of Materials found for this product.')
+
+        mo_vals = {
+            'product_id': self.product_id.id,
+            'product_qty': self.quantity,
+            'bom_id': self.bom_id.id,
+            'product_uom_id': self.product_id.uom_id.id,
+        }
+
+        mo = self.env['mrp.production'].create(mo_vals)
+        return {
+            'name': 'Manufacturing Order',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'mrp.production',
+            'type': 'ir.actions.act_window',
+            'res_id': mo.id,
+        }
+
     parent_id = fields.Many2one(
         'project.task',
         string='Parent Task',
@@ -76,37 +106,9 @@ class ProjectTask(models.Model):
         string='All Child Prescriptions',
         store=False
     )
+
+    # project_task = fields.One2many(, string='stages')
     is_subtask = fields.Boolean(string="Is Subtask", compute="_compute_is_subtask", store=True)
-
-    @api.depends('product_id')
-    def _compute_bom(self):
-        for record in self:
-            if record.product_id:
-                bom = self.env['mrp.bom'].search([('product_tmpl_id', '=', record.product_id.product_tmpl_id.id)],
-                                                 limit=1)
-                record.bom_id = bom if bom else False
-
-    def create_manufacturing_order(self):
-        self.ensure_one()
-        if not self.bom_id:
-            raise UserError(_('No Bill of Materials found for this product.'))
-
-        mo_vals = {
-            'product_id': self.product_id.id,
-            'product_qty': self.quantity,
-            'bom_id': self.bom_id.id,
-            'product_uom_id': self.product_id.uom_id.id,
-        }
-
-        mo = self.env['mrp.production'].create(mo_vals)
-        return {
-            'name': 'Manufacturing Order',
-            'view_type': 'form',
-            'view_mode': 'form',
-            'res_model': 'mrp.production',
-            'type': 'ir.actions.act_window',
-            'res_id': mo.id,
-        }
 
     @api.depends('parent_id')
     def _compute_is_subtask(self):
@@ -123,31 +125,22 @@ class ProjectTask(models.Model):
 
     @api.model
     def create(self, vals):
-        try:
-            # Check if we are in the context of creating sub-tasks
-            if self.env.context.get('creating_sub_tasks'):
-                return super(ProjectTask, self).create(vals)
+        # Check if we are in the context of creating sub-tasks
+        if self.env.context.get('creating_sub_tasks'):
+            return super(ProjectTask, self).create(vals)
 
-            # Create the main task
-            task = super(ProjectTask, self).create(vals)
+        # Create the main task
+        task = super(ProjectTask, self).create(vals)
 
-            # Retrieve the treatment_stages from the related project
-            if task.project_id.treatment_stages:
-                treatment_stages = task.project_id.treatment_stages
+        # Retrieve the treatment_stages from the related project
+        if task.project_id.treatment_stages:
+            treatment_stages = task.project_id.treatment_stages
+            # Create sub-tasks for each treatment_stage with a context flag to avoid recursion
+            for stage in treatment_stages:
+                self.with_context(creating_sub_tasks=True).create({
+                    'name': stage.name,
+                    'parent_id': task.id,
+                    'project_id': task.project_id.id,
+                })
 
-                for stage in treatment_stages:
-                    if not self.env['project.task.type'].browse(stage.id).exists():
-                        _logger.error("Stage ID %s does not exist.", stage.id)
-                        continue
-
-                    self.with_context(creating_sub_tasks=True).create({
-                        'name': stage.name,
-                        'parent_id': task.id,
-                        'project_id': task.project_id.id,
-                        'stage_id': stage.id,
-                    })
-            return task
-        except Exception as e:
-            _logger.error("An error occurred while creating project tasks: %s", e)
-            raise UserError(
-                _("An error occurred while creating project tasks. Please check the logs for more details."))
+        return task
