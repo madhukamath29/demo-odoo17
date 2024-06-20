@@ -11,14 +11,14 @@
                             string="Create Invoice" type="action" class="oe_highlight"
                             invisible="status != 'completed'"
                             help="Invoice creation available only for completed appointments."/>
+                    <button name="action_create_task" type="object" string="Create Treatment Plan"
+                            class="oe_highlight"/>
                     <button name="checkin_action" string="Check-in" type="object" class="oe_highlight"
                             invisible="status != 'booked'"/>
                     <button name="checkin_action" string="Completed" type="object" class="oe_highlight"
                             invisible="status != 'check_in'"/>
                     <button name="action_noshow_appointment" string="No Show" type="object" class="oe_highlight"/>
                     <button name="action_cancel_appointment" string="Cancel Appointment" type="object"
-                            class="oe_highlight"/>
-                    <button name="action_create_project_task" type="object" string="Create Treatment Plan"
                             class="oe_highlight"/>
                     <field name="status" widget="statusbar"/>
                 </header>

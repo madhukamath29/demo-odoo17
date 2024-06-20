@@ -1,8 +1,5 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
-import logging
-
-_logger = logging.getLogger(__name__)
 
 
 class WizardCreateProjectTask(models.TransientModel):
@@ -15,20 +12,23 @@ class WizardCreateProjectTask(models.TransientModel):
 
     def create_task(self):
         self.ensure_one()
-        patient_id = self.env.context.get('active_id')
-        patient = self.env['medical.patient'].browse(patient_id)
-        if not patient:
+        appointment_id = self.env.context.get('active_id')
+        appointment = self.env['medical.appointment'].browse(appointment_id)
+        if not appointment:
             return
 
-        task = self.env['project.task'].create({
+        task_vals = {
             'name': self.task_name,
             'project_id': self.project_id.id,
-            'patient_id': patient.id,
-        })
+            'patient_id': appointment.patient_id.id,
+            'appointment_id': appointment.id,
+        }
+
+        task = self.env['project.task'].create(task_vals)
 
         return {
             'type': 'ir.actions.act_window',
-            'name': 'Project',
+            'name': 'Project Task',
             'res_model': 'project.task',
             'view_mode': 'form',
             'res_id': task.id,
@@ -48,6 +48,7 @@ class ProjectTask(models.Model):
     patient_id = fields.Many2one('medical.patient', string="Patient")
     doctor_id = fields.Many2one('medical.physician', 'Prescribing Doctor')
 
+    appointment_id = fields.Many2one('medical.appointment', string="Appointment")
     product_id = fields.Many2one('product.product', string='Product')
     bom_id = fields.Many2one('mrp.bom', string='Bill of Materials', compute='_compute_bom', store=True)
     quantity = fields.Float(string='Quantity', default=1.0)

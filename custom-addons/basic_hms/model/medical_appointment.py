@@ -154,18 +154,6 @@ class medical_appointment(models.Model):
             appointment.message_post(body=msg_body)
         return True
 
-    def action_create_project_task(self):
-        return {
-            'type': 'ir.actions.act_window',
-            'name': 'Create Task in Project',
-            'res_model': 'wizard.create.project.task',
-            'view_mode': 'form',
-            'view_id': self.env.ref('basic_hms.view_wizard_create_project_task').id,
-            'target': 'new',
-            'context': {
-                'default_task_name': self.patient_id.name,
-            },
-        }
 
     def action_noshow_appointment(self):
         for appointment in self:
@@ -181,4 +169,21 @@ class medical_appointment(models.Model):
         # Define the action to return
         action = self.env.ref('basic_hms.action_medical_appointment').read()[0]
         return action
+
+    def action_create_task(self):
+        self.ensure_one()
+        context = dict(self.env.context)
+        context.update({
+            'default_task_name': self.patient_id.patient_id.name,  # Default task name based on patient
+            'active_id': self.id,
+        })
+        return {
+            'name': 'Create Treatment Type',
+            'type': 'ir.actions.act_window',
+            'res_model': 'wizard.create.project.task',
+            'view_mode': 'form',
+            'view_type': 'form',
+            'target': 'new',
+            'context': context,
+        }
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
