@@ -7,7 +7,6 @@
      setup() {
          super.setup();
          this.getRecord = this.getRecord.bind(this);
-         this.getConfiguration = this.getConfiguration.bind(this);
      }
 
      async getRecord() {
@@ -26,28 +25,11 @@
          }
      }
 
-     async getConfiguration() {
-         try {
-             const id = this.props.widget.id;
-             await this.props.doAction({
-                 type: 'ir.actions.act_window',
-                 res_model: 'dashboard.block',
-                 res_id: id,
-                 view_mode: 'form',
-                 views: [[false, "form"]],
-             });
-         } catch (error) {
-             console.error("Error getting configuration:", error);
-         }
-     }
  }
 
  DynamicDashboardTile.template = xml`
  <div class="col-sm-12 col-md-12 col-lg-3 tile block" t-att-data-id="this.props.widget.id">
      <div draggable="true" t-att-style="'background: ' + this.props.widget.tile_color" class="tile-container d-flex justify-content-around align-items-center position-relative w-100 h-auto my-3">
-         <a t-on-click="getConfiguration" class="block_setting position-absolute tile-container__setting-icon cursor-pointer">
-             <i class="fa fa-cog"></i>
-         </a>
          <div t-on-click="getRecord" class="d-flex cursor-pointer">
              <div t-att-style="'color: ' + this.props.widget.icon_color" class="tile-container__icon-container bg-white d-flex justify-content-center align-items-center">
                  <i t-att-class="this.props.widget.icon" aria-hidden="true"></i>
@@ -73,10 +55,6 @@
      padding: 20px;
  }
 
- .tile-container__setting-icon {
-     top: 10px;
-     right: 10px;
- }
 
  .tile-container__icon-container {
      width: 60px;

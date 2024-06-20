@@ -20,3 +20,4 @@
 #
 ###############################################################################
 from . import project_dashboard_odoo
+from . import project_task_controller
