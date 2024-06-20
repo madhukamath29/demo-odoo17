@@ -1,33 +1,34 @@
 //  /** @odoo-module */
 
- import { registry } from '@web/core/registry';
- const { Component, xml } = owl;
+import {registry} from '@web/core/registry';
 
- export class DynamicDashboardTile extends Component {
-     setup() {
-         super.setup();
-         this.getRecord = this.getRecord.bind(this);
-     }
+const {Component, xml} = owl;
 
-     async getRecord() {
-         try {
-             const model_name = this.props.widget.model_name;
-             if (model_name) {
-                 await this.props.doAction({
-                     type: 'ir.actions.act_window',
-                     res_model: model_name,
-                     view_mode: 'tree',
-                     views: [[false, "tree"]],
-                 });
-             }
-         } catch (error) {
-             console.error("Error getting record:", error);
-         }
-     }
+export class DynamicDashboardTile extends Component {
+    setup() {
+        super.setup();
+        this.getRecord = this.getRecord.bind(this);
+    }
 
- }
+    async getRecord() {
+        try {
+            const model_name = this.props.widget.model_name;
+            if (model_name) {
+                await this.props.doAction({
+                    type: 'ir.actions.act_window',
+                    res_model: model_name,
+                    view_mode: 'tree',
+                    views: [[false, "tree"]],
+                });
+            }
+        } catch (error) {
+            console.error("Error getting record:", error);
+        }
+    }
 
- DynamicDashboardTile.template = xml`
+}
+
+DynamicDashboardTile.template = xml`
  <div class="col-sm-12 col-md-12 col-lg-3 tile block" t-att-data-id="this.props.widget.id">
      <div draggable="true" t-att-style="'background: ' + this.props.widget.tile_color" class="tile-container d-flex justify-content-around align-items-center position-relative w-100 h-auto my-3">
          <div t-on-click="getRecord" class="d-flex cursor-pointer">
@@ -48,7 +49,7 @@
      </div>
  </div>`;
 
- DynamicDashboardTile.styles = `
+DynamicDashboardTile.styles = `
  .tile-container {
      border-radius: 8px;
      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -78,4 +79,4 @@
  }
  `;
 
-//  registry.category("web_components").add("DynamicDashboardTile", DynamicDashboardTile);
+registry.category("web_components").add("DynamicDashboardTile", DynamicDashboardTile);
