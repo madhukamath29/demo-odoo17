@@ -468,17 +468,19 @@ class medical_patient(models.Model):
             patient.appointment_count = len(patient.appointment_ids)
 
     def action_create_appointment(self):
-        appointment_model = self.env['medical.appointment']
+        appointment_values = {
+            'patient_id': self.id,
+        }
+        appointment = self.env['medical.appointment'].create(appointment_values)
+
         return {
             'type': 'ir.actions.act_window',
             'name': 'Create Appointment',
-            'res_model': 'medical.appointment',  # Replace with your actual appointment model name
+            'res_model': 'medical.appointment',
+            'res_id': appointment.id,
             'view_mode': 'form',
-            'domain': [('patient_id', '=', self.patient_id.id)],
-            'context': {
-                'default_patient_id': self.id,
-                # You can add more default values here if needed
-            },
+            'view_type': 'form',
+            'target': 'current',
         }
 
     def action_view_appointment(self):
