@@ -32,14 +32,15 @@ class medical_appointment(models.Model):
     ], 'Urgency Level', sort=False, default="b")
     appointment_date = fields.Datetime('Appointment Date', required=True, default=fields.Datetime.now)
     appointment_end = fields.Datetime('Appointment End')
-    doctor_id = fields.Many2one('medical.physician', 'Doctor', required=True)
+    doctor_id = fields.Many2one('medical.physician', 'Doctor')
+
     no_invoice = fields.Boolean(string='Invoice exempt', default=True)
     validity_status = fields.Selection([
         ('invoice', 'Invoice'),
         ('tobe', 'To be Invoiced'),
     ], 'Status', sort=False, readonly=True, default='tobe')
     appointment_validity_date = fields.Datetime('Validity Date')
-    consultations_id = fields.Many2one('product.product', 'Consultation Service', required=True)
+    consultations_id = fields.Many2one('product.product', 'Consultation Service')
     comments = fields.Text(string="Info")
     state = fields.Selection([('draft', 'Draft'), ('confirmed', 'Confirm'), ('cancel', 'Cancel'), ('done', 'Done')],
                              string="State", default='draft')
