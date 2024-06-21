@@ -287,5 +287,5 @@
      font-weight: bold;
  }
  `;
-
+DynamicDashboardChart.components = {};
 //  registry.category("components").add("DynamicDashboardChart", DynamicDashboardChart);
