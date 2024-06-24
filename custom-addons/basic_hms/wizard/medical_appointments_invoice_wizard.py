@@ -43,14 +43,9 @@ class medical_appointments_invoice_wizard(models.TransientModel):
                 if lab_req.consultations_id.id:
                     invoice_line_account_id = lab_req.consultations_id.property_account_income_id.id or lab_req.consultations_id.categ_id.property_account_income_categ_id.id or False
                 if not invoice_line_account_id:
-                    property_obj = self.env['ir.property'].search([
-                        ('name', '=', 'property_account_income_categ_id'),
-                        ('res_id', '=', 'product.category,%d' % lab_req.consultations_id.categ_id.id)
-                    ], limit=1)
-                    if property_obj:
-                        inc_acc = property_obj.value_reference
+                    inc_acc = ir_property_obj.get_by_record('property_account_income_categ_id', lab_req.consultations_id.categ_id)
                     if inc_acc:
-                        invoice_line_account_id = int(inc_acc.split(",")[1])
+                        invoice_line_account_id = int(inc_acc.id)
                 if not invoice_line_account_id:
                     raise UserError(
                         _('There is no income account defined for this product: "%s". You may have to install a chart of account from the Accounting app, settings menu.') %
