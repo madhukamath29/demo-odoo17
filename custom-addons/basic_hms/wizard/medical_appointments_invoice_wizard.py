@@ -37,11 +37,12 @@ class medical_appointments_invoice_wizard(models.TransientModel):
                     'journal_id': sale_journals.id,
                 }
                 res = account_invoice_obj.create(invoice_vals)
-                invoice_line_account_id = False
+            # Initialize invoice_line_account_id to None
+            invoice_line_account_id = None
             if lab_req.consultations_id:
                 invoice_line_account_id = lab_req.consultations_id.property_account_income_id.id or \
                                           lab_req.consultations_id.categ_id.property_account_income_categ_id.id or \
-                                          False
+                                          None
                 if not invoice_line_account_id:
                     inc_acc = ir_property_obj.get_by_key('property_account_income_categ_id')
                 if inc_acc:
