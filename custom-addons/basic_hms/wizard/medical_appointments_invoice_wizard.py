@@ -43,7 +43,7 @@ class medical_appointments_invoice_wizard(models.TransientModel):
                 if lab_req.consultations_id.id:
                     invoice_line_account_id = lab_req.consultations_id.property_account_income_id.id or lab_req.consultations_id.categ_id.property_account_income_categ_id.id or False
                 if not invoice_line_account_id:
-                    inc_acc = ir_property_obj.get_by_record('property_account_income_categ_id', lab_req.consultations_id.categ_id)
+                    inc_acc = ir_property_obj.get('property_account_income_categ_id', lab_req.consultations_id.categ_id._name)
                     if inc_acc:
                         invoice_line_account_id = int(inc_acc.id)
                 if not invoice_line_account_id:
