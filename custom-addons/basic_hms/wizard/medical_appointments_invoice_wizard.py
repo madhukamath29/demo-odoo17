@@ -14,14 +14,14 @@ class medical_appointments_invoice_wizard(models.TransientModel):
         list_of_ids  = []
         lab_req_obj = self.env['medical.appointment']
         account_invoice_obj  = self.env['account.move']
-        account_invoice_line_obj = self.env['account.move.line']
         ir_property_obj = self.env['ir.property']
         for active_id in active_ids: 
             lab_req = lab_req_obj.browse(active_id)
             lab_req.validity_status = 'invoice'
-            if lab_req.is_invoiced  == True:
-                raise UserError(_('All ready Invoiced.'))
-            if lab_req.no_invoice == False:
+            if lab_req.is_invoiced:
+                raise UserError(_('Already Invoiced.'))
+            
+            if not lab_req.no_invoice:
                 sale_journals = self.env['account.journal'].search([('type','=','sale')])
                 invoice_vals = {
                 'name': self.env['ir.sequence'].next_by_code('medical_app_inv_seq'),
@@ -42,14 +42,17 @@ class medical_appointments_invoice_wizard(models.TransientModel):
                 if lab_req.consultations_id.id:
                     invoice_line_account_id = lab_req.consultations_id.property_account_income_id.id or lab_req.consultations_id.categ_id.property_account_income_categ_id.id or False 
                 if not invoice_line_account_id:
-                    inc_acc = ir_property_obj.get('property_account_income_categ_id', 'product.category')
+                    inc_acc = ir_property_obj.get_by_record('property_account_income_categ_id', self.env['product.category'])
+                    if inc_acc:
+                        invoice_line_account_id = inc_acc.id
                 if not invoice_line_account_id:
                     raise UserError(
-                        _('There is no income account defined for this product: "%s". You may have to install a chart of account from Accounting app, settings menu.') %
+                        _('There is no income account defined for this product: "%s". You may have to install a chart of account from the Accounting app, settings menu.') %
                         (lab_req.consultations_id.name,))
 
                 tax_ids = []
-                taxes = lab_req.consultations_id.taxes_id.filtered(lambda r: not lab_req.consultations_id.company_id or r.company_id == lab_req.consultations_id.company_id)
+                taxes = lab_req.consultations_id.taxes_id.filtered(lambda
+                    r: not lab_req.consultations_id.company_id or r.company_id == lab_req.consultations_id.company_id)
                 tax_ids = taxes.ids
                 invoice_line_vals = {
                     'name': lab_req.consultations_id.name or '',
@@ -60,7 +63,7 @@ class medical_appointments_invoice_wizard(models.TransientModel):
                     'product_id':lab_req.consultations_id.id,
                 }
 
-                res1 = res.write({'invoice_line_ids' :([(0,0,invoice_line_vals)]) })
+                res.write({'invoice_line_ids': [(0, 0, invoice_line_vals)]})
 
                 list_of_ids.append(res.id)
                 if list_of_ids:
