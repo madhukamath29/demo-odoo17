@@ -20,9 +20,6 @@ class medical_appointments_invoice_wizard(models.TransientModel):
         for active_id in active_ids:
             lab_req = lab_req_obj.browse(active_id)
             lab_req.validity_status = 'invoice'
-            if lab_req.is_invoiced == True:
-                raise UserError(_('All ready Invoiced.'))
-            if lab_req.no_invoice == False:
         if lab_req.is_invoiced:
             raise UserError(_('Already Invoiced.'))
 
@@ -53,16 +50,15 @@ class medical_appointments_invoice_wizard(models.TransientModel):
                 invoice_line_account_id = inc_acc.id
                 if not invoice_line_account_id:
                     raise UserError(
-                        _('There is no income account defined for this product: "%s". You may have to install a chart of account from Accounting app, settings menu.') %
                         _('There is no income account defined for this product: "%s". You may have to install a chart of account from the Accounting app, settings menu.') %
-                        (lab_req.consultations_id.name,))
+                        (lab_req.consultations_id.name,)
+                    )
 
                 tax_ids = []
                 taxes = lab_req.consultations_id.taxes_id.filtered(
                     lambda
-                        r: not lab_req.consultations_id.company_id or r.company_id == lab_req.consultations_id.company_id)
-                taxes = lab_req.consultations_id.taxes_id.filtered(lambda
-                                                                       r: not lab_req.consultations_id.company_id or r.company_id == lab_req.consultations_id.company_id)
+                        r: not lab_req.consultations_id.company_id or r.company_id == lab_req.consultations_id.company_id
+                )
                 tax_ids = taxes.ids
 
                 invoice_line_vals = {
@@ -74,14 +70,12 @@ class medical_appointments_invoice_wizard(models.TransientModel):
                     'product_id': lab_req.consultations_id.id,
                 }
 
-                res1 = res.write({'invoice_line_ids': ([(0, 0, invoice_line_vals)])})
                 res.write({'invoice_line_ids': [(0, 0, invoice_line_vals)]})
 
                 list_of_ids.append(res.id)
+                lab_req.write({'is_invoiced': True})
                 if list_of_ids:
                     imd = self.env['ir.model.data']
-                    lab_req_obj_brw = lab_req_obj.browse(self._context.get('active_id'))
-                    lab_req_obj_brw.write({'is_invoiced': True})
                 action = self.env.ref('account.action_move_out_invoice_type')
                 list_view_id = imd.sudo()._xmlid_to_res_id('account.view_invoice_tree')
                 form_view_id = imd.sudo()._xmlid_to_res_id('account.view_move_form')
@@ -94,13 +88,10 @@ class medical_appointments_invoice_wizard(models.TransientModel):
                     'context': action.context,
                     'res_model': action.res_model,
 
+                    'domain': "[('id','in',%s)]" % list_of_ids
                 }
-                if list_of_ids:
-                    result['domain'] = "[('id','in',%s)]" % list_of_ids
-                else:
-                    raise UserError(_(' The Appointment is invoice exempt   '))
-                return result
-
-
+            return result
+        else:
+            raise UserError(_(' The Appointment is invoice exempt   '))
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
