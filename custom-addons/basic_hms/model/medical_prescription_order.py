@@ -33,9 +33,9 @@ class medical_prescription_order(models.Model):
     insurer_id = fields.Many2one('medical.insurance', 'Insurer')
     is_shipped = fields.Boolean(default=False, copy=False)
     contact_number = fields.Char('Pharmacy Contact Information')
+    height = fields.Float(string='Height', compute='_compute_height', store=True, readonly=True)
 
-    height = fields.Float(related='patient_id.height', string="Height", readonly=True)
-    weight = fields.Float(related='patient_id.weight', string="Weight", readonly=True)
+    weight = fields.Float(related='patient_id.weight', string="Weight",compute='_compute_weight', store=True, readonly=True)
     mobile = fields.Char(related='patient_id.mobile', string="Phone Number", readonly=False)
     # diagnosis = fields.Char(related='patient_id.diagnosis', string="Diagnosis", readonly=True)
     diagnosis = fields.Char(string="Diagnosis")
@@ -58,4 +58,13 @@ class medical_prescription_order(models.Model):
         ins_record = ins_obj.search([('medical_insurance_partner_id', '=', self.patient_id.patient_id.id)])
         self.insurer_id = ins_record.id or False
 
+    @api.depends('patient_id')
+    def _compute_height(self):
+        for record in self:
+            record.height = record.patient_id.height if record.patient_id else 0
+
+    @api.depends('patient_id.weight')
+    def _compute_weight(self):
+        for record in self:
+            record.weight = record.patient_id.weight if record.patient_id else 0.0
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
