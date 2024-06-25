@@ -176,6 +176,7 @@ class medical_appointment(models.Model):
         context = dict(self.env.context)
         context.update({
             'default_task_name': self.patient_id.patient_id.name,  # Default task name based on patient
+            'default_doctor_name': self.doctor_id.partner_id.name,
             'active_id': self.id,
         })
         return {

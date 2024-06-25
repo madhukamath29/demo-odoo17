@@ -8,6 +8,7 @@
                 <group>
                     <field name="project_id"/>
                     <field name="task_name" readonly="1"/>
+                    <field name="doctor_name" readonly="1"/>
                 </group>
                 <footer>
                     <button string="Create Task" type="object" name="create_task" class="oe_highlight"/>

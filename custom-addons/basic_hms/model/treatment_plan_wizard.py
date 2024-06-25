@@ -9,6 +9,8 @@ class WizardCreateProjectTask(models.TransientModel):
     project_id = fields.Many2one('project.project', string="Treatment Type", required=True)
     task_name = fields.Char(string="Patient Name", required=True,
                             default=lambda self: self.env.context.get('default_task_name', ''))
+    doctor_name = fields.Char(string="Doctor Name", required=True,
+                              default=lambda self: self.env.context.get('default_doctor_name', ''))
 
     def create_task(self):
         self.ensure_one()
@@ -22,6 +24,7 @@ class WizardCreateProjectTask(models.TransientModel):
             'project_id': self.project_id.id,
             'patient_id': appointment.patient_id.id,
             'appointment_id': appointment.id,
+            'doctor_id': appointment.doctor_id.id,  # Assuming appointment has a doctor_id field
         }
 
         task = self.env['project.task'].create(task_vals)
@@ -108,7 +111,6 @@ class ProjectTask(models.Model):
         store=False
     )
 
-    # project_task = fields.One2many(, string='stages')
     is_subtask = fields.Boolean(string="Is Subtask", compute="_compute_is_subtask", store=True)
 
     @api.depends('parent_id')
@@ -126,17 +128,13 @@ class ProjectTask(models.Model):
 
     @api.model
     def create(self, vals):
-        # Check if we are in the context of creating sub-tasks
         if self.env.context.get('creating_sub_tasks'):
             return super(ProjectTask, self).create(vals)
 
-        # Create the main task
         task = super(ProjectTask, self).create(vals)
 
-        # Retrieve the treatment_stages from the related project
         if task.project_id.treatment_stages:
             treatment_stages = task.project_id.treatment_stages
-            # Create sub-tasks for each treatment_stage with a context flag to avoid recursion
             for stage in treatment_stages:
                 self.with_context(creating_sub_tasks=True).create({
                     'name': stage.name,
