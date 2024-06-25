@@ -34,7 +34,7 @@ class medical_appointment(models.Model):
     appointment_end = fields.Datetime('Appointment End')
     doctor_id = fields.Many2one('medical.physician', 'Doctor')
 
-    no_invoice = fields.Boolean(string='Invoice exempt', default=True)
+    no_invoice = fields.Boolean(string='Invoice exempt', default=False)
     validity_status = fields.Selection([
         ('invoice', 'Invoice'),
         ('tobe', 'To be Invoiced'),
