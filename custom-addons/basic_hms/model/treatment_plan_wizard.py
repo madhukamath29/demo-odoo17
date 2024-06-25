@@ -140,6 +140,8 @@ class ProjectTask(models.Model):
                     'name': stage.name,
                     'parent_id': task.id,
                     'project_id': task.project_id.id,
+                    'patient_id': task.patient_id.id,
+                    'doctor_id': task.doctor_id.id,
                 })
 
         return task
