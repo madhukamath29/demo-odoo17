@@ -35,13 +35,14 @@ class medical_prescription_order(models.Model):
     contact_number = fields.Char('Pharmacy Contact Information')
     height = fields.Float(string='Height', compute='_compute_height', store=True, readonly=True)
 
-    weight = fields.Float(related='patient_id.weight', string="Weight",compute='_compute_weight', store=True, readonly=True)
+    weight = fields.Float(related='patient_id.weight', string="Weight", compute='_compute_weight', store=True,
+                          readonly=True)
     mobile = fields.Char(related='patient_id.mobile', string="Phone Number", readonly=False)
     # diagnosis = fields.Char(related='patient_id.diagnosis', string="Diagnosis", readonly=True)
     diagnosis = fields.Char(string="Diagnosis")
     allergies = fields.Char(related='patient_id.allergies', string="Allergies", readonly=True)
     general_info = fields.Text(related='patient_id.general_info', string="Patient Instruction", readonly=True)
-    followUp_date = fields.Date(related='patient_id.followUp_date', string="Follow-Up Appointments", store=True)
+    followUp_date = fields.Date(related='task_id.follow_up_appointments', string="Follow-Up Appointments", store=True)
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -58,7 +59,7 @@ class medical_prescription_order(models.Model):
         ins_record = ins_obj.search([('medical_insurance_partner_id', '=', self.patient_id.patient_id.id)])
         self.insurer_id = ins_record.id or False
 
-    @api.depends('patient_id')
+    @api.depends('patient_id.height')
     def _compute_height(self):
         for record in self:
             record.height = record.patient_id.height if record.patient_id else 0

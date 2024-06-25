@@ -39,6 +39,9 @@
                     <field name="all_child_prescription_ids" widget="section_and_note_one2many"/>
                 </page>
             </xpath>
+            <xpath expr="//div[@id='date_deadline_and_recurring_task']" position="after">
+            <field name="follow_up_appointments"/>
+             </xpath>
         </field>
     </record>
     <record id="view_task_inherit" model="ir.ui.view">

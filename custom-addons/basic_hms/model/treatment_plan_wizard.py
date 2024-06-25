@@ -55,6 +55,7 @@ class ProjectTask(models.Model):
     product_id = fields.Many2one('product.product', string='Product')
     bom_id = fields.Many2one('mrp.bom', string='Bill of Materials', compute='_compute_bom', store=True)
     quantity = fields.Float(string='Quantity', default=1.0)
+    follow_up_appointments = fields.Date(string="Follow-Up Appointments", store=True)
 
     @api.depends('product_id')
     def _compute_bom(self):

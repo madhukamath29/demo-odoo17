@@ -44,9 +44,9 @@
                                    options="{'no_create_edit': True,'no_create': True}"/>
                             <field name="prescription_date"
                                    required="1"/>
-                            <field name="pharmacy_partner_id"/>
+<!--                            <field name="pharmacy_partner_id"/>-->
                             <field name="mobile"/>
-                            <field name="diagnosis"/>
+<!--                            <field name="diagnosis"/>-->
                             <field name="allergies" readonly="1"/>
                         </group>
                         <group>
