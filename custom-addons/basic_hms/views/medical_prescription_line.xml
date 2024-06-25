@@ -14,7 +14,7 @@
                     <field name="dose" />
                     <field name="dose_unit_id" />
                     <field name="form" />
-                    <field name="medication_dosage_id" />
+<!--                    <field name="medication_dosage_id" />-->
                     <field name="quantity" />
                     <field name="duration" />
                     <field name="duration_period" optional="hide"/>
@@ -46,11 +46,11 @@
 
                             <field name="qty" />
                         </group>
-                        <separator string="Common Dosage" />
-                        <group colspan="4" col="4">
-                            <field name="medication_dosage_id" />
-                            <field name="admin_times" />
-                        </group>
+<!--                        <separator string="Common Dosage" />-->
+<!--                        <group colspan="4" col="4">-->
+<!--                            <field name="medication_dosage_id" />-->
+<!--                            <field name="admin_times" />-->
+<!--                        </group>-->
                         <separator string="Specific Dosage" />
                         <group colspan="4" col="4">
                             <field name="frequency" />

@@ -22,16 +22,16 @@ class MedicalPrescriptionLine(models.Model):
     qty = fields.Integer('Strength')
     medication_dosage_id = fields.Many2one('medical.medication.dosage', 'Frequency')
     admin_times = fields.Char('Admin Hours', size=128)
-    frequency = fields.Integer('Frequency')
+    frequency = fields.Integer('Frequency No')
     frequency_unit = fields.Selection(
         [('seconds', 'Seconds'), ('minutes', 'Minutes'), ('hours', 'hours'), ('days', 'Days'), ('weeks', 'Weeks'),
          ('wr', 'When Required')], 'Unit')
-    duration = fields.Integer('Duration')
+    duration = fields.Integer('Treatment Duration')
     duration_period = fields.Selection(
         [('minutes', 'Minutes'), ('hours', 'hours'), ('days', 'Days'), ('months', 'Months'), ('years', 'Years'),
          ('indefine', 'Indefine')], 'Treatment Period')
     quantity = fields.Integer('Quantity Prescribed')
-    review = fields.Datetime('Review')
+    review = fields.Datetime('Review Date')
     refills = fields.Integer('Refills#')
     short_comment = fields.Char('Dosage Instructions', size=128)
     end_treatment = fields.Datetime('End of treatment')
