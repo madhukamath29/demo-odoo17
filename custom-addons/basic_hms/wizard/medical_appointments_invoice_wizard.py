@@ -54,10 +54,9 @@ class MedicalAppointmentsInvoiceWizard(models.TransientModel):
 
                 if not invoice_line_account_id:
                     _logger.info('Fetching income account for category: %s', lab_req.consultations_id.categ_id.name)
-                    inc_acc = ir_property_obj.get_by_record('property_account_income_categ_id',
-                                                            lab_req.consultations_id.categ_id)
-                    if inc_acc:
-                        invoice_line_account_id = inc_acc.id
+                    inc_acc = ir_property_obj.get_multi(['property_account_income_categ_id'], lab_req.consultations_id.categ_id)
+                    if inc_acc.get('property_account_income_categ_id'):
+                        invoice_line_account_id = inc_acc['property_account_income_categ_id'].id
 
                     if not invoice_line_account_id:
                         raise UserError(
@@ -88,8 +87,7 @@ class MedicalAppointmentsInvoiceWizard(models.TransientModel):
                 'name': action.name,
                 'help': action.help,
                 'type': action.type,
-                'views': [[self.env.ref('account.view_invoice_tree').id, 'tree'],
-                          [self.env.ref('account.view_move_form').id, 'form']],
+                'views': [[self.env.ref('account.view_invoice_tree').id, 'tree'], [self.env.ref('account.view_move_form').id, 'form']],
                 'target': action.target,
                 'context': action.context,
                 'res_model': action.res_model,
