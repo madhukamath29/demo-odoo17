@@ -347,4 +347,4 @@ async fetchDataFromSource(configurationModel, startDate, endDate, filterType) {
  }
  `;
 DynamicDashboardChart.components = {};
-registry.category("components").remove("DynamicDashboardChart", DynamicDashboardChart);
+registry.category("components").add("DynamicDashboardChart", DynamicDashboardChart);
