@@ -41,7 +41,9 @@
     ],
     'assets': {
         'web.assets_backend': [
-            'odoo_dynamic_dashboard/static/src/js/**/*.js',
+            'odoo_dynamic_dashboard/static/src/js/DynamicDashboard.js',
+            'odoo_dynamic_dashboard/static/src/js/DynamicDashboardChart.js',
+            'odoo_dynamic_dashboard/static/src/js/DynamicDashboardTile.js',
             'odoo_dynamic_dashboard/static/src/scss/**/*.scss',
             'odoo_dynamic_dashboard/static/src/xml/**/*.xml',
         ],
