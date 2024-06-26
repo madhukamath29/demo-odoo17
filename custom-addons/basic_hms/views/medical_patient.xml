@@ -687,7 +687,7 @@
               action="project.open_view_project_all_config" sequence="2" name="Treatment Plans"/>
     <menuitem id="menu_medical_treatment2" parent="menu_treatment"
               action="project.open_task_type_form" sequence="3" name="Treatment Progress"/>
-<!--    <menuitem id="menu_medical_treatment3" parent="menu_treatment"-->
-<!--              action="basic_hms.medical_treatment_stages_action" sequence="4"/>-->
+    <menuitem id="menu_medical_treatment3" parent="menu_treatment"
+              action="basic_hms.medical_treatment_stages_action" sequence="4"/>
 
 </odoo>
