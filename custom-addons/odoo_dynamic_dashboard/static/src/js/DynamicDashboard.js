@@ -63,4 +63,5 @@
 
  DynamicDashboard.template = "owl.dynamic_dashboard";
  DynamicDashboard.components = { DynamicDashboardTile, DynamicDashboardChart };
+ 
 registry.category("actions").add("owl.dynamic_dashboard", DynamicDashboard);

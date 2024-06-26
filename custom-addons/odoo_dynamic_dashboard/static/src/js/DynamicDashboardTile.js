@@ -80,4 +80,5 @@ DynamicDashboardTile.styles = `
  `;
 
 registry.category("web_components").add("DynamicDashboardTile", DynamicDashboardTile);
+
 export default DynamicDashboardTile;
