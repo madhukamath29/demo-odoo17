@@ -143,51 +143,104 @@
          // Re-render the chart with the new data
          this.renderChart();
      }
+async fetchData(filterType) {
+    try {
+        console.log(`Fetching data for filter: ${filterType}`);
 
-     async fetchData(filterType) {
-         // Simulate fetching data based on filterType
-         // Replace this with actual data fetching logic
-         console.log(`Fetching data for filter: ${filterType}`);
+        const currentDate = new Date();
+        let startDate;
 
-         const currentDate = new Date();
-         let startDate;
+        switch (filterType) {
+            case 'last_10_days':
+                startDate = new Date(currentDate.getTime() - (10 * 24 * 60 * 60 * 1000));
+                break;
+            case 'last_30_days':
+                startDate = new Date(currentDate.getTime() - (30 * 24 * 60 * 60 * 1000));
+                break;
+            case 'last_3_months':
+                startDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 3, currentDate.getDate());
+                break;
+            case 'last_year':
+                startDate = new Date(currentDate.getFullYear() - 1, currentDate.getMonth(), currentDate.getDate());
+                break;
+            default:
+                startDate = new Date();
+                break;
+        }
 
-         switch (filterType) {
-             case 'last_10_days':
-                 startDate = new Date(currentDate.getTime() - (10 * 24 * 60 * 60 * 1000));
-                 break;
-             case 'last_30_days':
-                 startDate = new Date(currentDate.getTime() - (30 * 24 * 60 * 60 * 1000));
-                 break;
-             case 'last_3_months':
-                 startDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 3, currentDate.getDate());
-                 break;
-             case 'last_year':
-                 startDate = new Date(currentDate.getFullYear() - 1, currentDate.getMonth(), currentDate.getDate());
-                 break;
-             default:
-                 startDate = new Date();
-                 break;
-         }
+        const formatDate = date => date.toISOString().split('T')[0];
 
-         const formatDate = date => date.toISOString().split('T')[0];
+        const x_axis = [];
+        const end = formatDate(currentDate);
+        let current = new Date(startDate);
 
-         const x_axis = [];
-         const end = formatDate(currentDate);
-         let current = new Date(startDate);
+        while (current <= currentDate) {
+            x_axis.push(formatDate(current));
+            current.setDate(current.getDate() + 1);
+        }
 
-         while (current <= currentDate) {
-             x_axis.push(formatDate(current));
-             current.setDate(current.getDate() + 1);
-         }
+        // Fetch data from an actual data source
+        const configurationModel = this.props.configurationModel; // Assumes configuration model is passed as a prop
+        if (!configurationModel) {
+            throw new Error("Configuration model is not provided");
+        }
+        console.log('Configuration model:', configurationModel);
 
-         // Example data update
-         this.props.widget.x_axis = x_axis;
-         this.props.widget.y_axis = [15, 35, 60]; // You need to update y_axis according to your actual data
+        const data = await this.fetchDataFromSource(configurationModel, startDate, currentDate);
 
-         // Re-render the chart with the new data
-         this.renderChart();
-     }
+        // Update x_axis and y_axis based on the fetched data
+        this.props.widget.x_axis = x_axis;
+        this.props.widget.y_axis = data.map(item => item.value); // Assuming data contains 'value' field
+
+        // Re-render the chart with the new data
+        this.renderChart();
+    } catch (error) {
+        console.error('Error in fetchData:', error);
+    }
+}
+
+async fetchDataFromSource(configurationModel, startDate, endDate) {
+    try {
+        console.log(`Fetching data from source with configuration: ${JSON.stringify(configurationModel)}`);
+
+        // Extract details from configuration model
+        const modelId = configurationModel.model_id; // model: 'dashboard.block', relation: 'ir.model'
+        const measuredField = configurationModel.measured_field; // model: 'dashboard.block', relation: 'ir.model.fields'
+        const groupBy = configurationModel.group_by; // model: 'dashboard.block', relation: 'ir.model.fields'
+
+        if (!modelId || !measuredField || !groupBy) {
+            throw new Error("Configuration model is missing required fields");
+        }
+
+        // Example API call (adjust URL and parameters according to your actual API)
+        const apiUrl = `https://api.example.com/data`;
+        const params = {
+            model_id: modelId,
+            measured_field: measuredField,
+            group_by: groupBy,
+            start_date: startDate.toISOString(),
+            end_date: endDate.toISOString()
+        };
+
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(params)
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error fetching data: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        return data; // Ensure the data format matches your requirements
+    } catch (error) {
+        console.error('Error in fetchDataFromSource:', error);
+        return [];
+    }
+}
  }
 
  DynamicDashboardChart.template = xml`
@@ -288,4 +341,4 @@
  }
  `;
 DynamicDashboardChart.components = {};
-//  registry.category("components").add("DynamicDashboardChart", DynamicDashboardChart);
+// registry.category("components").add("DynamicDashboardChart", DynamicDashboardChart);
