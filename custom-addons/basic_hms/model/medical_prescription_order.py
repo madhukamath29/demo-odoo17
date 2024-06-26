@@ -13,7 +13,8 @@ class medical_prescription_order(models.Model):
     patient_id = fields.Many2one(
         comodel_name='medical.patient',
         string='Patient Name',
-        required=True
+        required=True,
+        related='task_id.patient_id',
     )
     task_id = fields.Many2one('project.task', string='Task')
     prescription_date = fields.Datetime('Prescription Date', default=fields.Datetime.now)
@@ -21,7 +22,7 @@ class medical_prescription_order(models.Model):
     no_invoice = fields.Boolean('Invoice exempt')
     inv_id = fields.Many2one('account.move', 'Invoice')
     invoice_to_insurer = fields.Boolean('Invoice to Insurance')
-    doctor_id = fields.Many2one('medical.physician', 'Doctor Name')
+    doctor_id = fields.Many2one('medical.physician', 'Doctor Name', related='task_id.doctor_id', )
     medical_appointment_id = fields.Many2one('medical.appointment', 'Appointment')
     state = fields.Selection([('invoiced', 'To Invoiced'), ('tobe', 'To Be Invoiced')], 'Invoice Status')
     pharmacy_partner_id = fields.Many2one('res.partner', domain=[('is_pharmacy', '=', True)], string='Pharmacy')
