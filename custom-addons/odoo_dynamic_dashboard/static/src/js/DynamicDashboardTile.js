@@ -79,4 +79,4 @@ DynamicDashboardTile.styles = `
  }
  `;
 
-//registry.category("web_components").add("DynamicDashboardTile", DynamicDashboardTile);
+registry.category("web_components").remove("DynamicDashboardTile", DynamicDashboardTile);

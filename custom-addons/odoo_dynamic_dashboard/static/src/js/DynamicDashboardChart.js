@@ -158,10 +158,10 @@ async fetchData(filterType) {
                 startDate = new Date(currentDate.getTime() - (30 * 24 * 60 * 60 * 1000));
                 break;
             case 'last_3_months':
-                startDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 3, currentDate.getDate());
+                startDate = new Date(currentDate.getFullYear(), currentDate.getMonth() - 3, 1);
                 break;
             case 'last_year':
-                startDate = new Date(currentDate.getFullYear() - 1, currentDate.getMonth(), currentDate.getDate());
+                startDate = new Date(currentDate.getFullYear() - 1, currentDate.getMonth(), 1);
                 break;
             default:
                 startDate = new Date();
@@ -169,14 +169,23 @@ async fetchData(filterType) {
         }
 
         const formatDate = date => date.toISOString().split('T')[0];
+        const formatMonth = date => date.toLocaleString('default', { month: 'long' }) + ' ' + date.getFullYear();
 
         const x_axis = [];
-        const end = formatDate(currentDate);
-        let current = new Date(startDate);
-
-        while (current <= currentDate) {
-            x_axis.push(formatDate(current));
-            current.setDate(current.getDate() + 1);
+        if (filterType === 'last_3_months' || filterType === 'last_year') {
+            // Generate x_axis for months
+            let current = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
+            while (current <= currentDate) {
+                x_axis.push(formatMonth(current));
+                current.setMonth(current.getMonth() + 1);
+            }
+        } else {
+            // Generate x_axis for days
+            let current = new Date(startDate);
+            while (current <= currentDate) {
+                x_axis.push(formatDate(current));
+                current.setDate(current.getDate() + 1);
+            }
         }
 
         // Fetch data from an actual data source
@@ -186,7 +195,7 @@ async fetchData(filterType) {
         }
         console.log('Configuration model:', configurationModel);
 
-        const data = await this.fetchDataFromSource(configurationModel, startDate, currentDate);
+        const data = await this.fetchDataFromSource(configurationModel, startDate, currentDate, filterType);
 
         // Update x_axis and y_axis based on the fetched data
         this.props.widget.x_axis = x_axis;
@@ -199,27 +208,24 @@ async fetchData(filterType) {
     }
 }
 
-async fetchDataFromSource(configurationModel, startDate, endDate) {
+async fetchDataFromSource(configurationModel, startDate, endDate, filterType) {
     try {
         console.log(`Fetching data from source with configuration: ${JSON.stringify(configurationModel)}`);
-
-        // Extract details from configuration model
-        const modelId = configurationModel.model_id; // model: 'dashboard.block', relation: 'ir.model'
-        const measuredField = configurationModel.measured_field; // model: 'dashboard.block', relation: 'ir.model.fields'
-        const groupBy = configurationModel.group_by; // model: 'dashboard.block', relation: 'ir.model.fields'
+        const modelId = configurationModel.model_id;
+        const measuredField = configurationModel.measured_field;
+        const groupBy = configurationModel.group_by;
 
         if (!modelId || !measuredField || !groupBy) {
             throw new Error("Configuration model is missing required fields");
         }
-
-        // Example API call (adjust URL and parameters according to your actual API)
         const apiUrl = `https://api.example.com/data`;
         const params = {
             model_id: modelId,
             measured_field: measuredField,
             group_by: groupBy,
             start_date: startDate.toISOString(),
-            end_date: endDate.toISOString()
+            end_date: endDate.toISOString(),
+            aggregate_by: (filterType === 'last_3_months' || filterType === 'last_year') ? 'month' : 'day'
         };
 
         const response = await fetch(apiUrl, {
@@ -341,4 +347,4 @@ async fetchDataFromSource(configurationModel, startDate, endDate) {
  }
  `;
 DynamicDashboardChart.components = {};
-// registry.category("components").add("DynamicDashboardChart", DynamicDashboardChart);
+registry.category("components").remove("DynamicDashboardChart", DynamicDashboardChart);
