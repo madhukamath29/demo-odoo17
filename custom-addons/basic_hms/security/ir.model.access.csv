@@ -148,3 +148,11 @@ basic_hms.access_medical_health_service_invoice,access_medical_health_service_in
 basic_hms.access_medical_patient_diseases,access_medical_patient_diseases,basic_hms.model_medical_patient_diseases,base.group_user,1,1,1,1
 
 access_medical_insurance_global_doctor,medical.insurance,model_medical_insurance,base.group_user,1,1,1,1
+
+
+access_medical,medical.group.medical,model_medical_administration,group_receptionist,1,1,1,1
+access_medical,medical.group.medical,model_medical_administration,bi_group_doctor,1,1,1,1
+
+access_medical_form,access_medical_form,model_medical_form,group_receptionist,1,1,1,1
+access_medical_form,access_medical_form,model_medical_form,bi_group_doctor,1,1,1,1
+
