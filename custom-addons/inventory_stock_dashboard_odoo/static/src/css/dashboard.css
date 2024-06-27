@@ -18,13 +18,6 @@
     padding-right: 7.5px;
     padding-left: 7.5px;
 }
-#location_table thead th {
-  border-bottom: none;
-  background-color: #67b7dc;
-  color: white;
-  width: 250px;
-  height: 30px;
-}
 .accounts-dashboard-wrap .card-header {
     background-color:
         transparent;
@@ -284,10 +277,6 @@
     padding: 1rem;
     background: #fff;
 }
-#location_table {
-    background-color:  #fff;
-    color: (--mauve);
-}
 #tile_main_div:hover {
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
@@ -522,11 +511,6 @@ h2.section-header {
      border-bottom-color: darkgray;
 }
 
-.location_value {
-    font-weight: 700;
-    font-size: 1.2rem;
-  text-align: center;
-}
 .btn__custom-info{
     background-color: #e9ebf6;
     color: #070920;
@@ -577,9 +561,6 @@ h2.section-header {
 #stock_moves_selection {
   position: absolute;
   top: 18px;
-}
-.location_table_value{
-text-align: center;
 }
 /* X-Small devices (portrait phones, less than 576px)*/
 @media (max-width: 575.98px) {
