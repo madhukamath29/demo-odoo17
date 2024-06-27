@@ -629,7 +629,7 @@
         </field>
     </record>
     <record id="project.open_view_project_all_config" model="ir.actions.act_window">
-        <field name="name">Treatment Plan Stages</field>
+        <field name="name">Treatment Plans</field>
     </record>
     <menuitem id="dental_invoice_child" action="action_invoice_order"
               name="Invoices" parent="menu_patients" sequence="3"/>

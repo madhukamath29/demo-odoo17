@@ -1,0 +1,85 @@
+<odoo>
+    <!-- Define the tree view -->
+    <!--    <record id="view_medicine_form_tree" model="ir.ui.view">-->
+    <!--        <field name="name">medicine.test.tree</field>-->
+    <!--        <field name="model">medical.form</field>-->
+    <!--        <field name="arch" type="xml">-->
+    <!--            <tree string="Medicine Form">-->
+    <!--                <field name="name"/>-->
+    <!--            </tree>-->
+    <!--        </field>-->
+    <!--    </record>-->
+
+    <!--    &lt;!&ndash; Define the form view &ndash;&gt;-->
+    <!--    <record id="view_medicine_form" model="ir.ui.view">-->
+    <!--        <field name="name">medicine.test.form</field>-->
+    <!--        <field name="model">medical.form</field>-->
+    <!--        <field name="arch" type="xml">-->
+    <!--            <form string="Medicine Form">-->
+    <!--                <group>-->
+    <!--                    <field name="name"/>-->
+    <!--                </group>-->
+    <!--            </form>-->
+    <!--        </field>-->
+    <!--    </record>-->
+
+    <!--    &lt;!&ndash; Define the action &ndash;&gt;-->
+    <!--    <record id="action_medicine_form" model="ir.actions.act_window">-->
+    <!--        <field name="name">medical.test.Form</field>-->
+    <!--        <field name="type">ir.actions.act_window</field>-->
+    <!--        <field name="res_model">medical.form</field>-->
+    <!--        <field name="view_mode">tree,form</field>-->
+    <!--    </record>-->
+
+
+    <!--    <menuitem id="menu_medical_form" parent="menu_medicament"-->
+    <!--              name="Medical Form" action="action_medicine_form" sequence="18"/>-->
+
+    <!-- Define the tree view for Route of Administration -->
+    <record id="view_route_medicine_tree" model="ir.ui.view">
+        <field name="name">Medicine Administration</field>
+        <field name="model">medical.administration</field>
+        <field name="arch" type="xml">
+            <tree string="Route of Administration">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Define the form view for Route of Administration -->
+    <record id="view_route_medicine_form" model="ir.ui.view">
+        <field name="name">Medicine Administration</field>
+        <field name="model">medical.administration</field>
+        <field name="arch" type="xml">
+            <form string="Route of Administration">
+                <group>
+                    <field name="name"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <!-- Define the action for Route of Administration -->
+    <record id="action_route_medicine" model="ir.actions.act_window">
+        <field name="name">Route Administration</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">medical.administration</field>
+        <field name="view_mode">tree,form</field>
+        <field name="binding_view_types">form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Define a Route Administration
+            </p>
+        </field>
+    </record>
+
+    <!-- Define the menu item for Route of Administration -->
+    <!--    <menuitem id="menu_form" name="Medicine House"-->
+    <!--              parent="main_menu_configartion"/>-->
+
+    <menuitem id="menu_medical_admin" parent="menu_medicament"
+              action="action_route_medicine"/>
+
+    <!--    <menuitem id="menu_administration_form" parent="menu_medicament"-->
+    <!--              name="Medical Administration" action="action_route_medicine" sequence="17"/>-->
+</odoo>

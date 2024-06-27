@@ -13,7 +13,7 @@ class MedicalPrescriptionLine(models.Model):
     medicament_id = fields.Many2one('medical.medicament', 'Medication Name')
     indication = fields.Char('Indication')
     allow_substitution = fields.Boolean('Allow Substitution')
-    form = fields.Char('Form')
+    forme = fields.Char('Form')
     prnt = fields.Boolean('Print')
     route = fields.Char('Route of Administration')
     end_treatement = fields.Datetime('Administration Route')
@@ -38,6 +38,8 @@ class MedicalPrescriptionLine(models.Model):
     start_treatment = fields.Datetime('Start of treatment')
     instructions = fields.Char('Special Instructions')
     patient_id = fields.Many2one('medical.patient', string="Patient", compute='_compute_patient_id', store=True)
+    form_id = fields.Many2one('medical.form', string="Medical Form")
+    admin_id = fields.Many2one('medical.administration', string="Medical Route of Administration")
 
     @api.depends('name')
     def _compute_patient_id(self):

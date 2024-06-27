@@ -1,0 +1,53 @@
+<odoo>
+
+    <!-- Define the tree view -->
+    <record id="view_medicine_form_tree" model="ir.ui.view">
+        <field name="name">medicine.test.tree</field>
+        <field name="model">medical.form</field>
+        <field name="arch" type="xml">
+            <tree string="Medicine Form">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Define the form view -->
+    <record id="view_medicine_form" model="ir.ui.view">
+        <field name="name">medicine.test.form</field>
+        <field name="model">medical.form</field>
+        <field name="arch" type="xml">
+            <form string="Medicine Form">
+                <group>
+                    <field name="name"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <!-- Define the action -->
+    <record id="medicine_form_action" model="ir.actions.act_window">
+        <field name="name">Route Form</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">medical.form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="binding_view_types">form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Define a new form of Medicine
+            </p>
+        </field>
+    </record>
+    <!--        <record id="action_route_medicine" model="ir.actions.act_window">-->
+    <!--        <field name="name">Route Administration</field>-->
+    <!--        <field name="type">ir.actions.act_window</field>-->
+    <!--        <field name="res_model">medical.administration</field>-->
+    <!--        <field name="view_mode">tree,form</field>-->
+    <!--        <field name="binding_view_types">form</field>-->
+    <!--    </record>-->
+
+
+    <!-- Define the menu item -->
+    <menuitem id="menu_medicine_form" parent="menu_medicament" name="Medical Form" action="medicine_form_action"
+              sequence="18"/>
+</odoo>
+

@@ -13,7 +13,7 @@
                     <field name="indication" />
                     <field name="dose" />
                     <field name="dose_unit_id" />
-                    <field name="form" />
+                    <field name="form_id" />
 <!--                    <field name="medication_dosage_id" />-->
                     <field name="quantity" />
                     <field name="duration" />
@@ -34,8 +34,8 @@
                         <field name="indication" />
                         <field name="allow_substitution" />
                         <field name="prnt" />
-                        <field name="form" />
-                        <field name="route" />
+                        <field name="form_id" />
+                        <field name="admin_id" />
                         <field name="start_treatment" />
                         <field name="end_treatment" />
                     </group>

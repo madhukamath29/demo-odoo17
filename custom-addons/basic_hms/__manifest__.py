@@ -86,6 +86,8 @@
         'views/res_partner.xml',
         'views/treatment_plan_wizard.xml',
         'views/medical_treatment_stages_views.xml',
+        'views/medicine_form.xml',
+        'views/medicine_test.xml',
         'report/report_view.xml',
         'report/appointment_recipts_report_template.xml',
         'report/medical_view_report_document_lab.xml',
