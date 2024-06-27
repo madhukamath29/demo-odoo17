@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-		<template id="report_patient_card_document">
+    <template id="report_patient_card_document">
         <t t-call="web.external_layout">
-					<div class="page">
+            <div class="page">
                 <div class="oe_structure"/>
-						<div>
+                <div>
                     <h3 class="text-center">
                         <strong>PATIENT CARD</strong>
                     </h3>
@@ -13,60 +13,105 @@
                 <br/>
                 <br/>
 
-                <table class="table table-condensed">
-									<tr>
-                        <th style="border: 0px;" class="text-left">Patient ID:
-                            <span style="font-weight:normal;" t-field="o.name"/>
-                        </th>
-                        <th style="border: 0px;" class="text-left">Title:
-                            <span style="font-weight:normal;" t-field="o.patient_id.title"/>
-                        </th>
-                        <th style="border: 0px;" class="text-left">Name:
-                            <span style="font-weight:normal;" t-field="o.patient_id.name"/>
-                        </th>
+                <style>
+                    .patient-card {
+                    width: 100%;
+                    border-collapse: collapse;
+                    }
+                    .patient-card th, .patient-card td {
+                    padding: 8px;
+                    border: none;
+                    }
+                    .patient-card th {
+                    text-align: left;
+                    font-weight: bold;
+                    width: 20%;
+                    }
+                    .patient-card td {
+                    text-align: left;
+                    font-weight: normal;
+                    }
+                    .patient-card .header-row {
+                    background-color: #f2f2f2;
+                    }
+                </style>
+
+
+                <table class="table table-condensed patient-card">
+                    <tr class="header-row">
+                        <th>Patient ID:</th>
+                        <td>
+                            <span t-field="o.name"></span>
+                        </td>
+                        <th>Name:</th>
+                        <td>
+                            <span t-field="o.patient_id.name"></span>
+                        </td>
                     </tr>
-
                     <tr>
-                        <th style="border: 0px;" class="text-left">Gender:
-                            <span style="font-weight:normal;" t-field="o.sex"/>
-                        </th>
-                        <th style="border: 0px;" class="text-left">Date of Birth:
-                            <span style="font-weight:normal;" t-field="o.date_of_birth"/>
-                        </th>
-                        <th style="border: 0px;" class="text-left">Age:
-                            <span style="font-weight:normal;" t-field="o.age"/>
-                        </th>
+                        <th>Occupation:</th>
+                        <td>
+                            <span t-field="o.occupation"></span>
+                        </td>
+                        <th>Gender:</th>
+                        <td>
+                            <span t-field="o.sex"></span>
+                        </td>
                     </tr>
-
+                    <tr class="header-row">
+                        <th>Date of Birth:</th>
+                        <td>
+                            <span t-field="o.date_of_birth"></span>
+                        </td>
+                        <th>Age:</th>
+                        <td>
+                            <span t-field="o.age"></span>
+                        </td>
+                    </tr>
                     <tr>
-                        <th style="border: 0px;" class="text-left">Blood Group:
-                            <span style="font-weight:normal;" t-field="o.blood_type"/>
-                        </th>
-                        <th style="border: 0px;" class="text-left">Address:
-                            <span style="font-weight:normal;"
-													t-out="'%s' % o.patient_id.street if  o.patient_id.street  else ''" />
-                            <span style="font-weight:normal;"
-													t-out="'%s' %  o.patient_id.street2 if  o.patient_id.street2  else ''" />
-                            <span style="font-weight:normal;"
-													t-out="'%s' %  o.patient_id.country_id.name if o.patient_id.country_id.name  else ''" />
-                            <span style="font-weight:normal;"
-													t-out="'%s' %  o.patient_id.state_id.name if  o.patient_id.state_id.name  else ''" />
-                        </th>
-                        <th style="border: 0px;" class="text-left">Phone No:
-                            <span style="font-weight:normal;" t-field="o.mobile"/>
-                        </th>
-									</tr>
-							</table>
-						</div>
-			</t>
-		</template>
+                        <th>Blood Group:</th>
+                        <td>
+                            <span t-field="o.blood_type"></span>
+                        </td>
+                        <th>Address:</th>
+                        <td>
+                            <span t-out="'%s' % o.patient_id.street if  o.patient_id.street  else ''"></span>
+                            <span t-out="'%s' % o.patient_id.street2 if  o.patient_id.street2  else ''"></span>
+                            <span t-out="'%s' % o.patient_id.country_id.name if o.patient_id.country_id.name  else ''"></span>
+                            <span t-out="'%s' % o.patient_id.state_id.name if  o.patient_id.state_id.name  else ''"></span>
+                        </td>
+                    </tr>
+                    <tr class="header-row">
+                        <th>Phone No:</th>
+                        <td>
+                            <span t-field="o.mobile"></span>
+                        </td>
+                        <th>Email:</th>
+                        <td>
+                            <span t-field="o.patient_id.email"></span>
+                        </td>
+                    </tr>
+                    <tr class="header-row">
+                        <th>Emergency Contact Name:</th>
+                        <td>
+                            <span t-field="o.relation_name"></span>
+                        </td>
+                        <th>Emergency Contact No:</th>
+                        <td>
+                            <span t-field="o.emergency_no"></span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </t>
+    </template>
 
-		<template id="report_patient_card">
-			<t t-call="web.html_container">
-				<t t-foreach="docs" t-as="o">
-					<t t-call="basic_hms.report_patient_card_document"
-						t-lang="o.patient_id.lang" />
-				</t>
-			</t>
-		</template>
+    <template id="report_patient_card">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="basic_hms.report_patient_card_document"
+                   t-lang="o.patient_id.lang"/>
+            </t>
+        </t>
+    </template>
 </openerp>
