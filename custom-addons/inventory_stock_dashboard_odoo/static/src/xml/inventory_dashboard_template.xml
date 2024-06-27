@@ -250,62 +250,6 @@
 <!--						</div>-->
 <!--					</div>-->
 <!--				</div>-->
-				<!-- Location graph -->
-				<div class="year_to_date_graph_div col-sm-12 col-md-6 my-4">
-					<div class="chart-container card-shadow" id="tiles">
-						<div style="height: 20px; max-height: 20px">
-							<h2>Locations</h2>
-						</div>
-						<hr/>
-						<table style="margin-top: 30px;" class="table table-hover"
-							   id="location_table">
-							<thead>
-								<tr>
-									<th><h2>Location</h2></th>
-									<th><h2 style="text-align: center;">On Hand Quantity</h2></th>
-								</tr>
-							</thead>
-							<tbody class="storage">
-								<t t-foreach="state.location_data" t-as="location" t-key="location_index">
-									<tr>
-										<td>
-											<t t-out="location"/>
-										</td>
-										<td class="location_table_value">
-											<t t-esc="state.location_data[location]"/>
-										</td>
-									</tr>
-	                    		</t>
-							</tbody>
-						</table>
-					</div>
-				</div>
-				<!-- Out of stock graph -->
-				<div class="year_to_date_graph_div col-sm-12 col-md-6 my-4" id="out_of_stock" style="display: none;">
-					<div class="chart-container card-shadow" id="tiles">
-						<div style="height: 20px; max-height: 20px;">
-							<h2>Out of Stock Products</h2>
-							<button class="btn_info" id="out_of_stock_info" title="Show Details" t-on-click="onclick_out_of_stock_info">
-								<i class="fa fa-ellipsis-v"/>
-							</button>
-							<table class="graph_details_table" id="out_of_stock_table">
-								<tr>
-									<th>Products</th>
-									<th>Out of Quantity</th>
-								</tr>
-								<t t-foreach="state.out_stock" t-as="name" t-key="name_index">
-									<tr>
-										<td><t t-out="name"/></td>
-										<td><t t-esc="state.out_stock_count[name_index]"/></td>
-									</tr>
-	                    		</t>
-							</table>
-						</div><hr/>
-						<div class="graph_canvas" style="margin-top: 30px;">
-							<canvas id="out_of_stock_graph" height="500px" width="150px"/>
-						</div>
-					</div>
-				</div>
 				<!-- Dead stock graph -->
 				<div class="year_to_date_graph_div col-sm-12 col-md-6 my-4" id="dead_stock" style="display:none;">
 					<div class="chart-container card-shadow" id="tiles">
