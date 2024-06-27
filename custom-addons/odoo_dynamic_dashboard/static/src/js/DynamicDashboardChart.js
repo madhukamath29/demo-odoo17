@@ -261,22 +261,22 @@ DynamicDashboardChart.template = xml`
                 <div class="col text-right">
                     <!-- Chart type buttons -->
                     <div class="chart-buttons">
-                        <button t-on-click="downloadDetails" class="chart-button circular-button" style="background-color: #007bff; margin-right: 10px; width: 50px; height: 50px;">
+                        <button t-on-click="downloadDetails" class="chart-button circular-button" style="background-color: #007bff; margin-right: 10px; width: 30px; height: 30px;">
                             <i class="fa fa-download" style="color: white;"></i>
                         </button>
-                        <button t-on-click="() => this.changeChartType('bar')" class="chart-button circular-button" style="background-color: #007bff; margin-right: 10px; width: 50px; height: 50px;">
+                        <button t-on-click="() => this.changeChartType('bar')" class="chart-button circular-button" style="background-color: #007bff; margin-right: 10px; width: 30px; height: 30px;">
                             <i class="fa fa-bar-chart" style="color: white;"></i>
                         </button>
-                        <button t-on-click="() => this.changeChartType('line')" class="chart-button circular-button" style="background-color: #007bff; margin-right: 10px; width: 50px; height: 50px;">
+                        <button t-on-click="() => this.changeChartType('line')" class="chart-button circular-button" style="background-color: #007bff; margin-right: 10px; width: 30px; height: 30px;">
                             <i class="fa fa-line-chart" style="color: white;"></i>
                         </button>
-                        <button t-on-click="() => this.changeChartType('pie')" class="chart-button circular-button" style="background-color: #007bff; margin-right: 10px; width: 50px; height: 50px;">
+                        <button t-on-click="() => this.changeChartType('pie')" class="chart-button circular-button" style="background-color: #007bff; margin-right: 10px; width: 30px; height: 30px;">
                             <i class="fa fa-pie-chart" style="color: white;"></i>
                         </button>
-                        <button t-on-click="() => this.changeChartType('doughnut')" class="chart-button circular-button" style="background-color: #007bff; margin-right: 10px; width: 50px; height: 50px;">
+                        <button t-on-click="() => this.changeChartType('doughnut')" class="chart-button circular-button" style="background-color: #007bff; margin-right: 10px; width: 30px; height: 30px;">
                             <i class="fa fa-circle-thin" style="color: white;"></i>
                         </button>
-                        <button t-on-click="() => this.changeChartType('radar')" class="chart-button circular-button" style="background-color: #007bff; width: 50px; height: 50px;">
+                        <button t-on-click="() => this.changeChartType('radar')" class="chart-button circular-button" style="background-color: #007bff; width: 30px; height: 30px;">
                             <i class="fa fa-bullseye" style="color: white;"></i>
                         </button>
                     </div>
