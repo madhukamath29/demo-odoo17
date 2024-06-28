@@ -420,10 +420,10 @@
 
                             </field>
                         </page>
-                        <page string="Medication">
+                        <!-- <page string="Medication">
                             <field name="prescription_line_id" widget="section_and_note_one2many" readonly="1">
                             </field>
-                        </page>
+                        </page> -->
                         <!--                        <page string="Vaccinations">-->
 
                         <!--                            <field name="medical_vaccination_ids"-->
