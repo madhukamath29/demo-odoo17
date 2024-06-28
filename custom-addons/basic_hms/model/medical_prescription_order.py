@@ -45,7 +45,7 @@ class medical_prescription_order(models.Model):
     diagnosis = fields.Char(string="Diagnosis")
     allergies = fields.Char(related='patient_id.allergies', string="Allergies", readonly=True)
     # general_info = fields.Text(related='patient_id.general_info', string="Patient Instruction", readonly=True)
-     followUp_date = fields.Date(related='task_id.follow_up_appointments', string="Follow-Up Appointments", store=True)
+    followUp_date = fields.Date(related='task_id.follow_up_appointments', string="Follow-Up Appointments", store=True)
     age = fields.Char(related='patient_id.age', string="Patient Age", store=True)
 
     @api.model_create_multi
