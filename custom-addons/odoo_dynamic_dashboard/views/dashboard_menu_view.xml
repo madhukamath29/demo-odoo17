@@ -39,7 +39,7 @@
     </record>
     <!--    Menu item to show the configuration in module dynamic dashboard-->
     <menuitem name="Reporting" id="menu_dynamic_dashboard_configuration" parent="basic_hms.main_menu_hospital_management"
-              sequence="3"/>
+              sequence="16"/>
     <!--    Menu item to show the dynamic menus in module dynamic dashboard-->
     <menuitem name="Purchase" id="menu_dynamic_dashboard_menu" parent="odoo_dynamic_dashboard.menu_dynamic_dashboard_configuration"
               sequence="3" action="purchase.action_purchase_order_report_all"/>
