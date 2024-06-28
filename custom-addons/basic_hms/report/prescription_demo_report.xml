@@ -8,7 +8,7 @@
             <h3 class="text-center mb32">
                 <strong>PRESCRIPTION REPORT</strong>
             </h3>
-            <hr style="border: 1px solid; width: 100%;"/>
+            <hr style="border: 5px solid #8b0000; width: 100%;"/>
             <br/>
             <table class="table table-condensed table-borderless"
                    style="width: 100%; border-collapse: collapse; border: none;">
@@ -35,64 +35,44 @@
                    style="width: 100%; border-collapse: collapse; border: none;">
                 <tr style="border: none;">
                     <td style="width: 50%; text-align: left; border: none;">
-                        <strong>Name</strong>
-                        <br/>
+                        <strong>Name : </strong>
                         <span t-field="doc.patient_id.name"/>
                     </td>
                     <td style="width: 50%; text-align: left; border: none;">
-                        <strong>Patient Age</strong>
-                        <br/>
+                        <strong>Patient Age : </strong>
                         <span style="font-weight:normal;" t-field="doc.patient_id.age"/>
                     </td>
                 </tr>
                 <tr style="border: none;">
                     <td style="width: 50%; text-align: left; border: none;">
-                        <strong>Mobile</strong>
-                        <br/>
-                        <span style="font-weight:normal;" t-field="doc.mobile"/>
-                    </td>
-                    <td style="width: 50%; text-align: left; border: none;">
-                        <strong>Date of Birth</strong>
-                        <br/>
-                        <span style="font-weight:normal;" t-field="doc.patient_id.date_of_birth"/>
-                    </td>
-                </tr>
-                <tr style="border: none;">
-                    <td style="width: 50%; text-align: left; border: none;">
-                        <strong>Email</strong>
-                        <br/>
-                        <span style="font-weight:normal;" t-field="doc.patient_id.email_address"/>
-                    </td>
-                    <td style="width: 50%; text-align: left; border: none;">
-                        <strong>Gender</strong>
-                        <br/>
+                        <strong>Gender : </strong>
                         <span style="font-weight:normal;" t-field="doc.patient_id.sex"/>
                     </td>
+                    <td style="width: 50%; text-align: left; border: none;">
+                        <strong>Mobile : </strong>
+                        <span style="font-weight:normal;" t-field="doc.mobile"/>
+                    </td>
                 </tr>
                 <tr style="border: none;">
                     <td style="width: 50%; text-align: left; border: none;">
-                        <strong>Weight</strong>
-                        <br/>
+                        <strong>Weight : </strong>
                         <span style="font-weight:normal;" t-field="doc.weight"/>
                     </td>
                     <td style="width: 50%; text-align: left; border: none;">
-                        <strong>Height</strong>
-                        <br/>
-                        <span style="font-weight:normal;" t-field="doc.height"/>
+                        <strong>Email : </strong>
+                        <span style="font-weight:normal;" t-field="doc.patient_id.email_address"/>
                     </td>
+
                 </tr>
                 <tr style="border: none;">
                     <td style="width: 50%; text-align: left; border: none;">
-                        <strong>Address</strong>
-                        <br/>
+                        <strong>Address : </strong>
                         <span style="font-weight:normal;" t-field="doc.patient_id.patient_id.contact_address"/>
                     </td>
                     <td style="width: 50%; text-align: left; border: none;">
-                        <strong>Follow Up Treatment</strong>
-                        <br/>
+                        <strong>Follow Up Treatment : </strong>
                         <span style="font-weight:normal;" t-field="doc.followUp_date"/>
                     </td>
-
                 </tr>
             </table>
             <br>
