@@ -1,5 +1,219 @@
 <?xml version="1.0" encoding="utf-8"?>
-	<openerp>
+	<openerp> 
+    <template id="basic_hms.prescription_demo_report_template">
+        <t t-call="web.external_layout">
+            <div class="oe_structure"/>
+            <br/>
+
+            <h3 class="text-center mb32">
+                <strong>PRESCRIPTION REPORT</strong>
+            </h3>
+            <hr style="border: 1px solid; width: 100%;"/>
+            <br/>
+            <table class="table table-condensed table-borderless"
+                   style="width: 100%; border-collapse: collapse; border: none;">
+                <tr style="border: none;">
+                    <td style="width: 50%; text-align: left; border: none;">
+                        <strong>Prescription ID</strong>
+                        <br/>
+                        <span style="font-weight:normal;" t-field="doc.name"/>
+                    </td>
+                    <td style="width: 50%; text-align: left; border: none;">
+                        <strong>Prescription Date</strong>
+                        <br/>
+                        <span style="font-weight:normal;" t-field="doc.prescription_date"/>
+                    </td>
+                </tr>
+            </table>
+
+            <tr style="border: none;">
+                <td colspan="2" style="text-align: left; border: none;">
+                    <h4>Patient Information</h4>
+                </td>
+            </tr>
+            <table class="table table-condensed "
+                   style="width: 100%; border-collapse: collapse; border: none;">
+                <tr style="border: none;">
+                    <td style="width: 50%; text-align: left; border: none;">
+                        <strong>Name</strong>
+                        <br/>
+                        <span t-field="doc.patient_id.name"/>
+                    </td>
+                    <td style="width: 50%; text-align: left; border: none;">
+                        <strong>Patient Age</strong>
+                        <br/>
+                        <span style="font-weight:normal;" t-field="doc.patient_id.age"/>
+                    </td>
+                </tr>
+                <tr style="border: none;">
+                    <td style="width: 50%; text-align: left; border: none;">
+                        <strong>Mobile</strong>
+                        <br/>
+                        <span style="font-weight:normal;" t-field="doc.mobile"/>
+                    </td>
+                    <td style="width: 50%; text-align: left; border: none;">
+                        <strong>Date of Birth</strong>
+                        <br/>
+                        <span style="font-weight:normal;" t-field="doc.patient_id.date_of_birth"/>
+                    </td>
+                </tr>
+                <tr style="border: none;">
+                    <td style="width: 50%; text-align: left; border: none;">
+                        <strong>Email</strong>
+                        <br/>
+                        <span style="font-weight:normal;" t-field="doc.patient_id.email_address"/>
+                    </td>
+                    <td style="width: 50%; text-align: left; border: none;">
+                        <strong>Gender</strong>
+                        <br/>
+                        <span style="font-weight:normal;" t-field="doc.patient_id.sex"/>
+                    </td>
+                </tr>
+                <tr style="border: none;">
+                    <td style="width: 50%; text-align: left; border: none;">
+                        <strong>Weight</strong>
+                        <br/>
+                        <span style="font-weight:normal;" t-field="doc.weight"/>
+                    </td>
+                    <td style="width: 50%; text-align: left; border: none;">
+                        <strong>Height</strong>
+                        <br/>
+                        <span style="font-weight:normal;" t-field="doc.height"/>
+                    </td>
+                </tr>
+                <tr style="border: none;">
+                    <td style="width: 50%; text-align: left; border: none;">
+                        <strong>Address</strong>
+                        <br/>
+                        <span style="font-weight:normal;" t-field="doc.patient_id.patient_id.contact_address"/>
+                    </td>
+                    <td style="width: 50%; text-align: left; border: none;">
+                        <strong>Follow Up Treatment</strong>
+                        <br/>
+                        <span style="font-weight:normal;" t-field="doc.followUp_date"/>
+                    </td>
+
+                </tr>
+            </table>
+            <br>
+                <br/>
+            </br>
+            <div>
+                <table class="table table-condensed ">
+                    <thead>
+                        <div>
+                            <strong>
+                                <h4>List of Prescribed Medications</h4>
+                            </strong>
+                        </div>
+                    </thead>
+                    <tbody class="sale_tbody">
+                        <!-- Print the labels only once -->
+                        <tr>
+                            <th>
+                                <strong>Medication Name</strong>
+                            </th>
+                            <th>
+                                <strong>Qty</strong>
+                            </th>
+                            <th>
+                                <strong>Start Treatment</strong>
+                            </th>
+                            <td t-if="doc.prescription_line_ids and doc.prescription_line_ids.filtered('end_treatment')">
+                                <strong>Stop Treatment</strong>
+                            </td>
+                            <th>
+                                <strong>Frequency</strong>
+                            </th>
+                            <td>
+                                <strong>Treatment</strong>
+                            </td>
+                            <td t-if="doc.prescription_line_ids and doc.prescription_line_ids.filtered('review')">
+                                <strong>Review</strong>
+                            </td>
+                            <!--        <td t-if="doc.prescription_line_ids and doc.prescription_line_ids.filtered('refills')">-->
+                            <!--            <strong>Refills</strong>-->
+                            <!--        </td>-->
+                            <th>
+                                <strong>Remarks</strong>
+                            </th>
+                        </tr>
+                        <!-- Iterate over prescription lines to print the values -->
+                        <t t-foreach="doc.prescription_line_ids" t-as="test">
+                            <tr>
+                                <td t-if="test.medicament_id">
+                                    <span t-field="test.medicament_id"/>
+                                </td>
+                                <td t-if="test.quantity">
+                                    <span t-field="test.quantity"/>
+                                </td>
+                                <td t-if="test.start_treatment">
+                                    <span t-field="test.start_treatment"/>
+                                </td>
+                                <td t-if="test.end_treatment">
+                                    <span t-field="test.end_treatment"/>
+                                </td>
+                                <td t-if="test.frequency">Every
+                                    <span t-field="test.frequency"/>
+                                    <span t-field="test.frequency_unit"/>
+                                </td>
+                                <td t-if="test.duration">Take during
+                                    <span t-field="test.duration"/>
+                                    <span t-field="test.duration_period"/>
+                                </td>
+                                <td t-if="test.review">
+                                    <span t-field="test.review"/>
+                                </td>
+                                <td t-if="test.short_comment">
+                                    <span t-field="test.short_comment"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+            </div>
+            <br>
+                <br>
+                    <br>
+                        <br/>
+                    </br>
+                </br>
+            </br>
+
+            <div class="row mt32 mb32" id="informations">
+                <div class="col-xs-3">
+                    <strong>Notes:</strong>
+                    <span t-field="doc.notes"/>
+                </div>
+            </div>
+            <br>
+            </br>
+            <table class="table table-condensed table-borderless"
+                   style="width: 100%; border-collapse: collapse; border: none;">
+                <tr style="border: none;">
+                    <td style="width: 50%; text-align: left; border: none;">
+                        <strong>Doctor Name</strong>
+                        <br/>
+                        <span style="font-weight:normal;" t-field="doc.doctor_id.partner_id.name"/>
+                    </td>
+                    <td style="width: 50%; text-align: left; border: none;">
+                        <strong>Doctor Signature</strong>
+                        <br/>
+                        <span style="font-weight:normal;"/>
+                    </td>
+                </tr>
+            </table>
+        </t>
+    </template>
+
+    <template id="prescription_demo_report">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="basic_hms.prescription_demo_report_template" t-lang="doc.doctor_id.partner_id.lang"/>
+            </t>
+        </t>
+    </template>
+</openerp>
         <template id="basic_hms.prescription_demo_report_template">
 			<t t-call="web.external_layout">
                 <div class="page">
