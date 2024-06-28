@@ -527,4 +527,17 @@ class medical_patient(models.Model):
         action['domain'] = [('id', 'in', invoices.ids)]
         action['context'] = {'default_partner_id': self.patient_id.id}
         return action
+
+    def action_create_project_task(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Create Task in Project',
+            'res_model': 'wizard.create.project.task',
+            'view_mode': 'form',
+            'view_id': self.env.ref('basic_hms.view_wizard_create_project_task_medical_patient').id,
+            'target': 'new',
+            'context': {
+                'default_task_name': self.patient_id.name,
+            },
+        }
 # vim=expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

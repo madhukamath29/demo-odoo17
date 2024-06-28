@@ -17,6 +17,23 @@
             </form>
         </field>
     </record>
+    <record id="view_wizard_create_project_task_medical_patient" model="ir.ui.view">
+        <field name="name">wizard.create.project.task.form</field>
+        <field name="model">wizard.create.project.task</field>
+        <field name="arch" type="xml">
+            <form string="Create Treatment Plan">
+                <group>
+                    <field name="project_id"/>
+                    <field name="task_name" readonly="1"/>
+                    <field name="doctor_id"/>
+                </group>
+                <footer>
+                    <button string="Create Task" type="object" name="create_task_patient" class="oe_highlight"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
 
     <record id="action_wizard_create_project_task" model="ir.actions.act_window">
         <field name="name">Create Task in Project</field>
@@ -24,6 +41,13 @@
         <field name="view_mode">form</field>
         <field name="target">new</field>
         <field name="view_id" ref="basic_hms.view_wizard_create_project_task"/>
+    </record>
+     <record id="action_wizard_create_project_task_medical_patient" model="ir.actions.act_window">
+        <field name="name">Create Task in Project</field>
+        <field name="res_model">wizard.create.project.task</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="basic_hms.view_wizard_create_project_task_medical_patient"/>
     </record>
     <record id="view_task_form_inherit" model="ir.ui.view">
         <field name="name">task.form.inherit.prescription</field>

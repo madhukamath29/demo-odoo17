@@ -11,6 +11,7 @@ class WizardCreateProjectTask(models.TransientModel):
                             default=lambda self: self.env.context.get('default_task_name', ''))
     doctor_name = fields.Char(string="Doctor Name", required=True,
                               default=lambda self: self.env.context.get('default_doctor_name', ''))
+    doctor_id = fields.Many2one('medical.physician', 'Doctor Name')
 
     def create_task(self):
         self.ensure_one()
@@ -32,6 +33,29 @@ class WizardCreateProjectTask(models.TransientModel):
         return {
             'type': 'ir.actions.act_window',
             'name': 'Project Task',
+            'res_model': 'project.task',
+            'view_mode': 'form',
+            'res_id': task.id,
+            'target': 'current',
+        }
+
+    def create_task_patient(self):
+        self.ensure_one()
+        patient_id = self.env.context.get('active_id')
+        patient = self.env['medical.patient'].browse(patient_id)
+        if not patient:
+            return
+
+        task = self.env['project.task'].create({
+            'name': self.task_name,
+            'project_id': self.project_id.id,
+            'patient_id': patient.id,
+            'doctor_id': self.doctor_id.id,
+        })
+
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Project',
             'res_model': 'project.task',
             'view_mode': 'form',
             'res_id': task.id,
