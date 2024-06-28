@@ -52,14 +52,15 @@
                         <group>
                             <field name="name" readonly="1"/>
                             <field name="user_id"/>
+                            <field name="age" readonly="1"/>
                             <field name="doctor_id" required="1" options="{'no_create_edit': True,'no_create': True}"/>
-                            <field name="invoice_to_insurer"/>
-                            <field name="insurer_id"
-                                   invisible="not invoice_to_insurer"/>
+                            <!--                            <field name="invoice_to_insurer"/>-->
+                            <!--                            <field name="insurer_id"-->
+                            <!--                                   invisible="not invoice_to_insurer"/>-->
                             <field name="height" readonly="1"/>
                             <field name="weight" readonly="1"/>
-                            <field name="general_info" readonly="1"/>
-                            <field name="followUp_date" readonly="1"/>
+                            <!--                            <field name="general_info" readonly="1"/>-->
+                            <!--                            <field name="followUp_date" readonly="1"/>-->
                         </group>
                     </group>
                     <group string="Prescription Detail">

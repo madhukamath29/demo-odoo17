@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of BrowseInfo. See LICENSE file for full copyright and licensing details.
+from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models, _
 from datetime import date, datetime
@@ -22,7 +23,7 @@ class medical_prescription_order(models.Model):
     user_id = fields.Many2one('res.users', 'Login User', readonly=True, default=lambda self: self.env.user)
     no_invoice = fields.Boolean('Invoice exempt')
     inv_id = fields.Many2one('account.move', 'Invoice')
-    invoice_to_insurer = fields.Boolean('Invoice to Insurance')
+    # invoice_to_insurer = fields.Boolean('Invoice to Insurance')
     doctor_id = fields.Many2one('medical.physician', 'Doctor Name', related='task_id.doctor_id', readonly=False, )
     medical_appointment_id = fields.Many2one('medical.appointment', 'Appointment')
     state = fields.Selection([('invoiced', 'To Invoiced'), ('tobe', 'To Be Invoiced')], 'Invoice Status')
@@ -43,8 +44,9 @@ class medical_prescription_order(models.Model):
     # diagnosis = fields.Char(related='patient_id.diagnosis', string="Diagnosis", readonly=True)
     diagnosis = fields.Char(string="Diagnosis")
     allergies = fields.Char(related='patient_id.allergies', string="Allergies", readonly=True)
-    general_info = fields.Text(related='patient_id.general_info', string="Patient Instruction", readonly=True)
-    followUp_date = fields.Date(related='task_id.follow_up_appointments', string="Follow-Up Appointments", store=True)
+    # general_info = fields.Text(related='patient_id.general_info', string="Patient Instruction", readonly=True)
+     followUp_date = fields.Date(related='task_id.follow_up_appointments', string="Follow-Up Appointments", store=True)
+    age = fields.Char(related='patient_id.age', string="Patient Age", store=True)
 
     @api.model_create_multi
     def create(self, vals_list):
