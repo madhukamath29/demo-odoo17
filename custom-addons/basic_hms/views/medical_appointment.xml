@@ -12,7 +12,7 @@
                             invisible="status != 'completed'"
                             help="Invoice creation available only for completed appointments."/>
                     <button name="action_create_task" type="object" string="Create Treatment Plan"
-                            class="oe_highlight" invisible="status != 'check_in'"/>
+                            class="oe_highlight" invisible="status != 'completed'"/>
                     <button name="checkin_action" string="Check-in" type="object" class="oe_highlight"
                             invisible="status != 'booked'"/>
                     <button name="checkin_action" string="Completed" type="object" class="oe_highlight"
