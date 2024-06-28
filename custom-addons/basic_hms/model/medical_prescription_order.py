@@ -14,17 +14,39 @@ class medical_prescription_order(models.Model):
     patient_id = fields.Many2one(
         comodel_name='medical.patient',
         string='Patient Name',
-        # required=True,
-        related='task_id.patient_id',
+        required=True,
         readonly=False,
     )
+
+    @api.onchange('task_id')
+    def _onchange_task_id(self):
+        if self.task_id:
+            self.patient_id = self.task_id.patient_id
+            self.doctor_id = self.task_id.doctor_id
+        else:
+            self.patient_id = None
+            self.doctor_id = None
+
+    # Ensure that patient_id is required
+    @api.constrains('patient_id')
+    def _check_patient_id(self):
+        for record in self:
+            if not record.patient_id:
+                raise ValidationError("Patient Name must be set.")
+
+    @api.constrains('doctor_id')
+    def _check_doctor_id(self):
+        for record in self:
+            if not record.doctor_id:
+                raise ValidationError("Doctor Name must be set.")
+
     task_id = fields.Many2one('project.task', string='Task')
     prescription_date = fields.Datetime('Prescription Date', default=fields.Datetime.now)
     user_id = fields.Many2one('res.users', 'Login User', readonly=True, default=lambda self: self.env.user)
     no_invoice = fields.Boolean('Invoice exempt')
     inv_id = fields.Many2one('account.move', 'Invoice')
     # invoice_to_insurer = fields.Boolean('Invoice to Insurance')
-    doctor_id = fields.Many2one('medical.physician', 'Doctor Name', related='task_id.doctor_id', readonly=False, )
+    doctor_id = fields.Many2one('medical.physician', 'Doctor Name', required=True)
     medical_appointment_id = fields.Many2one('medical.appointment', 'Appointment')
     state = fields.Selection([('invoiced', 'To Invoiced'), ('tobe', 'To Be Invoiced')], 'Invoice Status')
     pharmacy_partner_id = fields.Many2one('res.partner', domain=[('is_pharmacy', '=', True)], string='Pharmacy')
