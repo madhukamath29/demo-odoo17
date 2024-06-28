@@ -51,8 +51,8 @@
               sequence="3" action="mrp.mrp_workcenter_productivity_report"/>
     <menuitem name="Accounting" id="menu_dynamic_dashboard_mrp_acc" parent="odoo_dynamic_dashboard.menu_dynamic_dashboard_configuration"
               sequence="3" action="odoo_accounting_dashboard.accounting_dashboard_action"/>
-    <menuitem name="Inventory" id="menu_dynamic_dashboard_mrp_treat" parent="odoo_dynamic_dashboard.menu_dynamic_dashboard_configuration"
-              sequence="3" action="inventory_stock_dashboard_odoo.dashboard_action"/>
+    <!-- <menuitem name="Inventory" id="menu_dynamic_dashboard_mrp_treat" parent="odoo_dynamic_dashboard.menu_dynamic_dashboard_configuration"
+              sequence="3" action="inventory_stock_dashboard_odoo.dashboard_action"/> -->
     <menuitem name="Treatment" id="menu_dynamic_dashboard_inv_das" parent="odoo_dynamic_dashboard.menu_dynamic_dashboard_configuration"
               sequence="3" action="project_dashboard_odoo.project_dashboard_action"/>
      <menuitem name="Purchase" id="menu_dynamic_dashboard_menu" parent="odoo_dynamic_dashboard.menu_dynamic_dashboard_configuration"
