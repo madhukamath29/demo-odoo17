@@ -78,5 +78,19 @@
             </xpath>
         </field>
     </record>
+    <record id="view_product_template_form_inherit_scanner" model="ir.ui.view">
+        <field name="name">product.template.form.inherit.scanner</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <!-- Locate the barcode field and add the mobile_code_scanner widget -->
+            <xpath expr="//field[@name='barcode']" position="attributes">
+                <attribute name="widget">mobile_code_scanner</attribute>
+                <attribute name="scanner_options">{'enable_sound': false, 'enable_flashlight_default': true,
+                    'enable_backend_scan': true}
+                </attribute>
+            </xpath>
+        </field>
+    </record>
 </odoo>
 
