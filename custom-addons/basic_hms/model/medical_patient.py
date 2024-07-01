@@ -5,6 +5,7 @@ from odoo import api, fields, models, _
 from datetime import date, datetime
 from dateutil.relativedelta import relativedelta
 from odoo.exceptions import UserError, ValidationError
+from datetime import datetime
 
 
 class medical_patient(models.Model):
@@ -463,8 +464,19 @@ class medical_patient(models.Model):
         comodel_name='medical.prescription.order',
         inverse_name='patient_id',
         string='Prescriptions',
-        readonly='True'
+        readonly=True,
+        compute='_compute_prescription_ids'
     )
+
+    @api.depends('patient_id')
+    def _compute_prescription_ids(self):
+        for record in self:
+            now = fields.Datetime.context_timestamp(record, fields.Datetime.now())
+            now_str = fields.Datetime.to_string(now)
+            record.prescription_ids = self.env['medical.prescription.order'].search([
+                ('patient_id', '=', record.id),
+                ('prescription_line_ids.end_treatment', '>', now_str)
+            ])
     appointment_ids = fields.One2many('medical.appointment', 'patient_id', string='Appointments')
     appointment_count = fields.Integer(string='Appointment Count', compute='_compute_appointment_count', store=True)
 
