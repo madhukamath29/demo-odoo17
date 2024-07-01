@@ -296,7 +296,13 @@ class medical_patient(models.Model):
     deaths_1st_week = fields.Integer('Deceased after 1st week')
     full_term = fields.Integer('Full Term')
     ses_notes = fields.Text('Notes')
-    treatment_plan_ids = fields.One2many('project.task', 'patient_id', string='Treatment Plans')
+    treatment_plan_ids = fields.One2many(
+        'project.task',
+        'patient_id',
+        string='Treatment Plans',
+        domain=[('parent_id', '=', False)]
+    )
+
     prescription_line_id = fields.One2many('medical.prescription.line', 'patient_id', string="Prescription Line")
     language_preferences = fields.Char(string="Language Preferences")
     preferred_appointment_times = fields.Selection([

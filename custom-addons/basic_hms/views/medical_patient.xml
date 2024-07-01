@@ -439,7 +439,8 @@
                         <page string="Treatment Plan">
                             <field name="treatment_plan_ids" readonly="1">
                                 <tree>
-                                    <field name="name" string="Patient name"/>
+                                    <field name="patient_id" string="Patient name"/>
+                                    <field name="doctor_id" string="Doctor name"/>
                                     <field name="project_id" string="Treatment Type"/>
                                     <field name="date_deadline" string="Date"/>
                                 </tree>
