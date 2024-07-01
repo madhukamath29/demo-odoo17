@@ -36,7 +36,7 @@
                 <tr style="border: none;">
                     <td style="width: 50%; text-align: left; border: none;">
                         <strong>Name : </strong>
-                        <span t-field="doc.patient_id.name"/>
+                        <span t-field="doc.patient_id.patient_id"/>
                     </td>
                     <td style="width: 50%; text-align: left; border: none;">
                         <strong>Patient Age : </strong>
