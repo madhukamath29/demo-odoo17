@@ -99,6 +99,7 @@
         'report/patient_vaccinations_document_report.xml',
         'report/prescription_demo_report.xml',
         'report/report_medical_tooth.xml',
+        'report/medical_apt_inv.xml',
     ],
     "author": "BrowseInfo",
     "website": "https://www.browseinfo.com",
