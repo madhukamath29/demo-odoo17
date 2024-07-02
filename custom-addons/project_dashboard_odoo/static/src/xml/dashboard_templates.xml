@@ -135,7 +135,7 @@
             </t>
             <div class="col-md-4 col-sm-6 oh-payslip">
                 <div class="oh-card" style="width: 410px;">
-                    <div class="oh-card-body tot_sale" t-on-click="(e) => this.tot_emp(e)"
+                    <div class="oh-card-body tot_sale" t-on-click="(e) => this.tot_sale(e)"
                          style="box-shadow:5px 11px 30px;">
                         <div class="stat-widget-one" style="display:flex;">
                             <div class="stat-icon"><i class="fa fa-ticket" /></div>
