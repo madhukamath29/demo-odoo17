@@ -12,14 +12,16 @@
                             invisible="status != 'completed'"
                             help="Invoice creation available only for completed appointments."/>
                     <button name="action_create_task" type="object" string="Create Treatment Plan"
-                            class="oe_highlight" invisible="status != 'completed'"/>
+                            class="oe_highlight" invisible="status != 'check_in'"/>
                     <button name="checkin_action" string="Check-in" type="object" class="oe_highlight"
                             invisible="status != 'booked'"/>
                     <button name="checkin_action" string="Completed" type="object" class="oe_highlight"
                             invisible="status != 'check_in'"/>
-                    <button name="action_noshow_appointment" string="No Show" type="object" class="oe_highlight"/>
+                    <button name="action_noshow_appointment" string="No Show" type="object" class="oe_highlight"
+                            invisible="status != 'booked'"/>
                     <button name="action_cancel_appointment" string="Cancel Appointment" type="object"
-                            class="oe_highlight"/>
+                            class="oe_highlight" invisible="status != 'booked'"/>
+                    <button name="action_reset_status" type="object" string="Reset Status" class="oe_highlight" invisible="status == 'completed'"/>
                     <field name="status" widget="statusbar"/>
                 </header>
                 <sheet>
@@ -58,7 +60,7 @@
                             <field name="insurer_id"
                                    invisible="not invoice_to_insurer"/>
                             <field name="consultations_id"/>
-                            <field name="status"/>
+                            <field name="status" invisible="1"/>
                         </group>
                     </group>
                     <notebook>

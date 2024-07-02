@@ -58,6 +58,10 @@ class medical_appointment(models.Model):
         ('completed', 'Completed')
     ], string='Status', default='booked', track_visibility='onchange')
 
+    def action_reset_status(self):
+        for record in self:
+            record.status = 'booked'
+
     def _valid_field_parameter(self, field, name):
         return name == 'sort' or super()._valid_field_parameter(field, name)
 
@@ -154,7 +158,6 @@ class medical_appointment(models.Model):
                 msg_body = 'Appointment completed'
             appointment.message_post(body=msg_body)
         return True
-
 
     def action_noshow_appointment(self):
         for appointment in self:
