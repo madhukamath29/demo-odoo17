@@ -116,7 +116,7 @@
                                 <group>
                                     <field name="rh"/>
                                     <field name="receivable"/>
-                                    <field name="primary_care_physician_id"/>
+<!--                                    <field name="primary_care_physician_id"/>-->
                                 </group>
                             </group>
 
