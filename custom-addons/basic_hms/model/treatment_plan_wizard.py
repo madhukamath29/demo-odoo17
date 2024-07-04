@@ -72,7 +72,7 @@ class Project(models.Model):
 class ProjectTask(models.Model):
     _inherit = 'project.task'
 
-    patient_id = fields.Many2one('medical.patient', string="Patient")
+    patient_id = fields.Many2one('medical.patient', string="Patient Name")
     doctor_id = fields.Many2one('medical.physician', 'Prescribing Doctor')
 
     appointment_id = fields.Many2one('medical.appointment', string="Appointment")

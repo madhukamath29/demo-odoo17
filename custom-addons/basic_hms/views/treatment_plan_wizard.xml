@@ -35,6 +35,36 @@
         </field>
     </record>
 
+    <!-- Inherit Task Tree View -->
+    <record id="view_task_tree2_inherit" model="ir.ui.view">
+        <field name="name">project.task.tree.inherit</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_tree2"/>
+        <field name="arch" type="xml">
+            <!-- Add fields patient_id, doctor_id, and project_id -->
+            <xpath expr="//tree" position="inside">
+                <field name="patient_id"/>
+                <field name="doctor_id" string="Doctor Name"/>
+                <field name="project_id" string="Treatment Type"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Inherit Task Search Form -->
+    <record id="view_task_search_form_inherit" model="ir.ui.view">
+        <field name="name">project.task.search.form.inherit</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_search_form_base"/>
+        <field name="arch" type="xml">
+            <!-- Adding the Parent Task filter after the 'Archived' filter -->
+            <xpath expr="//filter[@name='inactive']" position="after">
+                <separator/>
+                <filter string="Parent Task" name="parent_task" domain="[('parent_id', '=', False)]"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Actions for the Wizards -->
     <record id="action_wizard_create_project_task" model="ir.actions.act_window">
         <field name="name">Create Task in Project</field>
         <field name="res_model">wizard.create.project.task</field>
