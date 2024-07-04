@@ -634,6 +634,9 @@
     </record>
     <menuitem id="dental_invoice_child" action="action_invoice_order"
               name="Invoices" parent="menu_patients" sequence="3"/>
+    <menuitem id="dental_invoice_child1" action="project.action_view_all_task"
+              name="All Treatment Tasks" parent="menu_patients" sequence="5"/>
+
 
     <menuitem id="menu_inventory" name="Inventory"
               parent="menu_hospital_inventory" sequence="5"/>

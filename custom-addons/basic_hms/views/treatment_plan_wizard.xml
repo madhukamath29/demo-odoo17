@@ -41,8 +41,8 @@
         <field name="model">project.task</field>
         <field name="inherit_id" ref="project.view_task_tree2"/>
         <field name="arch" type="xml">
-            <!-- Add fields patient_id, doctor_id, and project_id -->
-            <xpath expr="//tree" position="inside">
+            <!-- Add fields patient_id, doctor_id, and project_id after title -->
+            <xpath expr="//tree/field[@name='name']" position="after">
                 <field name="patient_id"/>
                 <field name="doctor_id" string="Doctor Name"/>
                 <field name="project_id" string="Treatment Type"/>
