@@ -204,8 +204,8 @@ export class ProjectDashboard extends Component {
 //			$('#tot_employee')[0].innerHTML = data['total_emp'].length
 			$("#tot_task")[0].innerHTML = data['total_task'].length
 			$("#tot_hrs")[0].innerHTML = data['hours_recorded']
-			$("#tot_margin")[0].innerHTML = data['total_margin']
-			$("#tot_so")[0].innerHTML = data['total_so'].length
+			// $("#tot_margin")[0].innerHTML = data['total_margin']
+			// $("#tot_so")[0].innerHTML = data['total_so'].length
 		})
 	}
 	/**
