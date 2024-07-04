@@ -190,10 +190,9 @@ class ProjectFilter(http.Controller):
             all_project = request.env['project.project'].search([])
             all_task = request.env['project.task'].search([])
             analytic_project = request.env['account.analytic.line'].search([])
-            report_project = request.env['timesheets.analysis.report'].search(
-                [])
+            report_project = request.env['timesheets.analysis.report'].search([])
             margin = round(sum(report_project.mapped('margin')), 2)
-            total_time = sum(analytic_project.mapped('unit_amount'))
+            total_time = round(sum(analytic_project.mapped('unit_amount')), 2)
             employees = request.env['hr.employee'].search([])
             task = request.env['project.task'].sudo().search_read([
                 ('sale_order_id', '!=', False)
@@ -230,7 +229,7 @@ class ProjectFilter(http.Controller):
                         all_task.append(task.id)
             analytic_project = request.env['account.analytic.line'].search(
                 [('project_id', 'in', all_project.ids)])
-            total_time = sum(analytic_project.mapped('unit_amount'))
+            total_time = round(sum(analytic_project.mapped('unit_amount')), 2)
             task = request.env['project.task'].sudo().search_read([
                 ('sale_order_id', '!=', False),
                 ('project_id', 'in', all_project.ids)
