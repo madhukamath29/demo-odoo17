@@ -102,78 +102,55 @@ class ProjectFilter(http.Controller):
 
     @http.route('/project/filter-apply', auth='public', type='json')
     def project_filter_apply(self, **kw):
-        """Summary:
-            transferring data after filter 9th applied
-        Args:
-            kw(dict):This parameter contains the value of selection field
-        Returns:
-            type:dict, it contains the data for the corresponding
-            filtrated transferring data to ui after filtration."""
-        data = kw['data']
-        # checking the employee selected or not
-        if data['employee'] == 'null':
-            emp_selected = [employee.id for employee in
-                            request.env['hr.employee'].search([])]
+        data = kw.get('data', {})
+
+        emp_selected = []
+        if data.get('employee') == 'null':
+            emp_selected = [employee.id for employee in request.env['hr.employee'].search([])]
         else:
-            emp_selected = [int(data['employee'])]
-        start_date = data['start_date']
-        end_date = data['end_date']
-        # checking the dates are selected or not
+            emp_selected = [int(data.get('employee'))]
+
+        start_date = data.get('start_date')
+        end_date = data.get('end_date')
+        pro_selected = []
+
         if start_date != 'null' and end_date != 'null':
-            start_date = datetime.datetime.strptime(start_date,
-                                                    "%Y-%m-%d").date()
+            start_date = datetime.datetime.strptime(start_date, "%Y-%m-%d").date()
             end_date = datetime.datetime.strptime(end_date, "%Y-%m-%d").date()
-            if data['project'] == 'null':
-                pro_selected = [project.id for project in
-                                request.env['project.project'].search(
-                                    [('date_start', '>', start_date),
-                                     ('date_start', '<', end_date)])]
-            else:
-                pro_selected = [int(data['project'])]
+            pro_selected = [project.id for project in request.env['project.project'].search(
+                [('date_start', '>', start_date), ('date_start', '<', end_date)])]
         elif start_date == 'null' and end_date != 'null':
             end_date = datetime.datetime.strptime(end_date, "%Y-%m-%d").date()
-            if data['project'] == 'null':
-                pro_selected = [project.id for project in
-                                request.env['project.project'].search(
-                                    [('date_start', '<', end_date)])]
-            else:
-                pro_selected = [int(data['project'])]
+            pro_selected = [project.id for project in
+                            request.env['project.project'].search([('date_start', '<', end_date)])]
         elif start_date != 'null' and end_date == 'null':
-            start_date = datetime.datetime.strptime(start_date,
-                                                    "%Y-%m-%d").date()
-            if data['project'] == 'null':
-                pro_selected = [project.id for project in
-                                request.env['project.project'].search(
-                                    [('date_start', '>', start_date)])]
-            else:
-                pro_selected = [int(data['project'])]
+            start_date = datetime.datetime.strptime(start_date, "%Y-%m-%d").date()
+            pro_selected = [project.id for project in
+                            request.env['project.project'].search([('date_start', '>', start_date)])]
         else:
-            if data['project'] == 'null':
-                pro_selected = [project.id for project in
-                                request.env['project.project'].search([])]
-            else:
-                pro_selected = [int(data['project'])]
+            pro_selected = [project.id for project in request.env['project.project'].search([])]
+
         report_project = request.env['timesheets.analysis.report'].search(
-            [('project_id', 'in', pro_selected),
-             ('employee_id', 'in', emp_selected)])
+            [('project_id', 'in', pro_selected), ('employee_id', 'in', emp_selected)])
         analytic_project = request.env['account.analytic.line'].search(
-            [('project_id', 'in', pro_selected),
-             ('employee_id', 'in', emp_selected)])
+            [('project_id', 'in', pro_selected), ('employee_id', 'in', emp_selected)])
+
+        # Debug output
+        print(
+            f"pro_selected: {pro_selected}, emp_selected: {emp_selected}, report_project: {report_project.ids}, analytic_project: {analytic_project.ids}")
+
+        # Calculate margin and other metrics
         margin = round(sum(report_project.mapped('margin')), 2)
-        sale_orders = []
-        for rec in analytic_project:
-            if rec.order_id.id and rec.order_id.id not in sale_orders:
-                sale_orders.append(rec.order_id.id)
-        total_time = sum(analytic_project.mapped('unit_amount'))
+        total_time = round(sum(analytic_project.mapped('unit_amount')), 2)
+
         return {
             'total_project': pro_selected,
             'total_emp': emp_selected,
-            'total_task': [rec.id for rec in request.env['project.task'].search(
-                [('project_id', 'in', pro_selected)])],
+            'total_task': [rec.id for rec in request.env['project.task'].search([('project_id', 'in', pro_selected)])],
             'hours_recorded': total_time,
             'list_hours_recorded': [rec.id for rec in analytic_project],
             'total_margin': margin,
-            'total_so': sale_orders
+            'total_so': [rec.order_id.id for rec in analytic_project if rec.order_id]
         }
 
     @http.route('/get/tiles/data', auth='public', type='json')
@@ -267,61 +244,50 @@ class ProjectFilter(http.Controller):
             hours table."""
         user_employee = request.env.user.partner_id
         if user_employee.user_has_groups('project.group_project_manager'):
-            query = '''SELECT sum(unit_amount) as hour_recorded FROM 
-            account_analytic_line WHERE 
-            timesheet_invoice_type='non_billable_project' '''
+            query = '''SELECT COALESCE(sum(unit_amount), 0) as hour_recorded FROM 
+                account_analytic_line WHERE 
+                timesheet_invoice_type='non_billable_project' '''
             request._cr.execute(query)
             data = request._cr.dictfetchall()
-            hour_recorded = []
-            for record in data:
-                hour_recorded.append(record.get('hour_recorded'))
-            query = '''SELECT sum(unit_amount) as hour_recorde FROM 
-            account_analytic_line WHERE 
-            timesheet_invoice_type='billable_time' '''
+            hour_recorded = data[0].get('hour_recorded', 0)
+
+            query = '''SELECT COALESCE(sum(unit_amount), 0) as hour_recorde FROM 
+                account_analytic_line WHERE 
+                timesheet_invoice_type='billable_time' '''
             request._cr.execute(query)
             data = request._cr.dictfetchall()
-            hour_recorde = []
-            for record in data:
-                hour_recorde.append(record.get('hour_recorde'))
-            query = '''SELECT sum(unit_amount) as billable_fix FROM 
-            account_analytic_line WHERE 
-            timesheet_invoice_type='billable_fixed' '''
+            hour_recorde = data[0].get('hour_recorde', 0)
+
+            query = '''SELECT COALESCE(sum(unit_amount), 0) as billable_fix FROM 
+                account_analytic_line WHERE 
+                timesheet_invoice_type='billable_fixed' '''
             request._cr.execute(query)
             data = request._cr.dictfetchall()
-            billable_fix = []
-            for record in data:
-                billable_fix.append(record.get('billable_fix'))
-            query = '''SELECT sum(unit_amount) as non_billable FROM 
-            account_analytic_line WHERE timesheet_invoice_type='non_billable' 
-            '''
+            billable_fix = data[0].get('billable_fix', 0)
+
+            query = '''SELECT COALESCE(sum(unit_amount), 0) as non_billable FROM 
+                account_analytic_line WHERE timesheet_invoice_type='non_billable' 
+                '''
             request._cr.execute(query)
             data = request._cr.dictfetchall()
-            non_billable = []
-            for record in data:
-                non_billable.append(record.get('non_billable'))
-            query = '''SELECT sum(unit_amount) as total_hr FROM 
-            account_analytic_line WHERE 
-            timesheet_invoice_type='non_billable_project' or
-            timesheet_invoice_type='billable_time' or 
-            timesheet_invoice_type='billable_fixed' or 
-            timesheet_invoice_type='non_billable' '''
-            request._cr.execute(query)
-            data = request._cr.dictfetchall()
-            total_hr = []
-            for record in data:
-                total_hr.append(record.get('total_hr'))
+            non_billable = data[0].get('non_billable', 0)
+
+            # Summing up and rounding individual values to 2 decimal places
+            total_hr = round(hour_recorded + hour_recorde + billable_fix + non_billable, 2)
+
             return {
-                'hour_recorded': hour_recorded,
-                'hour_recorde': hour_recorde,
-                'billable_fix': billable_fix,
-                'non_billable': non_billable,
-                'total_hr': total_hr,
+                'hour_recorded': [hour_recorded],
+                'hour_recorde': [hour_recorde],
+                'billable_fix': [billable_fix],
+                'non_billable': [non_billable],
+                'total_hr': [total_hr],
             }
         else:
             all_project = request.env['project.project'].search(
                 [('user_id', '=', request.env.uid)]).ids
             analytic_project = request.env['account.analytic.line'].search(
                 [('project_id', 'in', all_project)])
+
             all_hour_recorded = analytic_project.filtered(
                 lambda x: x.timesheet_invoice_type == 'non_billable_project')
             all_hour_recorde = analytic_project.filtered(
@@ -330,18 +296,25 @@ class ProjectFilter(http.Controller):
                 lambda x: x.timesheet_invoice_type == 'billable_fixed')
             all_non_billable = analytic_project.filtered(
                 lambda x: x.timesheet_invoice_type == 'non_billable')
-            hour_recorded = [sum(all_hour_recorded.mapped('unit_amount'))]
-            hour_recorde = [sum(all_hour_recorde.mapped('unit_amount'))]
-            billable_fix = [sum(all_billable_fix.mapped('unit_amount'))]
-            non_billable = [sum(all_non_billable.mapped('unit_amount'))]
-            total_hr = [
-                sum(hour_recorded + hour_recorde + billable_fix + non_billable)]
+
+            # Summing up and rounding individual values to 2 decimal places
+            total_hour_recorded = round(sum(all_hour_recorded.mapped('unit_amount')), 2)
+            total_hour_recorde = round(sum(all_hour_recorde.mapped('unit_amount')), 2)
+            total_billable_fix = round(sum(all_billable_fix.mapped('unit_amount')), 2)
+            total_non_billable = round(sum(all_non_billable.mapped('unit_amount')), 2)
+            total_hr = round(sum([
+                total_hour_recorded,
+                total_hour_recorde,
+                total_billable_fix,
+                total_non_billable
+            ]), 2)
+
             return {
-                'hour_recorded': hour_recorded,
-                'hour_recorde': hour_recorde,
-                'billable_fix': billable_fix,
-                'non_billable': non_billable,
-                'total_hr': total_hr,
+                'hour_recorded': [total_hour_recorded],
+                'hour_recorde': [total_hour_recorde],
+                'billable_fix': [total_billable_fix],
+                'non_billable': [total_non_billable],
+                'total_hr': [total_hr],
             }
 
     @http.route('/get/task/data', auth='public', type='json')
