@@ -1,0 +1,378 @@
+<odoo>
+    <data>
+        <template id="medical_sale_order" inherit_id="sale.report_saleorder_document">
+            <xpath expr="//t[@t-call='web.external_layout']" position="replace">
+                <t t-call="web.external_layout">
+                    <!-- Apply page-break class to force page break -->
+                    <div class="page-break">
+                        <div class="custom-content">
+                            <t t-foreach="docs" t-as="doc">
+                                <t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang)"/>
+                                <t t-set="forced_vat" t-value="doc.fiscal_position_id.foreign_vat"/>
+
+                                <h2 class="mt-4" style="text-align: center; font-weight: bold;">
+                                    <span style="text-align: center; color: #000080 !important;" t-if="env.context.get('proforma', False) or is_pro_forma">PRO FORMA INVOICE</span>
+                                    <span style="text-align: center; color: #000080 !important;"
+                                          t-elif="doc.state in ['draft','sent']">BUSINESS QUOTATION
+                                    </span>
+                                    <span style="text-align: center; color: #000080 !important;" t-else="">SALE ORDER
+                                    </span>
+                                </h2>
+
+                                <hr style="border: 1px solid grey; width: 100%;"/>
+                                <table class="table table-borderless"
+                                       style="width: 100%; border-collapse: collapse; border: none;">
+                                    <tr>
+                                        <!-- Left cell (40% width) with border -->
+                                        <td style="width: 50%; vertical-align: top; padding: 10px; border: 1px solid black;">
+                                            <div style="padding: 10px; min-width: 180px; margin-bottom: 30px;">
+                                                <div class="mt-2">
+                                                    <p class="larger-font" style="font-weight: bold; color: #000080;">
+                                                        <strong t-if="doc.state in ['draft', 'sent']">QUOTATION FOR
+                                                        </strong>
+                                                        <strong t-else="">ORDER FOR</strong>
+                                                    </p>
+                                                    <div class="larger-font"
+                                                         style="width: 100%; min-width: 180px; padding-left: 10px; color: #000080;">
+                                                        <t t-if="doc.partner_id.name">
+                                                            <span style="padding-bottom: 2px;"
+                                                                  t-field="doc.partner_id.name"></span>
+                                                            <br/>
+                                                        </t>
+                                                        <!--                                                    <t t-if="doc.partner_id.parent_id.name">-->
+                                                        <!--                                                        <span style="padding-bottom: 2px;"-->
+                                                        <!--                                                              t-field="doc.partner_id.parent_id.name"></span>-->
+                                                        <!--                                                        <br/>-->
+                                                        <!--                                                    </t>-->
+                                                        <t t-if="doc.partner_id.street or doc.partner_id.street2">
+                                                            <span t-if="doc.partner_id.street"
+                                                                  style="padding-bottom: 2px;"
+                                                                  t-field="doc.partner_id.street"></span>
+                                                            <span t-if="doc.partner_id.street2"
+                                                                  style="padding-left: 2px; padding-bottom: 2px;"
+                                                                  t-field="doc.partner_id.street2"></span>
+                                                            <br/>
+                                                        </t>
+                                                        <t t-if="doc.partner_id.city or doc.partner_id.state_id">
+                                                            <span t-if="doc.partner_id.city"
+                                                                  style="padding-bottom: 2px;"
+                                                                  t-field="doc.partner_id.city"></span>
+                                                            <span t-if="doc.partner_id.state_id"
+                                                                  style="padding-left: 2px;"
+                                                                  t-field="doc.partner_id.state_id"></span>
+                                                            <br/>
+                                                        </t>
+                                                        <t t-if="doc.partner_id.zip or doc.partner_id.phone">
+                                                            <span t-if="doc.partner_id.zip" style="padding-bottom: 2px;"
+                                                                  t-field="doc.partner_id.zip"></span>
+                                                            <span t-if="doc.partner_id.phone" style="padding-left: 2px;"
+                                                                  t-field="doc.partner_id.phone"></span>
+                                                            <br/>
+                                                        </t>
+                                                        <t t-if="doc.partner_id.mobile">
+                                                            <span style="padding-bottom: 2px;"
+                                                                  t-field="doc.partner_id.mobile"></span>
+                                                        </t>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <!-- Right cell (60% width) without border -->
+                                        <td style="width: 60%; vertical-align: top; padding: 10px; border-right: none;">
+                                            <div class="row mt-4 mb-4" id="informations">
+                                                <t t-if="doc.name" class="col-auto col-3 mw-100 mb-2">
+                                                    <strong style="font-weight: bold; color: #000080;">QUOTATION REF NO:
+                                                    </strong>
+                                                    <strong>
+                                                        <span class="m-0" style="color: #000080"
+                                                              t-field="doc.name"></span>
+                                                    </strong>
+                                                    <br/>
+                                                </t>
+
+                                                <t t-if="doc.name" class="col-auto col-3 mw-100 mb-2">
+                                                    <t t-if="doc.state not in ['draft', 'sent']">
+                                                        <strong style="font-weight: bold; color: #000080;">ORDER NO:
+                                                        </strong>
+                                                        <strong>
+                                                            <span class="m-0" style="color: #000080"
+                                                                  t-field="doc.name"></span>
+                                                        </strong>
+                                                        <br/>
+                                                    </t>
+                                                </t>
+
+                                                <t t-if="doc.date_order" class="col-auto col-3 mw-100 mb-2"
+                                                   name="informations_date">
+                                                    <strong style="font-weight: bold; color: #000080;"
+                                                            t-if="doc.state in ['draft', 'sent']">QUOTATION DATE:
+                                                    </strong>
+                                                    <strong style="font-weight: bold; color: #000080;" t-else="">ORDER
+                                                        DATE:
+                                                    </strong>
+                                                    <!-- Display the date -->
+                                                    <strong>
+                                                        <span class="m-0" style="color: #000080"
+                                                              t-field="doc.date_order"
+                                                              t-options='{"widget": "date"}'></span>
+                                                    </strong>
+                                                    <br/>
+                                                </t>
+
+                                                <t t-if="doc.validity_date" class="col-auto col-3 mw-100 mb-2">
+                                                    <strong style="font-weight: bold; color: #000080;">VALID UNTIL:
+                                                    </strong>
+                                                    <strong>
+                                                        <span class="m-0" style="color: #000080"
+                                                              t-field="doc.validity_date"></span>
+                                                    </strong>
+                                                </t>
+                                                <br/>
+                                                <t t-if="doc.user_id" class="col-auto col-3 mw-100 mb-2">
+                                                    <strong style="font-weight: bold; color: #000080;">PREPARED BY:
+                                                    </strong>
+                                                    <strong>
+                                                        <span class="m-0" style="color: #000080;"
+                                                              t-field="doc.user_id"></span>
+                                                    </strong>
+                                                    <br/>
+                                                </t>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div>
+                                    <h5 style="font-size: 20px; font-weight:bold; color: #000080; min-width: 350px;">
+                                        COMMENTS OR SPECIAL INSTRUCTION
+                                    </h5>
+                                </div>
+                                <table class="table table-sm o_main_table table-borderless mt-3">
+                                    <thead style="display: table-row-group">
+                                        <tr>
+                                            <th name="th_contact_per" class="text-center"
+                                                style="color: #000080;font-weight:bold">CONTACT PERSON
+                                            </th>
+                                            <th name="th_quantity" class="text-center"
+                                                style="color: #000080;font-weight:bold">DELIVERY DATE
+                                            </th>
+                                            <th name="th_priceunit" class="text-center"
+                                                style="color:#000080;font-weight:bold">PAYMENT TERMS
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="sale_tbody">
+                                        <tr>
+                                            <td class="text-center" style="color:#000080;font-weight:bold">
+                                                <div style="width:60%; min-width: 180px;" class="larger-font"
+                                                     t-field="doc.partner_id.name">
+                                                </div>
+                                            </td>
+                                            <div style="width:60%; min-width: 180px;" class="larger-font">
+                                                <td class="text-center" style="color:#000080;font-weight:bold">
+                                                    <strong>
+                                                        <span t-field="doc.commitment_date"
+                                                              t-options='{"format": "MM-dd-Y"}' class="m-0"/>
+                                                    </strong>
+                                                </td>
+                                            </div>
+                                            <div style="width:60%; min-width: 180px;" class="larger-font">
+                                                <td class="text-center" style="color:#000080;font-weight:bold">
+                                                    <strong>
+                                                        <span t-field="doc.payment_term_id"/>
+                                                    </strong>
+                                                </td>
+                                            </div>
+
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+
+                                <t t-set="lines_to_report" t-value="doc._get_order_lines_to_report()"/>
+                                <t t-set="display_discount"
+                                   t-value="True in [line.discount > 0 for line in lines_to_report]"/>
+
+                                <t t-set="lines_to_report" t-value="doc._get_order_lines_to_report()"/>
+                                <t t-set="display_tax" t-value="any(l.tax_id for l in lines_to_report)"/>
+
+                                <t t-set="lines_to_report" t-value="doc._get_order_lines_to_report()"/>
+                                <!--                                <t t-set="display_ari_part_id" t-value="any(l.ari_id for l in lines_to_report)"/>-->
+                                <table class="table table-sm o_main_table table-borderless mt-4">
+                                    <thead style="display: table-row-group; color:#71639e; font-weight:bold">
+                                        <tr>
+                                            <th style="color:#000080;font-weight:bold" name="th_slno"
+                                                class="text-center">
+                                                SL. NO
+                                            </th>
+                                            <th style="color:#000080;font-weight:bold" name="th_description"
+                                                class="text-center">Description
+                                            </th>
+                                            <th style="color:#000080;font-weight:bold" name="th_quantity"
+                                                class="text-center">Quantity
+                                            </th>
+                                            <th style="color:#000080;font-weight:bold" name="th_priceunit"
+                                                class="text-center">Unit Price
+                                            </th>
+                                            <th style="color:#000080;font-weight:bold" name="th_taxes"
+                                                t-if="display_tax"
+                                                class="text-center">Taxes
+                                            </th>
+                                            <th style="color:#000080;font-weight:bold" name="th_subtotal"
+                                                class="text-end">
+                                                <span>Amount</span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="sale_tbody">
+
+                                        <t t-set="current_subtotal" t-value="0"/>
+
+                                        <t t-foreach="doc.order_line" t-as="line">
+                                            <tr>
+                                                <td class="text-center" style="color:#00008B;font-weight:bold">
+                                                    <t t-esc="line_index + 1"/>
+                                                </td>
+
+                                                <td t-if="line.display_type == 'product'"
+                                                    style="color:#00008B;font-weight:bold"
+                                                    name="account_invoice_line_accountable" class="text-center">
+                                                    <span t-esc="line.sequence + 1"/>
+                                                </td>
+                                                <td style="color:#00008B;font-weight:bold">
+                                                    <strong>
+                                                        <span t-field="line.product_id.name"/>
+                                                    </strong>
+                                                </td>
+                                                <td class="text-center" style="color:#00008B;font-weight:bold">
+                                                    <strong>
+                                                        <span t-field="line.product_uom_qty"/>
+                                                    </strong>
+                                                </td>
+                                                <td class="text-center" style="color:#00008B;font-weight:bold">
+                                                    <strong>
+                                                        <span t-field="line.price_unit"/>
+                                                    </strong>
+                                                </td>
+
+                                                <!--                                            <td t-if="display_discount" class="text-center"-->
+                                                <!--                                                style="color:#00008B;font-weight:bold">-->
+                                                <!--                                                <strong>-->
+                                                <!--                                                    <span t-field="line.discount"/>-->
+                                                <!--                                                </strong>-->
+                                                <!--                                            </td>-->
+                                                <td style="color:#00008B;font-weight:bold" name="td_taxes"
+                                                    class="text-end"
+                                                    t-if="display_tax">
+                                                    <span t-out="', '.join(map(lambda x: (x.description or x.name), line.tax_id))"/>
+                                                </td>
+                                                <td t-if="not line.is_downpayment" name="td_subtotal"
+                                                    class="text-end o_price_total" style="color:#00008B;font-weight:bold;">
+                                                    <span t-field="line.price_subtotal"></span>
+                                                </td>
+                                                <t t-elif="line.display_type == 'line_section'">
+                                                    <td name="td_section_line" colspan="99" style="color:#00008B;font-weight:bold;">
+                                                        <span t-field="line.name">A section title</span>
+                                                    </td>
+                                                    <t t-set="current_section" t-value="line"/>
+                                                    <t t-set="current_subtotal" t-value="0"/>
+                                                </t>
+                                                <t t-elif="line.display_type == 'line_note'">
+                                                    <td name="td_note_line" colspan="99">
+                                                        <span t-field="line.name">A note, whose content usually applies
+                                                            to the section or product above.
+                                                        </span>
+                                                    </td>
+                                                </t>
+
+                                            </tr>
+                                            <t t-if="current_section and (line_last or doc.order_line[line_index+1].display_type == 'line_section') and not line.is_downpayment">
+                                                <tr class="is-subtotal text-end">
+                                                    <td name="td_section_subtotal" colspan="99" style="color:#00008B;font-weight:bold;">
+                                                        <strong class="mr16">Subtotal</strong>
+                                                        <span
+                                                                t-out="current_subtotal"
+                                                                t-options='{"widget": "monetary", "display_currency": doc.currency_id}'
+                                                        >31.05
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </t>
+                                    </tbody>
+                                </table>
+
+                                <div class="clearfix">
+                                    <div class="clearfix">
+                                        <table class="table table-borderless"
+                                               style="border-collapse: collapse; border: none; ">
+                                            <tr>
+                                                <td class="no-left-border"
+                                                    style="width: 30%; vertical-align: top; padding: 10px; border: none;">
+                                                    <div style="margin-top:20px;">
+                                                        <p style="font-weight: bold;">
+                                                            <strong>
+                                                                <h6 style="font-size: 16px; color: #000080; min-width: 350px;">
+                                                                    IF YOU HAVE ANY CONCERNING THIS
+                                                                    QUOTATION, PLEASE CONTACT:
+                                                                </h6>
+                                                            </strong>
+                                                        </p>
+                                                        <p>
+                                                            <strong style="font-weight: bold; color: #00008B;">SALESMAN
+                                                                NAME:
+                                                            </strong>
+                                                            <strong>
+                                                                <span class="m-0" t-field="doc.user_id"
+                                                                      style="font-size: large; min-width: 250px; color: #00008B;"></span>
+                                                            </strong>
+                                                        </p>
+                                                    </div>
+                                                    <div style="margin-top:20px;">
+                                                        <p>
+                                                            <strong style="font-weight: bold; color: #00008B;">CONTACT
+                                                                DETAILS:
+                                                            </strong>
+                                                            <span class="m-0" t-field="doc.user_id.mobile"
+                                                                  style="font-size: large; min-width: 250px; color: #00008B;"></span>
+                                                        </p>
+                                                    </div>
+                                                </td>
+                                                <td style="width: 70%; padding: 10px; border: none; font-weight:bold font-weight: bold; color: #00008B;">
+                                                    <div class="clearfix" name="so_total_summary">
+                                                        <div id="total" class="row" name="total">
+                                                            <div t-attf-class="#{'col-6' if report_type != 'html' else 'col-sm-7 col-md-6'} ms-auto">
+                                                                <table class="table table-borderless"
+                                                                       style="font-weight: bold; color: #00008B;">
+                                                                    <t t-set="tax_totals" t-value="doc.tax_totals"/>
+                                                                    <t t-call="account.document_tax_totals"/>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+
+
+                                    </div>
+                                </div>
+
+
+                            </t>
+                        </div>
+                    </div>
+                    <div id="thank_you_message" style="width: 100%; display: flex; justify-content: center;">
+                        <div class="text-center mt-4" style="color: blue;">
+                            <div class="mt-4">
+                                <strong style="font-weight: bold; color: #00008B;">
+                                    <h4>THANK YOU FOR YOUR BUSINESS!</h4>
+                                </strong>
+                            </div>
+                        </div>
+                    </div>
+
+                </t>
+            </xpath>
+        </template>
+    </data>
+</odoo>

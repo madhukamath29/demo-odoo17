@@ -3,36 +3,13 @@
 
 {
 
-    "name": "Basic Hospital Management System in Odoo",
-    "version": "17.0.0.2",
-    "currency": 'EUR',
-    "summary": "Apps basic Hospital Management system Healthcare Management Clinic Management apps manage clinic manage Patient hospital manage Healthcare system Patient Management Hospital Management Healthcare Management Clinic Management hospital Lab Test Request",
+    "name": "Dental Clinic",
+    "version": "0.0.1",
+    "currency": 'RUPEES',
+    "summary": "Apps basic Dental Clinic Management system",
     "category": "Industry",
     "description": """
-    BrowseInfo developed a new odoo/OpenERP module apps
-    This module is used to manage Hospital and Healthcare Management and Clinic Management apps. 
-    manage clinic manage Patient hospital in odoo manage Healthcare system Patient Management, 
-    Odoo Hospital Management odoo Healthcare Management Odoo Clinic Management
-    Odoo hospital Patients
-    Odoo Healthcare Patients Card Report
-    Odoo Healthcare Patients Medication History Report
-    Odoo Healthcare Appointments
-    Odoo hospital Appointments Invoice
-    Odoo Healthcare Families Prescriptions Healthcare Prescriptions
-    Odoo Healthcare Create Invoice from Prescriptions odoo hospital Prescription Report
-    Odoo Healthcare Patient Hospitalization
-    odoo Hospital Management System
-    Odoo Healthcare Management System
-    Odoo Clinic Management System
-    Odoo Appointment Management System
-    health care management system
-    Generate Report for patient details, appointment, prescriptions, lab-test
-
-    Odoo Lab Test Request and Result
-    Odoo Patient Hospitalization details
-    Generate Patient's Prescriptions
-
-    
+    This module is used to manage Dental Clinic
 """,
 
     "depends": ["base", "sale_management", "stock", "account", "project", "stock", "mrp", "purchase"],
@@ -100,6 +77,9 @@
         'report/prescription_demo_report.xml',
         'report/report_medical_tooth.xml',
         'report/medical_apt_inv.xml',
+        'report/medical_sale_order.xml',
+        'report/medical_purchase_report.xml',
+
     ],
     "author": "BrowseInfo",
     "website": "https://www.browseinfo.com",
