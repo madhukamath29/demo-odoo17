@@ -258,26 +258,26 @@ DynamicDashboardChart.template = xml`
                 <div class="col">
                     <h3><t t-esc="this.props.widget.name"/></h3>
                 </div>
-                <div class="col text-right">
+                <div class="col text-right" style="display:flex">
                     <!-- Chart type buttons -->
-                    <div class="chart-buttons">
-                        <button t-on-click="downloadDetails" class="chart-button circular-button" style="background-color: #007bff; margin-right: 10px; width: 30px; height: 30px;">
-                            <i class="fa fa-download" style="color: white;"></i>
+                    <div class="chart-buttons" style="display:flex">
+                        <button t-on-click="downloadDetails" class="button-34" role="button" style="background-color: #007bff; margin-right: 10px; height: 30px; width:50px;">
+                            <i class="fa fa-download" style="color: white; display:flex;"></i>
                         </button>
-                        <button t-on-click="() => this.changeChartType('bar')" class="chart-button circular-button" style="background-color: #007bff; margin-right: 10px; width: 30px; height: 30px;">
-                            <i class="fa fa-bar-chart" style="color: white;"></i>
+                        <button t-on-click="() => this.changeChartType('bar')" class="button-34" role="button" style="background-color: #007bff; margin-right: 10px; height: 30px; width:50px;">
+                            <i class="fa fa-bar-chart" style="color: white; display:flex;"></i>
                         </button>
-                        <button t-on-click="() => this.changeChartType('line')" class="chart-button circular-button" style="background-color: #007bff; margin-right: 10px; width: 30px; height: 30px;">
-                            <i class="fa fa-line-chart" style="color: white;"></i>
+                        <button t-on-click="() => this.changeChartType('line')" class="button-34" role="button" style="background-color: #007bff; margin-right: 10px; height: 30px; width:50px;">
+                            <i class="fa fa-line-chart" style="color: white; display:flex;"></i>
                         </button>
-                        <button t-on-click="() => this.changeChartType('pie')" class="chart-button circular-button" style="background-color: #007bff; margin-right: 10px; width: 30px; height: 30px;">
-                            <i class="fa fa-pie-chart" style="color: white;"></i>
+                        <button t-on-click="() => this.changeChartType('pie')" class="button-34" role="button" style="background-color: #007bff; margin-right: 10px; height: 30px; width:50px;">
+                            <i class="fa fa-pie-chart" style="color: white; display:flex;"></i>
                         </button>
-                        <button t-on-click="() => this.changeChartType('doughnut')" class="chart-button circular-button" style="background-color: #007bff; margin-right: 10px; width: 30px; height: 30px;">
-                            <i class="fa fa-circle-thin" style="color: white;"></i>
+                        <button t-on-click="() => this.changeChartType('doughnut')" class="button-34" role="button" style="background-color: #007bff; margin-right: 10px; height: 30px; width:50px;">
+                            <i class="fa fa-circle-thin" style="color: white; display:flex;"></i>
                         </button>
-                        <button t-on-click="() => this.changeChartType('radar')" class="chart-button circular-button" style="background-color: #007bff; width: 30px; height: 30px;">
-                            <i class="fa fa-bullseye" style="color: white;"></i>
+                        <button t-on-click="() => this.changeChartType('radar')" class="button-34" role="button" style="background-color: #007bff; height: 30px; width:50px;">
+                            <i class="fa fa-bullseye" style="color: white; display:flex;"></i>
                         </button>
                     </div>
                     <!-- End chart type buttons -->
