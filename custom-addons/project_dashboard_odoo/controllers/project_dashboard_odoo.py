@@ -103,76 +103,64 @@ class ProjectFilter(http.Controller):
     @http.route('/project/filter-apply', auth='public', type='json')
     def project_filter_apply(self, **kw):
         """Summary:
-            transferring data after filter 9th applied
+            transferring data after filter is applied
         Args:
-            kw(dict):This parameter contains the value of selection field
+            kw(dict): This parameter contains the value of the selection field
         Returns:
-            type:dict, it contains the data for the corresponding
+            type: dict, it contains the data for the corresponding
             filtrated transferring data to ui after filtration."""
         data = kw['data']
-        # checking the employee selected or not
+        # Checking the employee selected or not
         if data['employee'] == 'null':
-            emp_selected = [employee.id for employee in
-                            request.env['hr.employee'].search([])]
+            emp_selected = [employee.id for employee in request.env['hr.employee'].search([])]
         else:
             emp_selected = [int(data['employee'])]
         start_date = data['start_date']
         end_date = data['end_date']
-        # checking the dates are selected or not
+        project_domain = []
+
+        # Checking the dates are selected or not
         if start_date != 'null' and end_date != 'null':
-            start_date = datetime.datetime.strptime(start_date,
-                                                    "%Y-%m-%d").date()
+            start_date = datetime.datetime.strptime(start_date, "%Y-%m-%d").date()
             end_date = datetime.datetime.strptime(end_date, "%Y-%m-%d").date()
-            if data['project'] == 'null':
-                pro_selected = [project.id for project in
-                                request.env['project.project'].search(
-                                    [('date_start', '>', start_date),
-                                     ('date_start', '<', end_date)])]
-            else:
-                pro_selected = [int(data['project'])]
+            project_domain += [('date_start', '>=', start_date), ('date_start', '<=', end_date)]
+        elif start_date != 'null' and end_date == 'null':
+            start_date = datetime.datetime.strptime(start_date, "%Y-%m-%d").date()
+            project_domain += [('date_start', '>=', start_date)]
         elif start_date == 'null' and end_date != 'null':
             end_date = datetime.datetime.strptime(end_date, "%Y-%m-%d").date()
-            if data['project'] == 'null':
-                pro_selected = [project.id for project in
-                                request.env['project.project'].search(
-                                    [('date_start', '<', end_date)])]
-            else:
-                pro_selected = [int(data['project'])]
-        elif start_date != 'null' and end_date == 'null':
-            start_date = datetime.datetime.strptime(start_date,
-                                                    "%Y-%m-%d").date()
-            if data['project'] == 'null':
-                pro_selected = [project.id for project in
-                                request.env['project.project'].search(
-                                    [('date_start', '>', start_date)])]
-            else:
-                pro_selected = [int(data['project'])]
+            project_domain += [('date_start', '<=', end_date)]
+
+        if data['project'] == 'null':
+            project_ids = request.env['project.project'].search(project_domain).ids
         else:
-            if data['project'] == 'null':
-                pro_selected = [project.id for project in
-                                request.env['project.project'].search([])]
-            else:
-                pro_selected = [int(data['project'])]
-        report_project = request.env['timesheets.analysis.report'].search(
-            [('project_id', 'in', pro_selected),
-             ('employee_id', 'in', emp_selected)])
-        analytic_project = request.env['account.analytic.line'].search(
-            [('project_id', 'in', pro_selected),
-             ('employee_id', 'in', emp_selected)])
-        margin = round(sum(report_project.mapped('margin')), 2)
-        sale_orders = []
-        for rec in analytic_project:
-            if rec.order_id.id and rec.order_id.id not in sale_orders:
-                sale_orders.append(rec.order_id.id)
-        total_time =  round(sum(analytic_project.mapped('unit_amount')), 2)
+            project_ids = [int(data['project'])]
+
+        task_domain = [('project_id', 'in', project_ids), ('user_ids', 'in', emp_selected)]
+        if start_date != 'null':
+            task_domain.append(('date_assign', '>=', start_date))
+        if end_date != 'null':
+            task_domain.append(('date_assign', '<=', end_date))
+
+        tasks = request.env['project.task'].search(task_domain)
+
+        analytic_project_domain = [('project_id', 'in', project_ids), ('employee_id', 'in', emp_selected)]
+        if start_date != 'null':
+            analytic_project_domain.append(('date', '>=', start_date))
+        if end_date != 'null':
+            analytic_project_domain.append(('date', '<=', end_date))
+
+        analytic_project = request.env['account.analytic.line'].search(analytic_project_domain)
+
+        sale_orders = list(set(rec.order_id.id for rec in analytic_project if rec.order_id.id))
+        total_time = round(sum(analytic_project.mapped('unit_amount')), 2)
+
         return {
-            'total_project': pro_selected,
+            'total_project': project_ids,
             'total_emp': emp_selected,
-            'total_task': [rec.id for rec in request.env['project.task'].search(
-                [('project_id', 'in', pro_selected)])],
+            'total_task': tasks.ids,
             'hours_recorded': total_time,
-            'list_hours_recorded': [rec.id for rec in analytic_project],
-            'total_margin': margin,
+            'list_hours_recorded': analytic_project.ids,
             'total_so': sale_orders
         }
 
