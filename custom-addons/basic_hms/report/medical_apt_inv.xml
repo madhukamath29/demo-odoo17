@@ -74,6 +74,9 @@
                                                     <span style="color: #686868;"
                                                           t-field="o.partner_id.contact_address"/>
                                                 </span>
+                                                <br/>
+                                                <strong style="color: #000000;">Invoice No :</strong>
+                                                <span style="color: #686868;" t-field="o.name"/>
                                             </td>
                                             <td style="vertical-align: top; top;width: 50%; padding: 20px; border: none;background-color: transparent;">
                                                 <span t-if="o.move_type == 'in_invoice'">
