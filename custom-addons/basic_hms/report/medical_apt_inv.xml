@@ -55,18 +55,44 @@
                                            style="width: 100%; border-collapse: collapse;border: transparent; ">
                                         <tr style="border: none;background-color: transparent;">
                                             <td style="vertical-align: top;width: 50%; padding: 20px; border: none;background-color: transparent;">
-                                                <strong style="color: #000000;">Patient Name :</strong>
-                                                <span style="color: #686868;" t-field="o.partner_id.name"/>
+                                                <span t-if="o.move_type == 'in_invoice'">
+                                                    <strong style="color: #000000;">Name :</strong>
+                                                    <span style="color: #686868;" t-field="o.partner_id.name"/>
+                                                </span>
+                                                <span t-else="">
+                                                    <strong style="color: #000000;">Patient Name :</strong>
+                                                    <span style="color: #686868;" t-field="o.partner_id.name"/>
+                                                </span>
                                                 <br/>
-                                                <strong style="color: #000000;">Patient Address :</strong>
-                                                <span style="color: #686868;" t-field="o.partner_id.contact_address"/>
+                                                <span t-if="o.move_type == 'in_invoice'">
+                                                    <strong style="color: #000000;">Address :</strong>
+                                                    <span style="color: #686868;"
+                                                          t-field="o.partner_id.contact_address"/>
+                                                </span>
+                                                <span t-else="">
+                                                    <strong style="color: #000000;">Patient Address :</strong>
+                                                    <span style="color: #686868;"
+                                                          t-field="o.partner_id.contact_address"/>
+                                                </span>
                                             </td>
                                             <td style="vertical-align: top; top;width: 50%; padding: 20px; border: none;background-color: transparent;">
-                                                <strong style="color: #000000;">Patient Mobile :</strong>
-                                                <span style="color: #686868;" t-field="o.partner_id.mobile"/>
+                                                <span t-if="o.move_type == 'in_invoice'">
+                                                    <strong style="color: #000000;"> Mobile :</strong>
+                                                    <span style="color: #686868;" t-field="o.partner_id.mobile"/>
+                                                </span>
+                                                <span t-else="">
+                                                    <strong style="color: #000000;">Patient Mobile :</strong>
+                                                    <span style="color: #686868;" t-field="o.partner_id.mobile"/>
+                                                </span>
                                                 <br/>
-                                                <strong style="color: #000000;">Patient Email :</strong>
-                                                <span style="color: #686868;" t-field="o.partner_id.email"/>
+                                                <span t-if="o.move_type == 'in_invoice'">
+                                                    <strong style="color: #000000;"> Email :</strong>
+                                                    <span style="color: #686868;" t-field="o.partner_id.email"/>
+                                                </span>
+                                                <span t-else="">
+                                                    <strong style="color: #000000;">Patient Email :</strong>
+                                                    <span style="color: #686868;" t-field="o.partner_id.email"/>
+                                                </span>
                                                 <br/>
                                                 <span t-if="o.is_lab_invoice">
                                                     <strong style="color: #000000;">Lab Test :</strong>
