@@ -1,0 +1,288 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="res_partner_role_list_view">
+            <field name="name">res.partner.role.list.view</field>
+            <field name="model">res.partner.role</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom">
+                    <field name="name" required="True"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="document_type_list_view">
+            <field name="name">freight.document.type.list.view</field>
+            <field name="model">freight.document.type</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom">
+                    <field name="name" required="True"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="transport_type_list_view">
+            <field name="name">transport.type.list.view</field>
+            <field name="model">transport.type</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom">
+                    <field name="name" required="True"/>
+                    <field name="transport_mode_ids" widget="many2many_tags" required="True"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="transport_mode_list_view">
+            <field name="name">transport.mode.list.view</field>
+            <field name="model">transport.mode</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom">
+                    <field name="name" required="True"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="port_port_list_view">
+            <field name="name">port.port.list.view</field>
+            <field name="model">port.port</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom">
+                    <field name="name" required="True"/>
+                    <field name="country_id" required="True"/>
+                    <field name="transport_type_id" required="True"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="freight_order_list_view">
+            <field name="name">freight.order.list.view</field>
+            <field name="model">freight.order</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="order_date"/>
+                    <field name="shipper_id"/>
+                    <field name="receiver_id"/>
+                    <field name="state" decoration-success="state == 'confirm'" decoration-info="state == 'planned'"
+                           decoration-danger="state == 'cancelled'" widget="badge"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="freight_order_form_view">
+            <field name="name">freight.order.form.view</field>
+            <field name="model">freight.order</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="action_confirm" type="object" string="Confirm" class="oe_highlight"
+                                invisible="state not in ['planned']" data-hotkey="c"/>
+                        <button name="action_cancel" type="object" string="Cancel"
+                                invisible="state in ['cancelled']" data-hotkey="x"/>
+
+                        <field name="state" widget="statusbar" statusbar_visible="planned,confirm,cancelled"/>
+                    </header>
+                    <sheet>
+                        <div name="button_box" class="oe_button_box">
+                            <button class="oe_stat_button" type="object" invisible="not consignment_id"
+                                    name="action_open_consignment" icon="fa-book">
+                                <div class="o_stat_info">
+                                    <span class="o_stat_text">Consignment</span>
+                                </div>
+                            </button>
+                        </div>
+
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="order_date" required="True" readonly="state != 'planned'"/>
+                                <field name="shipper_id" required="True" readonly="state != 'planned'"/>
+                                <field name="bill_to_partner_id" required="True" readonly="state != 'planned'"/>
+                                <field name="transport_type_id" required="True" readonly="state != 'planned'"/>
+                                <field name="origin_country_id" required="True" readonly="state != 'planned'"/>
+                                <field name="destination_country_id" required="True" readonly="state != 'planned'"/>
+                                <field name="consignment_type" required="True" readonly="state != 'planned'"/>
+                                <field name="ready_date" readonly="state != 'planned'"/>
+                            </group>
+                            <group>
+                                <field name="terms" readonly="state != 'planned'"/>
+                                <field name="receiver_id" required="True" readonly="state != 'planned'"/>
+                                <field name="notify_party_id" required="True" readonly="state != 'planned'"/>
+                                <field name="transport_mode_id" required="True" readonly="state != 'planned'"/>
+                                <field name="origin_port_id" required="True" readonly="state != 'planned'"/>
+                                <field name="destination_port_id" required="True" readonly="state != 'planned'"/>
+                                <field name="company_id" required="True" readonly="state != 'planned'"/>
+                                <field name="shipping_date" readonly="state != 'planned'"/>
+                                <field name="allowed_transport_mode_ids" invisible="True"/>
+                                <field name="in_consignment" invisible="1"/>
+                                <field name="consignment_id" invisible="1"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="Internal Note">
+                                <field name="internal_note" readonly="state != 'planned'"/>
+                            </page>
+                            <page string="Packages">
+                                <field name="freight_package_line_ids" readonly="state != 'planned'">
+                                    <tree editable="bottom">
+                                        <field name="package_type" required="True"/>
+                                        <field name="package_count" required="True"/>
+                                        <field name="weight"/>
+                                        <field name="weight_uom_id"/>
+                                        <field name="volume"/>
+                                        <field name="volume_uom_id"/>
+                                        <field name="description" required="True"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="res_partner_form_view">
+            <field name="name">res.partner.form.view</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']/.." position="after">
+                    <field name="ref_unique_code" readonly="1" force_save="1"/>
+                    <br/>
+                </xpath>
+                <xpath expr="//field[@name='vat']" position="after">
+                    <field name="is_customer"/>
+                    <field name="customs_code" invisible="is_customer == 'no'" required="is_customer == 'yes'"/>
+                    <field name="is_overseas"/>
+                    <field name="supplier_code" invisible="is_overseas == 'no'" required="is_overseas == 'yes'"/>
+                    <field name="has_local_warehouse"/>
+                    <field name="cca_code" invisible="has_local_warehouse == 'no'"
+                           required="has_local_warehouse == 'yes'"/>
+                    <field name="atf_number"/>
+                    <field name="company_number"/>
+                    <field name="partner_role_ids" widget="many2many_tags"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_res_partner_tree" model="ir.ui.view">
+            <field name="name">res.partner.tree.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='display_name']" position="before">
+                    <field name="ref_unique_code" readonly="1"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="customer_code_search" model="ir.ui.view">
+            <field name="name">Customer code Search</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_res_partner_filter"/>
+            <field name="arch" type="xml">
+                <field name="name" position="before">
+                    <field name="ref_unique_code" filter_domain="[('ref_unique_code', 'ilike', self)]"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="customer_code_settings_forms" model="ir.ui.view">
+            <field name="name">customer.code.settings.form.inherit</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="base_setup.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@id='contacts_settings']/block[@name='contacts_setting_container']"
+                       position="inside">
+                    <setting help="Assign Customer Code"
+                             title="Assign Customer Code">
+                        <button class="oe_highlight" name="generate_code" type="object"
+                                icon="fa-codepen icon" string="  ">
+                            <strong>Generate Customer Code</strong>
+                        </button>
+                        <div class='text-muted'>Assign unique code to the existing contacts</div>
+
+                    </setting>
+
+                </xpath>
+            </field>
+        </record>
+
+        <!-- actions opening views on models -->
+
+        <record model="ir.actions.act_window" id="action_window_freight_orders">
+            <field name="name">Freight Order</field>
+            <field name="res_model">freight.order</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_window_freight_consignments">
+            <field name="name">Freight Consignment</field>
+            <field name="res_model">freight.consignment</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_window_partner_role">
+            <field name="name">Roles</field>
+            <field name="res_model">res.partner.role</field>
+            <field name="view_mode">tree</field>
+        </record>
+        <record model="ir.actions.act_window" id="action_window_transport">
+            <field name="name">Transport</field>
+            <field name="res_model">transport.type</field>
+            <field name="view_mode">tree</field>
+        </record>
+        <record model="ir.actions.act_window" id="action_window_transport_mode">
+            <field name="name">Transport Mode</field>
+            <field name="res_model">transport.mode</field>
+            <field name="view_mode">tree</field>
+        </record>
+        <record model="ir.actions.act_window" id="action_window_transport_port">
+            <field name="name">Transport Port</field>
+            <field name="res_model">port.port</field>
+            <field name="view_mode">tree</field>
+        </record>
+        <record model="ir.actions.act_window" id="action_window_document_type">
+            <field name="name">Document Types</field>
+            <field name="res_model">freight.document.type</field>
+            <field name="view_mode">tree</field>
+        </record>
+
+        <!-- Top menu item -->
+
+        <menuitem name="Freight" id="freight_management.menu_root">
+            <menuitem name="Orders" id="freight_management.menu_order" sequence="1">
+                <menuitem name="Freight Order" id="freight_management.menu_freight_order"
+                          action="action_window_freight_orders"/>
+            </menuitem>
+
+            <menuitem name="Customers" id="freight_management.menu_customer" sequence="2">
+                <menuitem id="menu_orders_customers"
+                          name="Customers"
+                          action="base.action_partner_customer_form"/>
+            </menuitem>
+
+            <menuitem name="Consignments" id="freight_management.menu_consignment" sequence="3">
+                <menuitem name="Freight Consignments" id="freight_management.menu_freight_consignment"
+                          action="action_window_freight_consignments"/>
+            </menuitem>
+
+            <menuitem name="Configuration" id="freight_management.menu_config" sequence="4">
+                <menuitem name="Roles" id="freight_management.menu_partner_role"
+                          action="action_window_partner_role"/>
+                <menuitem name="Document Types" id="freight_management.menu_document_type"
+                          action="action_window_document_type"/>
+                <menuitem name="Transport" id="freight_management.menu_transport"
+                          action="action_window_transport"/>
+                <menuitem name="Transport Mode" id="freight_management.menu_transport_mode"
+                          action="action_window_transport_mode"/>
+                <menuitem name="Transport Port" id="freight_management.menu_transport_port"
+                          action="action_window_transport_port"/>
+            </menuitem>
+        </menuitem>
+
+
+    </data>
+</odoo>

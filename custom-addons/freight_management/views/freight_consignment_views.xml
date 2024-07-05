@@ -1,0 +1,183 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="freight_consignment_list_view">
+            <field name="name">freight.consignment.list.view</field>
+            <field name="model">freight.consignment</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="master_bill_no"/>
+                    <field name="departure_date"/>
+                    <field name="arrival_date"/>
+                    <field name="origin_country_id"/>
+                    <field name="destination_country_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="freight_consignment_form_view">
+            <field name="name">freight.consignment.form.view</field>
+            <field name="model">freight.consignment</field>
+            <field name="arch" type="xml">
+                <form>
+
+                    <header>
+                        <button name="action_pull_orders" type="object" string="Pull Orders" class="oe_highlight"
+                                data-hotkey="p"/>
+                    </header>
+                    <sheet>
+                        <div name="button_box" class="oe_button_box">
+                            <button class="oe_stat_button" type="object"
+                                    name="action_open_consignment_orders" icon="fa-book">
+                                <div class="o_stat_info">
+                                    <span class="o_stat_text">Orders</span>
+                                </div>
+                            </button>
+                            <button class="oe_stat_button" type="object"
+                                    name="action_open_consignment_customs" icon="fa-credit-card">
+                                <div class="o_stat_info">
+                                    <span class="o_stat_text">Customs</span>
+                                </div>
+                            </button>
+                        </div>
+                        <field name="consignment_order_ids" invisible="1"/>
+                        <field name="consignment_customs_line_ids" invisible="1"/>
+
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="master_bill_no"/>
+                                <field name="terms"/>
+                                <field name="receiving_agent_id" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="transport_type_id" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="allowed_transport_mode_ids" invisible="1"/>
+                                <field name="origin_country_id" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="destination_country_id" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="consignment_type"/>
+                                <field name="shipping_date"/>
+                                <field name="arrival_date"/>
+                                <field name="outern_no"/>
+                                <field name="carrier_name"/>
+                                <field name="carrier_no"/>
+                            </group>
+                            <group>
+                                <field name="booking_no"/>
+                                <field name="sending_agent_id" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="notify_party_id" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="transport_mode_id" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="origin_port_id" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="destination_port_id" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="company_id" options="{'no_create': True, 'no_open': True}"/>
+                                <field name="departure_date"/>
+                                <field name="release_type"/>
+                                <field name="carrier_booking_ref"/>
+                                <field name="agent_ref"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="description"/>
+                        </group>
+                        <notebook>
+                            <!--                            <page string="Orders">-->
+                            <!--                                <field name="consignment_order_ids">-->
+                            <!--                                </field>-->
+                            <!--                            </page>-->
+                            <page string="Documents">
+                                <field name="consignment_document_line_ids">
+                                    <tree>
+                                        <field name="name"/>
+                                        <field name="document_type_id"/>
+                                        <field name="file_data" widget="binary"/>
+                                        <field name="doc_description"/>
+                                    </tree>
+                                    <form>
+                                        <sheet>
+                                            <group>
+                                                <group>
+                                                    <field name="name" required="1"/>
+                                                    <field name="document_type_id" required="1"
+                                                           options="{'no_create': True, 'no_open': True}"/>
+                                                </group>
+                                            </group>
+                                            <group>
+                                                <field name="doc_description"/>
+                                            </group>
+
+                                            <separator string="Document"/>
+                                            <field name="file_data" nolabel="1" required="True" widget="binary"/>
+                                        </sheet>
+                                    </form>
+
+                                </field>
+
+                            </page>
+<!--                            <page string="Customs">-->
+<!--                                <field name="consignment_customs_line_ids">-->
+<!--                                </field>-->
+<!--                            </page>-->
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="freight_consignment_custom_list_view">
+            <field name="name">freight.consignment.custom.list.view</field>
+            <field name="model">consignment.customs.line</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="status"/>
+                    <field name="date"/>
+                    <field name="carrier"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="freight_consignment_custom_form_view">
+            <field name="name">freight.consignment.custom.form.view</field>
+            <field name="model">consignment.customs.line</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="status"/>
+                                <field name="ocr_no"/>
+                                <field name="ocr_ref_no"/>
+                            </group>
+                            <group>
+                                <field name="date"/>
+                                <field name="carrier"/>
+                                <field name="consolidator_name"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="additional_info"/>
+                            <field name="override_reason"/>
+                            <field name="change_reason"/>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="goods_location"/>
+                            </group>
+                            <group>
+                                <field name="message_type"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Order List">
+
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+
+            </field>
+        </record>
+    </data>
+</odoo>
