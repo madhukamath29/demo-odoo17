@@ -40,6 +40,7 @@ class medical_lab_test_invoice(models.TransientModel):
                 'fiscal_position_id': lab_req.patient_id.patient_id.property_account_position_id.id,
                 'team_id': False,
                 'invoice_date': date.today(),
+                    'is_lab_invoice': False
                     }
                 res = account_invoice_obj.create(invoice_vals)
                 product = lab_req.medical_test_type_id.service_product_id
@@ -83,6 +84,8 @@ class medical_lab_test_invoice(models.TransientModel):
                 'fiscal_position_id': lab_req.patient_id.patient_id.property_account_position_id.id,
                 'team_id': False,
                 'invoice_date': date.today(),
+                    'is_lab_invoice': True,
+                    'test_id':lab_req.test_id.id,
                     }
                 res = account_invoice_obj.create(invoice_vals)
                 product = lab_req.test_id.service_product_id

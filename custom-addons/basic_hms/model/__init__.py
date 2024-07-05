@@ -70,5 +70,5 @@ from . import treatment_plan_wizard
 from . import Medical_tooth
 from . import medical_treatment_stages
 from . import medicine_form
-
+from . import lab_inv_field
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:s
