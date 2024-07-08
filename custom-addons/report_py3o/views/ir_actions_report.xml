@@ -12,7 +12,7 @@
                     class="alert alert-danger"
                     role="alert"
                     style="margin-bottom:0px;"
-                    invisible="[('is_py3o_report_not_available','=',False)]"
+                    invisible="is_py3o_report_not_available == False"
                 >
                     <field name="msg_py3o_report_not_available" />
                 </div>
@@ -21,7 +21,7 @@
                 <page
                     string="LibreOffice Template"
                     name="py3o_tab"
-                    invisible="[('report_type', '!=', 'py3o')]"
+                    invisible="report_type != 'py3o'"
                 >
                     <group name="py3o_params">
                         <field name="lo_bin_path" />
