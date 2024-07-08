@@ -15,32 +15,94 @@
                         <div class="page">
                             <div class="oe_structure"/>
                         </div>
+                        <hr style="border: 1px solid grey; width: 100%;"/>
                         <div id="informations" class="row mt-4 mb32">
                             <t t-if="o.state in ['purchase','done'] and o.date_approve" class="col-3 bm-2">
-                                <strong style="color: #000080; font-weight:bold">DATE:</strong>
-                                <strong style="color: #000080; font-weight:bold">
+                                <strong style="color: #000000; font-weight:bold">DATE:</strong>
+                                <strong style="color: #686868; font-weight:bold">
                                     <span t-field="o.date_approve" t-options='{"format": "MM-dd-Y"}' class="m-0"/>
                                 </strong>
                             </t>
                             <br/>
                             <t t-if="o.state in ['purchase', 'done']" class="col-3 bm-2">
-                                <strong style="color: #000080; font-weight:bold">PURCHASE ORDER NO:</strong>
-                                <strong style="color: #000080; font-weight:bold">
+                                <strong style="color: #000000; font-weight:bold">PURCHASE ORDER NO:</strong>
+                                <strong style="color: #686868; font-weight:bold">
                                     <span t-field="o.name" class="m-0"/>
                                 </strong>
                             </t>
                             <br/>
                             <t class="col-3 bm-2">
-                                <strong style="color: #000080; font-weight:bold">DELIVER TO:</strong>
-                                <strong style="color: #000080; font-weight:bold">
+                                <strong style="color: #000000; font-weight:bold">SHIPPING TO:</strong>
+                                <strong style="color: #686868; font-weight:bold">
                                     <span t-field="o.company_id.name"/>
+                                    <br/>
+                                    <t t-if="o.company_id.street or o.company_id.street2">
+                                        <span t-if="o.company_id.street"
+                                              style="padding-bottom: 2px; padding-left:75px;"
+                                              t-field="o.company_id.street"></span>
+                                        <span t-if="o.company_id.street2"
+                                              style="padding-left: 2px; padding-bottom: 2px;"
+                                              t-field="o.company_id.street2"></span>
+                                        <br/>
+                                    </t>
+                                    <t t-if="o.company_id.city or o.company_id.state_id">
+                                        <span t-if="o.company_id.city"
+                                              style="padding-bottom: 2px; padding-left:75px;"
+                                              t-field="o.company_id.city"></span>
+                                        <span t-if="o.company_id.state_id"
+                                              style="padding-left: 2px;"
+                                              t-field="o.company_id.state_id"></span>
+                                        <br/>
+                                    </t>
+                                    <t t-if="o.company_id.zip or o.company_id.phone">
+                                        <span t-if="o.company_id.zip" style="padding-left: 75px;"
+                                              t-field="o.partner_id.zip"></span>
+                                        <span t-if="o.company_id.phone" style="padding: 2px;"
+                                              t-field="o.partner_id.phone"></span>
+                                        <br/>
+                                    </t>
+                                    <t t-if="o.company_id.mobile">
+                                        <span style="padding-bottom: 2px;padding-left:75px;"
+                                              t-field="o.company_id.mobile"></span>
+                                    </t>
                                 </strong>
                             </t>
-
-                            <!--                        <div t-elif="o.date_order" class="col-3 bm-2">-->
-                            <!--                            <strong>Order Deadline:</strong>-->
-                            <!--                            <p t-field="o.date_order" class="m-0"/>-->
-                            <!--                        </div>-->
+                            <t class="col-3 bm-2">
+                                <strong style="color: #000000; font-weight:bold">VENDOR DETAILS:</strong>
+                                <strong style="color: #686868; font-weight:bold">
+                                    <span t-field="o.partner_id.name"/>
+                                    <br/>
+                                    <t t-if="o.partner_id.street or o.partner_id.street2">
+                                        <span t-if="o.partner_id.street"
+                                              style="padding-bottom: 2px; padding-left:75px;"
+                                              t-field="o.partner_id.street"></span>
+                                        <span t-if="o.partner_id.street2"
+                                              style="padding-left: 2px; padding-bottom: 2px;"
+                                              t-field="o.partner_id.street2"></span>
+                                        <br/>
+                                    </t>
+                                    <t t-if="o.partner_id.city or o.partner_id.state_id">
+                                        <span t-if="o.partner_id.city"
+                                              style="padding-bottom: 2px; padding-left:75px;"
+                                              t-field="o.partner_id.city"></span>
+                                        <span t-if="o.partner_id.state_id"
+                                              style="padding-left: 2px;"
+                                              t-field="o.partner_id.state_id"></span>
+                                        <br/>
+                                    </t>
+                                    <t t-if="o.partner_id.zip or o.partner_id.phone">
+                                        <span t-if="o.partner_id.zip" style="padding-left: 75px;"
+                                              t-field="o.partner_id.zip"></span>
+                                        <span t-if="o.partner_id.phone" style="padding: 2px;"
+                                              t-field="o.partner_id.phone"></span>
+                                        <br/>
+                                    </t>
+                                    <t t-if="o.partner_id.mobile">
+                                        <span style="padding-bottom: 2px;padding-left:75px;"
+                                              t-field="o.partner_id.mobile"></span>
+                                    </t>
+                                </strong>
+                            </t>
                         </div>
                         <table class="table table-sm o_main_table table-borderless mt-4">
                             <thead style="display: table-row-group">

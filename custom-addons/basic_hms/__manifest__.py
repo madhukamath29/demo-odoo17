@@ -79,7 +79,7 @@
         'report/medical_apt_inv.xml',
         'report/medical_sale_order.xml',
         'report/medical_purchase_report.xml',
-
+        'report/medical_purchase_quotation.xml',
     ],
     "author": "BrowseInfo",
     "website": "https://www.browseinfo.com",
