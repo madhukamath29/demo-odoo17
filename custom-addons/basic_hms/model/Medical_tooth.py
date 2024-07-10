@@ -20,11 +20,17 @@ class MedicalTooth(models.Model):
 
     problem_type = fields.Selection(
         selection='_get_problem_type_selection', string='Problem Type')
-    patient_id = fields.Many2one('medical.patient', string='Patient', required=True)
-    appointment_id = fields.Many2one('medical.appointment', string='Appointment', required=True)
+    patient_id = fields.Many2one(
+        'medical.patient', string='Patient', required=True)
+    appointment_id = fields.Many2one(
+        'medical.appointment', string='Appointment', required=True)
     solution = fields.Text(string='Solution')
 
-    @api.model
+    @api.onchange('appointment_id')
+    def _onchange_appointment_id(self):
+        if self.appointment_id:
+            self.patient_id = self.appointment_id.patient_id
+
     @api.model
     def _get_tooth_type_selection(self):
         return [
