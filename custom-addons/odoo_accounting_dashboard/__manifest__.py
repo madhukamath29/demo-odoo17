@@ -29,7 +29,7 @@
     'company': 'Cybrosys Techno Solutions',
     'maintainer': 'Cybrosys Techno Solutions',
     'website': 'https://cybrosys.com',
-    'depends': ['base_accounting_kit'],
+    'depends': ['account'],
     'data': [
         'data/account_move_data.xml',
     ],
