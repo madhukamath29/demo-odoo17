@@ -24,7 +24,7 @@
                 </xpath>
                 <footer>
                     <button name="check_report" class="oe_highlight"
-                            string="Print" type="object"/>
+                            string="Preview" type="object"/>
                     <button string="Cancel" class="btn btn-default" special="cancel"/>
                 </footer>
             </form>
