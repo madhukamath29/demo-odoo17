@@ -4,6 +4,7 @@ from odoo.exceptions import UserError
 
 class ReportTax(models.AbstractModel):
     _name = 'report.accounting_pdf_reports.report_tax'
+    _inherit = 'report.report_xlsx.abstract'
     _description = 'Tax Report'
 
     @api.model
@@ -68,3 +69,53 @@ class ReportTax(models.AbstractModel):
             if tax['tax']:
                 groups[tax['type']].append(tax)
         return groups
+
+    def generate_xlsx_report(self, workbook, data, docs):
+        report_data = self._get_report_values(None, data)
+
+        form_data = report_data.get('data', {})
+        lines = report_data.get('lines', {})
+
+        sheet = workbook.add_worksheet('Tax Report')
+
+        bold_format = workbook.add_format({'bold': True})
+        normal_format = workbook.add_format({'bold': False})
+        monetary_format = workbook.add_format({'num_format': '#,##0.00'})
+
+        sheet.write('A1', 'Tax Report', bold_format)
+
+        sheet.write('A3', 'Company:', bold_format)
+        sheet.write('B3', docs[0].company_id.name, normal_format)
+
+        if form_data.get('date_from'):
+            sheet.write('A4', 'Date from:', bold_format)
+            sheet.write('B4', form_data['date_from'], normal_format)
+
+        if form_data.get('date_to'):
+            sheet.write('A5', 'Date to:', bold_format)
+            sheet.write('B5', form_data['date_to'], normal_format)
+
+        sheet.write('A6', 'Target Moves:', bold_format)
+        target_move = 'All Entries' if form_data.get('target_move') == 'all' else 'All Posted Entries'
+        sheet.write('B6', target_move, normal_format)
+
+        start_row = 8
+        sheet.write(start_row, 0, 'Sale', bold_format)
+        sheet.write(start_row, 1, 'Net', bold_format)
+        sheet.write(start_row, 2, 'Tax', bold_format)
+        start_row += 1
+
+        for line in lines.get('sale', []):
+            sheet.write(start_row, 0, line.get('name', ''), normal_format)
+            sheet.write_number(start_row, 1, line.get('net', 0.0), monetary_format)
+            sheet.write_number(start_row, 2, line.get('tax', 0.0), monetary_format)
+            start_row += 1
+
+        sheet.write(start_row, 0, 'Purchase', bold_format)
+        start_row += 1
+
+        for line in lines.get('purchase', []):
+            sheet.write(start_row, 0, line.get('name', ''), normal_format)
+            sheet.write_number(start_row, 1, line.get('net', 0.0), monetary_format)
+            sheet.write_number(start_row, 2, line.get('tax', 0.0), monetary_format)
+            start_row += 1

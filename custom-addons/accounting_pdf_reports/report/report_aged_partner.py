@@ -8,6 +8,7 @@ from dateutil.relativedelta import relativedelta
 
 class ReportAgedPartnerBalance(models.AbstractModel):
     _name = 'report.accounting_pdf_reports.report_agedpartnerbalance'
+    _inherit = 'report.report_xlsx.abstract'
     _description = 'Aged Partner Balance Report'
 
     def _get_partner_move_lines(self, account_type, partner_ids,
@@ -213,7 +214,6 @@ class ReportAgedPartnerBalance(models.AbstractModel):
                                      precision_rounding=self.env.user.company_id.currency_id.rounding):
                     at_least_one_amount = True
             values['total'] = sum([values['direction']] + [values[str(i)] for i in range(5)])
-            ## Add for total
             total[(i + 1)] += values['total']
             values['partner_id'] = partner['partner_id']
             if partner['partner_id']:
@@ -261,3 +261,66 @@ class ReportAgedPartnerBalance(models.AbstractModel):
             'get_partner_lines': movelines,
             'get_direction': total,
         }
+
+    def generate_xlsx_report(self, workbook, data, objects):
+        report_data = self._get_report_values(objects, data)
+
+        partners = report_data['get_partner_lines']
+        total = report_data['get_direction']
+        docs = report_data['docs']
+        res_company = self.env.company
+
+        sheet = workbook.add_worksheet('Aged Partner Balance')
+        bold = workbook.add_format({'bold': True})
+        date_format = workbook.add_format({'num_format': 'dd/mm/yyyy'})
+        currency_format = workbook.add_format({'num_format': '#,##0.00'})
+
+        sheet.write(0, 0, 'Aged Partner Balance', bold)
+        sheet.write(1, 0, 'Company:', bold)
+        sheet.write(1, 1, res_company.name)
+
+        date_from = data['form'].get('date_from', '')
+        sheet.write(2, 0, 'Start Date:', bold)
+        sheet.write(2, 1, date_from)
+
+        period_length = data['form'].get('period_length', '')
+        sheet.write(2, 2, 'Period Length (days):', bold)
+        sheet.write(2, 3, period_length)
+
+        target_move = data['form'].get('target_move', 'all')
+        target_move_label = 'All Entries' if target_move == 'all' else 'All Posted Entries'
+        sheet.write(3, 0, 'Target Moves:', bold)
+        sheet.write(3, 1, target_move_label)
+
+        result_selection = data['form'].get('result_selection', 'customer_supplier')
+        if result_selection == 'customer':
+            partner_type = 'Receivable Accounts'
+        elif result_selection == 'supplier':
+            partner_type = 'Payable Accounts'
+        else:
+            partner_type = 'Receivable and Payable Accounts'
+        sheet.write(3, 2, "Partner's:", bold)
+        sheet.write(3, 3, partner_type)
+
+        periods = {str(i): data['form'][str(i)] for i in range(5)}
+
+        headers = ['Partners', 'Not due'] + [periods[str(i)]['name'] for i in range(4, -1, -1)] + ['Total']
+        header_row = 5
+        for col, header in enumerate(headers):
+            sheet.write(header_row, col, header, bold)
+
+        row = header_row + 1
+        for partner in partners:
+            sheet.write(row, 0, partner['name'], bold)
+            sheet.write(row, 1, partner['direction'], currency_format)
+            for i in range(4, -1, -1):
+                sheet.write(row, 2 + (4 - i), partner.get(str(i), 0), currency_format)
+            sheet.write(row, 7, partner['total'], currency_format)
+            row += 1
+
+        sheet.write(row, 0, 'Total', bold)
+        sheet.write(row, 1, total[6], currency_format)
+        for i in range(4, -1, -1):
+            sheet.write(row, 2 + (4 - i), total[i], currency_format)
+        sheet.write(row, 7, sum(total), currency_format)
+

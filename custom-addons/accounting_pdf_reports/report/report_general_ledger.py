@@ -5,6 +5,7 @@ from odoo.exceptions import UserError
 
 class ReportGeneralLedger(models.AbstractModel):
     _name = 'report.accounting_pdf_reports.report_general_ledger'
+    _inherit = 'report.report_xlsx.abstract'
     _description = 'General Ledger Report'
 
     def _get_account_move_entry(self, accounts, analytic_account_ids,
@@ -182,3 +183,84 @@ class ReportGeneralLedger(models.AbstractModel):
             'partner_ids': partner_ids,
             'analytic_account_ids': analytic_account_ids,
         }
+
+    def generate_xlsx_report(self, workbook, data, objects):
+        report_data = self._get_report_values(objects, data)
+        accounts = report_data['Accounts']
+        res_company = self.env.company
+
+        sheet = workbook.add_worksheet('General Ledger')
+        bold = workbook.add_format({'bold': True})
+        date_format = workbook.add_format({'num_format': 'dd/mm/yyyy'})
+        currency_format = workbook.add_format({'num_format': '#,##0.00'})
+        right_align = workbook.add_format({'align': 'right'})
+
+        sheet.write(0, 0, f"{res_company.name}: General Ledger", bold)
+
+        filters = data['form']
+        sheet.write(2, 0, 'Journals:', bold)
+        sheet.write(2, 1, ', '.join(filters.get('print_journal', [])))
+
+        if filters.get('analytic_account_ids'):
+            sheet.write(2, 2, 'Analytic Accounts:', bold)
+            analytic_accounts = ', '.join([aa.name for aa in filters['analytic_account_ids']])
+            sheet.write(2, 3, analytic_accounts)
+
+        sheet.write(3, 0, 'Display Account:', bold)
+        display_account = filters.get('display_account', 'all')
+        display_account_map = {
+            'all': "All accounts",
+            'movement': "With movements",
+            'not_zero': "With balance not equal to zero"
+        }
+        sheet.write(3, 1, display_account_map.get(display_account, 'All accounts'))
+
+        sheet.write(3, 2, 'Target Moves:', bold)
+        target_move = filters.get('target_move', 'all')
+        target_move_label = 'All Entries' if target_move == 'all' else 'All Posted Entries'
+        sheet.write(3, 3, target_move_label)
+
+        sheet.write(4, 0, 'Sorted By:', bold)
+        sortby = filters.get('sortby', 'sort_date')
+        sortby_map = {
+            'sort_date': "Date",
+            'sort_journal_partner': "Journal and Partner"
+        }
+        sheet.write(4, 1, sortby_map.get(sortby, 'Date'))
+
+        date_from = filters.get('date_from')
+        date_to = filters.get('date_to')
+        if date_from:
+            sheet.write(4, 2, 'Date from:', bold)
+            sheet.write(4, 3, date_from)
+        if date_to:
+            sheet.write(5, 2, 'Date to:', bold)
+            sheet.write(5, 3, date_to)
+
+        headers = ['Date', 'JRNL', 'Partner', 'Ref', 'Move', 'Entry Label', 'Debit', 'Credit', 'Balance', 'Currency']
+        header_row = 7
+        for col, header in enumerate(headers):
+            sheet.write(header_row, col, header, bold)
+
+        row = header_row + 1
+        for account in accounts:
+            sheet.write(row, 0, f".. {account['code']} {account['name']}", bold)
+            sheet.write(row, 5, account['debit'], currency_format)
+            sheet.write(row, 6, account['credit'], currency_format)
+            sheet.write(row, 7, account['balance'], currency_format)
+            row += 1
+
+            for line in account['move_lines']:
+                sheet.write(row, 0, line['ldate'], date_format)
+                sheet.write(row, 1, line['lcode'])
+                sheet.write(row, 2, line['partner_name'])
+                sheet.write(row, 3, line['lref'])
+                sheet.write(row, 4, line['move_name'])
+                sheet.write(row, 5, line['lname'])
+                sheet.write(row, 6, line['debit'], currency_format)
+                sheet.write(row, 7, line['credit'], currency_format)
+                sheet.write(row, 8, line['balance'], currency_format)
+                if line.get('amount_currency') and line['amount_currency'] > 0.00:
+                    sheet.write(row, 9, line['amount_currency'], currency_format)
+                    sheet.write(row, 10, line['currency_code'])
+                row += 1

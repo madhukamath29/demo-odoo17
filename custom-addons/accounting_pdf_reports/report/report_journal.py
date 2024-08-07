@@ -5,6 +5,7 @@ from odoo.exceptions import UserError
 
 class ReportJournal(models.AbstractModel):
     _name = 'report.accounting_pdf_reports.report_journal'
+    _inherit = 'report.report_xlsx.abstract'
     _description = 'Journal Audit Report'
 
     def lines(self, target_move, journal_ids, sort_selection, data):

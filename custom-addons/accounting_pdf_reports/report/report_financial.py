@@ -5,6 +5,7 @@ from odoo.exceptions import UserError
 
 class ReportFinancial(models.AbstractModel):
     _name = 'report.accounting_pdf_reports.report_financial'
+    _inherit = 'report.report_xlsx.abstract'
     _description = 'Financial Reports'
 
     def _compute_account_balance(self, accounts):
@@ -161,3 +162,70 @@ class ReportFinancial(models.AbstractModel):
             'time': time,
             'get_account_lines': report_lines,
         }
+
+    def generate_xlsx_report(self, workbook, data, docs):
+        if 'account_report_id' not in data['form']:
+            raise UserError(_("Missing 'account_report_id' in data"))
+
+        sheet = workbook.add_worksheet('Financial Report')
+
+        bold_format = workbook.add_format({'bold': True})
+        normal_format = workbook.add_format({'bold': False})
+        monetary_format = workbook.add_format({'num_format': '#,##0.00'})
+
+        sheet.write('A1', data['form']['account_report_id'][1], bold_format)
+
+        sheet.write('A3', 'Target Moves:', bold_format)
+        sheet.write('B3', 'All Entries' if data['form']['target_move'] == 'all' else 'All Posted Entries',
+                    normal_format)
+
+        if data['form'].get('date_from'):
+            sheet.write('A4', 'Date from:', bold_format)
+            sheet.write('B4', data['form']['date_from'], normal_format)
+
+        if data['form'].get('date_to'):
+            sheet.write('A5', 'Date to:', bold_format)
+            sheet.write('B5', data['form']['date_to'], normal_format)
+
+        start_row = 7
+        if data['form']['debit_credit']:
+            sheet.write(start_row, 0, 'Name', bold_format)
+            sheet.write(start_row, 1, 'Debit', bold_format)
+            sheet.write(start_row, 2, 'Credit', bold_format)
+            sheet.write(start_row, 3, 'Balance', bold_format)
+            start_row += 1
+
+            for account in self.get_account_lines(data['form']):
+                if account['level'] != 0:
+                    style = normal_format if int(account.get('level')) > 3 else bold_format
+                    sheet.write(start_row, 0, int(account.get('level', 0)) + account.get('name'), style)
+                    sheet.write_number(start_row, 1, account.get('debit'), monetary_format)
+                    sheet.write_number(start_row, 2, account.get('credit'), monetary_format)
+                    sheet.write_number(start_row, 3, account.get('balance'), monetary_format)
+                    start_row += 1
+
+        elif not data['form']['enable_filter'] and not data['form']['debit_credit']:
+            sheet.write(start_row, 0, 'Name', bold_format)
+            sheet.write(start_row, 1, 'Balance', bold_format)
+            start_row += 1
+
+            for account in self.get_account_lines(data['form']):
+                if account['level'] != 0:
+                    style = normal_format if int(account.get('level')) > 3 else bold_format
+                    sheet.write(start_row, 0, '..' * int(account.get('level', 0)) + account.get('name'), style)
+                    sheet.write_number(start_row, 1, account.get('balance'), monetary_format)
+                    start_row += 1
+
+        elif data['form']['enable_filter'] and not data['form']['debit_credit']:
+            sheet.write(start_row, 0, 'Name', bold_format)
+            sheet.write(start_row, 1, 'Balance', bold_format)
+            sheet.write(start_row, 2, data['form']['label_filter'], bold_format)
+            start_row += 1
+
+            for account in self.get_account_lines(data['form']):
+                if account['level'] != 0:
+                    style = normal_format if int(account.get('level')) > 3 else bold_format
+                    sheet.write(start_row, 0, '..' * int(account.get('level', 0)) + account.get('name'), style)
+                    sheet.write_number(start_row, 1, account.get('balance'), monetary_format)
+                    sheet.write_number(start_row, 2, account.get('balance_cmp'), monetary_format)
+                    start_row += 1
