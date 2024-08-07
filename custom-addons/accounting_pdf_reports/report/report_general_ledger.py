@@ -188,6 +188,7 @@ class ReportGeneralLedger(models.AbstractModel):
         report_data = self._get_report_values(objects, data)
         accounts = report_data['Accounts']
         res_company = self.env.company
+        print_journal = report_data.get('print_journal', [])
 
         sheet = workbook.add_worksheet('General Ledger')
         bold = workbook.add_format({'bold': True})
@@ -199,7 +200,7 @@ class ReportGeneralLedger(models.AbstractModel):
 
         filters = data['form']
         sheet.write(2, 0, 'Journals:', bold)
-        sheet.write(2, 1, ', '.join(filters.get('print_journal', [])))
+        sheet.write(2, 1, ', '.join(print_journal))
 
         if filters.get('analytic_account_ids'):
             sheet.write(2, 2, 'Analytic Accounts:', bold)
@@ -244,7 +245,7 @@ class ReportGeneralLedger(models.AbstractModel):
 
         row = header_row + 1
         for account in accounts:
-            sheet.write(row, 0, f".. {account['code']} {account['name']}", bold)
+            sheet.write(row, 0, f"{account['code']} {account['name']}", bold)
             sheet.write(row, 5, account['debit'], currency_format)
             sheet.write(row, 6, account['credit'], currency_format)
             sheet.write(row, 7, account['balance'], currency_format)

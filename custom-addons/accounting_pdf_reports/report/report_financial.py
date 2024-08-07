@@ -212,7 +212,7 @@ class ReportFinancial(models.AbstractModel):
             for account in self.get_account_lines(data['form']):
                 if account['level'] != 0:
                     style = normal_format if int(account.get('level')) > 3 else bold_format
-                    sheet.write(start_row, 0, '..' * int(account.get('level', 0)) + account.get('name'), style)
+                    sheet.write(start_row, 0, account.get('name'), style)
                     sheet.write_number(start_row, 1, account.get('balance'), monetary_format)
                     start_row += 1
 
@@ -225,7 +225,7 @@ class ReportFinancial(models.AbstractModel):
             for account in self.get_account_lines(data['form']):
                 if account['level'] != 0:
                     style = normal_format if int(account.get('level')) > 3 else bold_format
-                    sheet.write(start_row, 0, '..' * int(account.get('level', 0)) + account.get('name'), style)
+                    sheet.write(start_row, 0, account.get('name'), style)
                     sheet.write_number(start_row, 1, account.get('balance'), monetary_format)
                     sheet.write_number(start_row, 2, account.get('balance_cmp'), monetary_format)
                     start_row += 1
