@@ -246,9 +246,9 @@ class ReportGeneralLedger(models.AbstractModel):
         row = header_row + 1
         for account in accounts:
             sheet.write(row, 0, f"{account['code']} {account['name']}", bold)
-            sheet.write(row, 5, account['debit'], currency_format)
-            sheet.write(row, 6, account['credit'], currency_format)
-            sheet.write(row, 7, account['balance'], currency_format)
+            sheet.write(row, 6, account['debit'], currency_format)
+            sheet.write(row, 7, account['credit'], currency_format)
+            sheet.write(row, 8, account['balance'], currency_format)
             row += 1
 
             for line in account['move_lines']:

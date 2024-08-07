@@ -171,13 +171,12 @@ class ReportBankBook(models.AbstractModel):
         target_move = form_data.get('target_move', 'all')
         accounts = report_data.get('Accounts', [])
 
-        title_format = workbook.add_format({'bold': True})
         header_format = workbook.add_format({'bold': True})
         money_format = workbook.add_format({'num_format': '#,##0.00'})
 
         for obj in objs:
             sheet = workbook.add_worksheet('Bank Book')
-            sheet.merge_range('A1:J1', 'Account Bank Book', title_format)
+            sheet.merge_range('A1:J1', 'Account Bank Book', header_format)
 
             sheet.write('A3', 'Journals:', header_format)
             sheet.write('B3', print_journal)
@@ -195,17 +194,18 @@ class ReportBankBook(models.AbstractModel):
 
             row = 9
             for account in accounts:
-                sheet.write(row, 0, str(account['date']), header_format)
-                sheet.write(row, 6, account['debit'], money_format)
-                sheet.write(row, 7, account['credit'], money_format)
-                sheet.write(row, 8, account['balance'], money_format)
+                sheet.write(row, 0, f'{account["code"]} {account["name"]}', header_format)
+                sheet.write(row, 6, account['debit'], header_format)
+                sheet.write(row, 7, account['credit'], header_format)
+                sheet.write(row, 8, account['balance'], header_format)
                 row += 1
 
                 for line in account['move_lines']:
                     sheet.write(row, 0, line['ldate'])
                     sheet.write(row, 1, line['lcode'])
-                    sheet.write(row, 2, line['lpartner_id'])
-                    sheet.write(row, 3, line['lref'])
+                    sheet.write(row, 2, line['partner_name'])
+                    if line.get('lref'):
+                        sheet.write(row, 3, line['lref'])
                     sheet.write(row, 4, line['move_name'])
                     sheet.write(row, 5, line['lname'])
                     sheet.write(row, 6, line['debit'], money_format)
