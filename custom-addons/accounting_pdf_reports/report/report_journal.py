@@ -116,3 +116,98 @@ class ReportJournal(models.AbstractModel):
             'sum_debit': self._sum_debit,
             'get_taxes': self._get_taxes,
         }
+
+    def generate_xlsx_report(self, workbook, data, objects):
+        # Step 1: Extract Report Data
+        report_data = self._get_report_values(objects, data)
+        docs = report_data['docs']
+        lines = report_data['lines']
+        res_company = self.env.company
+
+        # Step 2: Setup Workbook Formats
+        bold_format = workbook.add_format({'bold': True})
+        normal_format = workbook.add_format({'bold': False})
+        currency_format = workbook.add_format({'num_format': '#,##0.00'})
+        date_format = workbook.add_format({'num_format': 'dd/mm/yyyy'})
+
+        # Step 3: Initialize Sheet
+        sheet = workbook.add_worksheet('Journal Report')
+        row = 0
+
+        # Step 4: Iterate Through Documents (docs)
+        for o in docs:
+            # Fetch sum_debit and sum_credit for each document
+            sum_debit = self._sum_debit(data, o)
+            sum_credit = self._sum_credit(data, o)
+            get_taxes = self._get_taxes(data, o)
+
+            # Write the report title and company name
+            sheet.write(row, 0, f"{o.name} Journal", bold_format)
+            row += 1
+            sheet.write(row, 0, 'Company:', bold_format)
+            sheet.write(row, 1, res_company.name)
+            row += 1
+
+            # Write journal details
+            sheet.write(row, 0, 'Journal:', bold_format)
+            sheet.write(row, 1, o.name)
+            row += 1
+
+            # Write entries sorted by
+            sheet.write(row, 0, 'Entries Sorted By:', bold_format)
+            sort_selection = data['form'].get('sort_selection')
+            sort_label = 'Journal Entry Number' if sort_selection != 'l.date' else 'Date'
+            sheet.write(row, 1, sort_label)
+            row += 1
+
+            # Write target moves
+            sheet.write(row, 0, 'Target Moves:', bold_format)
+            target_move = data['form'].get('target_move', 'all')
+            target_move_label = 'All Entries' if target_move == 'all' else 'All Posted Entries'
+            sheet.write(row, 1, target_move_label)
+            row += 1
+
+            # Table headers
+            headers = ['Move', 'Date', 'Account', 'Partner', 'Label', 'Debit', 'Credit']
+            if data['form'].get('amount_currency'):
+                headers.append('Currency')
+            for col, header in enumerate(headers):
+                sheet.write(row, col, header, bold_format)
+            row += 1
+
+            # Write journal entries
+            for aml in lines.get(o.id, []):
+                sheet.write(row, 0,
+                            aml['move_id']['name'] if aml['move_id']['name'] != '/' else f"*{aml['move_id']['id']}")
+                sheet.write(row, 1, aml['date'], date_format)
+                sheet.write(row, 2, aml['account_id']['code'])
+                sheet.write(row, 3, aml['partner_id']['name'][:23] if aml['partner_id'] else '')
+                sheet.write(row, 4, aml['name'][:35] if aml['name'] else '')
+                sheet.write(row, 5, aml['debit'], currency_format)
+                sheet.write(row, 6, aml['credit'], currency_format)
+                if data['form'].get('amount_currency') and aml.get('amount_currency'):
+                    sheet.write(row, 7, aml['amount_currency'], currency_format)
+                row += 1
+
+            # Write totals
+            row += 1
+            sheet.write(row, 0, 'Total', bold_format)
+            sheet.write(row, 5, sum_debit, currency_format)
+            sheet.write(row, 6, sum_credit, currency_format)
+            row += 2
+
+            # Tax Declaration Table
+            sheet.write(row, 0, 'Tax Declaration', bold_format)
+            row += 1
+            tax_headers = ['Name', 'Base Amount', 'Tax Amount']
+            for col, header in enumerate(tax_headers):
+                sheet.write(row, col, header, bold_format)
+            row += 1
+
+            # Write tax details
+            for tax in get_taxes:
+                sheet.write(row, 0, tax['name'])
+                sheet.write(row, 1, get_taxes[tax]['base_amount'], currency_format)
+                sheet.write(row, 2, get_taxes[tax]['tax_amount'], currency_format)
+                row += 1
+            row += 1

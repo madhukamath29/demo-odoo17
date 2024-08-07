@@ -311,16 +311,17 @@ class ReportAgedPartnerBalance(models.AbstractModel):
 
         row = header_row + 1
         for partner in partners:
-            sheet.write(row, 0, partner['name'], bold)
+            sheet.write(row, 0, partner['name'])
             sheet.write(row, 1, partner['direction'], currency_format)
             for i in range(4, -1, -1):
                 sheet.write(row, 2 + (4 - i), partner.get(str(i), 0), currency_format)
             sheet.write(row, 7, partner['total'], currency_format)
             row += 1
 
-        sheet.write(row, 0, 'Total', bold)
-        sheet.write(row, 1, total[6], currency_format)
-        for i in range(4, -1, -1):
-            sheet.write(row, 2 + (4 - i), total[i], currency_format)
-        sheet.write(row, 7, sum(total), currency_format)
+        if partners:
+            sheet.write(row, 0, 'Account Total', bold)
+            sheet.write(row, 1, total[6], bold)
+            for i in range(4, -1, -1):
+                sheet.write(row, 2 + (4 - i), total[i], bold)
+            sheet.write(row, 7, total[5], bold)
 
