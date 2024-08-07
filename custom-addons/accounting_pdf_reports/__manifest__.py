@@ -44,6 +44,12 @@
     ],
     'pre_init_hook': '_pre_init_clean_m2m_models',
     'images': ['static/description/banner.gif'],
+    'assets': {
+        'web.assets_backend': [
+            'accounting_pdf_reports/static/src/js/report_action_patch.js',
+            'accounting_pdf_reports/static/src/xml/**/*.xml',
+        ],
+    },
 }
 
 # todo nys settings page

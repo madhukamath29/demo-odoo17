@@ -5,6 +5,7 @@ from odoo.exceptions import UserError
 
 class ReportPartnerLedger(models.AbstractModel):
     _name = 'report.accounting_pdf_reports.report_partnerledger'
+    _inherit = 'report.report_xlsx.abstract'
     _description = 'Partner Ledger Report'
 
     def _lines(self, data, partner):
@@ -120,3 +121,72 @@ class ReportPartnerLedger(models.AbstractModel):
             'lines': self._lines,
             'sum_partner': self._sum_partner,
         }
+
+    def generate_xlsx_report(self, workbook, data, objects):
+        report_data = self._get_report_values(objects, data)
+
+        # Extract required data from report_data
+        partner_ids = report_data['doc_ids']
+        partners = report_data['docs']
+        lines = report_data['lines']
+        res_company = self.env.company
+
+        # Create the Excel sheet
+        sheet = workbook.add_worksheet('Partner Ledger')
+        bold = workbook.add_format({'bold': True})
+        date_format = workbook.add_format({'num_format': 'dd/mm/yyyy'})
+        currency_format = workbook.add_format({'num_format': '#,##0.00'})
+
+        # Write the report title and company name
+        sheet.write(0, 0, 'Partner Ledger', bold)
+        sheet.write(1, 0, 'Company:', bold)
+        sheet.write(1, 1, res_company.name)
+
+        # Write date range
+        sheet.write(2, 0, 'Date from:', bold)
+        sheet.write(2, 1, data['form']['date_from'] if data['form']['date_from'] else '')
+        sheet.write(3, 0, 'Date to:', bold)
+        sheet.write(3, 1, data['form']['date_to'] if data['form']['date_to'] else '')
+
+        # Write target moves
+        sheet.write(4, 0, 'Target Moves:', bold)
+        target_move = data['form']['target_move']
+        target_move_label = 'All Entries' if target_move == 'all' else 'All Posted Entries'
+        sheet.write(4, 1, target_move_label)
+
+        # Table header
+        headers = ['Date', 'JRNL', 'Account', 'Ref', 'Debit', 'Credit', 'Balance']
+        if data['form'].get('amount_currency'):
+            headers.append('Currency')
+
+        header_row = 6
+        for col, header in enumerate(headers):
+            sheet.write(header_row, col, header, bold)
+
+        # Table rows
+        row = header_row + 1
+        for partner in partners:
+            partner_total_debit = self._sum_partner(data, partner, 'debit')
+            partner_total_credit = self._sum_partner(data, partner, 'credit')
+            partner_total_balance = self._sum_partner(data, partner, 'debit - credit')
+
+            # Partner information row
+            sheet.write(row, 0, f'{partner.ref if partner.ref else ""} - {partner.name if partner.name else ""}', bold)
+            sheet.write(row, 4, partner_total_debit, currency_format)
+            sheet.write(row, 5, partner_total_credit, currency_format)
+            sheet.write(row, 6, partner_total_balance, currency_format)
+            row += 1
+
+            # Transactions for the partner
+            partner_lines = lines(data, partner)
+            for line in partner_lines:
+                sheet.write(row, 0, line['date'], date_format)
+                sheet.write(row, 1, line['code'])
+                sheet.write(row, 2, line['a_code'])
+                sheet.write(row, 3, line['displayed_name'])
+                sheet.write(row, 4, line['debit'], currency_format)
+                sheet.write(row, 5, line['credit'], currency_format)
+                sheet.write(row, 6, line['progress'], currency_format)
+                if data['form'].get('amount_currency') and line.get('currency_id'):
+                    sheet.write(row, 7, line['amount_currency'], currency_format)
+                row += 1

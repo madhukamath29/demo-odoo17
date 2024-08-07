@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+	<t t-name="accounting_pdf_reports.XlsxReportAction" t-inherit="web.ReportAction" t-inherit-mode="extension" owl="1">
+		<xpath expr="//t[@t-set-slot='control-panel-create-button']/button" position="attributes">
+			<attribute name="t-on-click">() => this.print('qweb-pdf')</attribute>
+		</xpath>
+		<xpath expr="//t[@t-set-slot='control-panel-create-button']/button" position="after">
+			<button t-on-click="() => this.print('xlsx')" type="button" class="btn btn-secondary" title="Export">Export</button>
+		</xpath>
+	</t>
+</templates>
+
+
+
