@@ -26,6 +26,7 @@
         'om_recurring_payments',
         'om_account_daily_reports',
         'om_account_followup',
+        'report_xlsx',
     ],
     'data': [
         'security/group.xml',
