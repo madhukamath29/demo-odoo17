@@ -134,6 +134,7 @@ class ReportPartnerLedger(models.AbstractModel):
         bold = workbook.add_format({'bold': True})
         date_format = workbook.add_format({'num_format': 'dd/mm/yyyy'})
         currency_format = workbook.add_format({'num_format': '#,##0.00'})
+        title_currency_format = workbook.add_format({'num_format': '#,##0.00', 'bold': True})
 
         sheet.write(0, 0, 'Partner Ledger', bold)
         sheet.write(1, 0, 'Company:', bold)
@@ -165,9 +166,9 @@ class ReportPartnerLedger(models.AbstractModel):
 
             # Partner information row
             sheet.write(row, 0, f'{partner.ref if partner.ref else ""} - {partner.name if partner.name else ""}', bold)
-            sheet.write(row, 4, partner_total_debit, currency_format)
-            sheet.write(row, 5, partner_total_credit, currency_format)
-            sheet.write(row, 6, partner_total_balance, currency_format)
+            sheet.write(row, 4, f"{res_company.currency_id.symbol} {partner_total_debit}", title_currency_format)
+            sheet.write(row, 5, f"{res_company.currency_id.symbol} {partner_total_credit}", title_currency_format)
+            sheet.write(row, 6, f"{res_company.currency_id.symbol} {partner_total_balance}", title_currency_format)
             row += 1
 
             partner_lines = lines(data, partner)

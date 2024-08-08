@@ -194,6 +194,7 @@ class ReportGeneralLedger(models.AbstractModel):
         bold = workbook.add_format({'bold': True})
         date_format = workbook.add_format({'num_format': 'dd/mm/yyyy'})
         currency_format = workbook.add_format({'num_format': '#,##0.00'})
+        title_currency_format = workbook.add_format({'num_format': '#,##0.00', 'bold': True})
         right_align = workbook.add_format({'align': 'right'})
 
         sheet.write(0, 0, f"{res_company.name}: General Ledger", bold)
@@ -246,9 +247,9 @@ class ReportGeneralLedger(models.AbstractModel):
         row = header_row + 1
         for account in accounts:
             sheet.write(row, 0, f"{account['code']} {account['name']}", bold)
-            sheet.write(row, 6, f"{res_company.currency_id.symbol} {account['debit']}", currency_format)
-            sheet.write(row, 7, f"{res_company.currency_id.symbol} {account['credit']}", currency_format)
-            sheet.write(row, 8, f"{res_company.currency_id.symbol} {account['balance']}", currency_format)
+            sheet.write(row, 6, f"{res_company.currency_id.symbol} {account['debit']}", title_currency_format)
+            sheet.write(row, 7, f"{res_company.currency_id.symbol} {account['credit']}", title_currency_format)
+            sheet.write(row, 8, f"{res_company.currency_id.symbol} {account['balance']}", title_currency_format)
             row += 1
 
             for line in account['move_lines']:
