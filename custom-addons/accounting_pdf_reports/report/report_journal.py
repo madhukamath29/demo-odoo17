@@ -124,8 +124,7 @@ class ReportJournal(models.AbstractModel):
         res_company = self.env.company
 
         bold_format = workbook.add_format({'bold': True})
-        normal_format = workbook.add_format({'bold': False})
-        currency_format = workbook.add_format({'num_format': '#,##0.00'})
+        currency_format = workbook.add_format({'num_format': res_company.currency_id.symbol + '#,##0.00'})
         date_format = workbook.add_format({'num_format': 'dd/mm/yyyy'})
 
         sheet = workbook.add_worksheet('Journal Report')

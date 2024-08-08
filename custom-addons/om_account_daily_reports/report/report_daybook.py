@@ -118,7 +118,8 @@ class ReportDayBook(models.AbstractModel):
 
     def generate_xlsx_report(self, workbook, data, objs):
         report_data = self._get_report_values(None, data)
-
+        user = self.env.user
+        res_company = self.env.company
         form_data = report_data.get('data', {})
         print_journal = ', '.join(report_data.get('print_journal', []))
         date_from = form_data.get('date_from', '')
@@ -126,46 +127,47 @@ class ReportDayBook(models.AbstractModel):
         target_move = form_data.get('target_move', 'all')
         accounts = report_data.get('Accounts', [])
 
-        title_format = workbook.add_format({'bold': True})
         header_format = workbook.add_format({'bold': True})
-        money_format = workbook.add_format({'num_format': '#,##0.00'})
+        money_format = workbook.add_format({'num_format': res_company.currency_id.symbol + '#,##0.00'})
+        title_currency_format = workbook.add_format({'num_format':  res_company.currency_id.symbol + '#,##0.00',
+                                                     'bold': True})
 
-        for obj in objs:
-            sheet = workbook.add_worksheet('Day Book')
-            sheet.merge_range('A1:J1', 'Account Day Book', title_format)
+        sheet = workbook.add_worksheet('Day Book')
+        sheet.merge_range('A1:J1', 'Account Day Book', header_format)
 
-            sheet.write('A3', 'Journals:', header_format)
-            sheet.write('B3', print_journal)
-            sheet.write('A4', 'Start Date:', header_format)
-            sheet.write('B4', date_from)
-            sheet.write('A5', 'End Date:', header_format)
-            sheet.write('B5', date_to)
-            sheet.write('A6', 'Target Moves:', header_format)
-            sheet.write('B6', 'All Entries' if target_move == 'all' else 'Posted Entries')
+        sheet.write('A3', 'Journals:', header_format)
+        sheet.write('B3', print_journal)
+        sheet.write('A4', 'Start Date:', header_format)
+        sheet.write('B4', date_from)
+        sheet.write('A5', 'End Date:', header_format)
+        sheet.write('B5', date_to)
+        sheet.write('A6', 'Target Moves:', header_format)
+        sheet.write('B6', 'All Entries' if target_move == 'all' else 'Posted Entries')
 
-            headers = ['Date', 'JRNL', 'Partner', 'Ref', 'Move', 'Entry Label', 'Debit', 'Credit', 'Balance',
-                       'Currency']
-            for col_num, header in enumerate(headers):
-                sheet.write(8, col_num, header, header_format)
+        headers = (['Date', 'JRNL', 'Partner', 'Ref', 'Move', 'Entry Label', 'Debit', 'Credit', 'Balance'] +
+                   (['Currency'] if user.has_group('base.group_multi_currency') else []))
+        for col_num, header in enumerate(headers):
+            sheet.write(8, col_num, header, header_format)
 
-            row = 9
-            for account in accounts:
-                sheet.write(row, 0, str(account['date']), header_format)
-                sheet.write(row, 6, account['debit'], money_format)
-                sheet.write(row, 7, account['credit'], money_format)
-                sheet.write(row, 8, account['balance'], money_format)
+        row = 9
+        for account in accounts:
+            sheet.write(row, 0, str(account['date']), header_format)
+            sheet.write(row, 6, account['debit'], title_currency_format)
+            sheet.write(row, 7, account['credit'], title_currency_format)
+            sheet.write(row, 8, account['balance'], title_currency_format)
+            row += 1
+
+            for line in account['move_lines']:
+                sheet.write(row, 0, str(line['ldate']))
+                sheet.write(row, 1, line['lcode'])
+                sheet.write(row, 2, line['lpartner_id'])
+                sheet.write(row, 3, line['lref'])
+                sheet.write(row, 4, line['move_name'])
+                sheet.write(row, 5, line['lname'])
+                sheet.write(row, 6, line['debit'], money_format)
+                sheet.write(row, 7, line['credit'], money_format)
+                sheet.write(row, 8, line['balance'], money_format)
+                if (user.has_group('base.group_multi_currency') and
+                        (line['amount_currency'] and line['amount_currency'] > 0.00)):
+                    sheet.write(row, 9, f"{line['amount_currency']} {line['currency_code']}")
                 row += 1
-
-                for line in account['move_lines']:
-                    sheet.write(row, 0, line['ldate'])
-                    sheet.write(row, 1, line['lcode'])
-                    sheet.write(row, 2, line['lpartner_id'])
-                    sheet.write(row, 3, line['lref'])
-                    sheet.write(row, 4, line['move_name'])
-                    sheet.write(row, 5, line['lname'])
-                    sheet.write(row, 6, line['debit'], money_format)
-                    sheet.write(row, 7, line['credit'], money_format)
-                    sheet.write(row, 8, line['balance'], money_format)
-                    if line.get('amount_currency'):
-                        sheet.write(row, 9, f"{line['amount_currency']} {line['currency_code']}")
-                    row += 1
