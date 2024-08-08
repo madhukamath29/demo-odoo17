@@ -176,9 +176,9 @@ class ReportPartnerLedger(models.AbstractModel):
                 sheet.write(row, 1, line['code'])
                 sheet.write(row, 2, line['a_code'])
                 sheet.write(row, 3, line['displayed_name'])
-                sheet.write(row, 4, line['debit'], currency_format)
-                sheet.write(row, 5, line['credit'], currency_format)
-                sheet.write(row, 6, line['progress'], currency_format)
+                sheet.write(row, 4, f"{res_company.currency_id.symbol} {line['debit']}", currency_format)
+                sheet.write(row, 5, f"{res_company.currency_id.symbol} {line['credit']}", currency_format)
+                sheet.write(row, 6, f"{res_company.currency_id.symbol} {line['progress']}", currency_format)
                 if data['form'].get('amount_currency') and line.get('currency_id'):
                     sheet.write(row, 7, line['amount_currency'], currency_format)
                 row += 1

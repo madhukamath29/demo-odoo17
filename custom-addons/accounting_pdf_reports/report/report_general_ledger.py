@@ -246,9 +246,9 @@ class ReportGeneralLedger(models.AbstractModel):
         row = header_row + 1
         for account in accounts:
             sheet.write(row, 0, f"{account['code']} {account['name']}", bold)
-            sheet.write(row, 6, account['debit'], currency_format)
-            sheet.write(row, 7, account['credit'], currency_format)
-            sheet.write(row, 8, account['balance'], currency_format)
+            sheet.write(row, 6, f"{res_company.currency_id.symbol} {account['debit']}", currency_format)
+            sheet.write(row, 7, f"{res_company.currency_id.symbol} {account['credit']}", currency_format)
+            sheet.write(row, 8, f"{res_company.currency_id.symbol} {account['balance']}", currency_format)
             row += 1
 
             for line in account['move_lines']:
@@ -258,10 +258,9 @@ class ReportGeneralLedger(models.AbstractModel):
                 sheet.write(row, 3, line['lref'])
                 sheet.write(row, 4, line['move_name'])
                 sheet.write(row, 5, line['lname'])
-                sheet.write(row, 6, line['debit'], currency_format)
-                sheet.write(row, 7, line['credit'], currency_format)
-                sheet.write(row, 8, line['balance'], currency_format)
+                sheet.write(row, 6, f"{res_company.currency_id.symbol} {line['debit']}", currency_format)
+                sheet.write(row, 7, f"{res_company.currency_id.symbol} {line['credit']}", currency_format)
+                sheet.write(row, 8, f"{res_company.currency_id.symbol} {line['balance']}", currency_format)
                 if line.get('amount_currency') and line['amount_currency'] > 0.00:
-                    sheet.write(row, 9, line['amount_currency'], currency_format)
-                    sheet.write(row, 10, line['currency_code'])
+                    sheet.write(row, 9, f"{line['amount_currency']} {line['currency_code']}")
                 row += 1

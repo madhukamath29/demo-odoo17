@@ -173,6 +173,8 @@ class ReportFinancial(models.AbstractModel):
         normal_format = workbook.add_format({'bold': False})
         monetary_format = workbook.add_format({'num_format': '#,##0.00'})
 
+        res_company = self.env.company
+
         sheet.write('A1', data['form']['account_report_id'][1], bold_format)
 
         sheet.write('A3', 'Target Moves:', bold_format)
@@ -199,9 +201,9 @@ class ReportFinancial(models.AbstractModel):
                 if account['level'] != 0:
                     style = normal_format if int(account.get('level')) > 3 else bold_format
                     sheet.write(start_row, 0, int(account.get('level', 0)) + account.get('name'), style)
-                    sheet.write_number(start_row, 1, account.get('debit'), monetary_format)
-                    sheet.write_number(start_row, 2, account.get('credit'), monetary_format)
-                    sheet.write_number(start_row, 3, account.get('balance'), monetary_format)
+                    sheet.write(start_row, 1, f"{res_company.currency_id.symbol} {account.get('debit')}", monetary_format)
+                    sheet.write(start_row, 2, f"{res_company.currency_id.symbol} {account.get('credit')}", monetary_format)
+                    sheet.write(start_row, 3, f"{res_company.currency_id.symbol} {account.get('balance')}", monetary_format)
                     start_row += 1
 
         elif not data['form']['enable_filter'] and not data['form']['debit_credit']:
@@ -213,7 +215,7 @@ class ReportFinancial(models.AbstractModel):
                 if account['level'] != 0:
                     style = normal_format if int(account.get('level')) > 3 else bold_format
                     sheet.write(start_row, 0, account.get('name'), style)
-                    sheet.write_number(start_row, 1, account.get('balance'), monetary_format)
+                    sheet.write(start_row, 1, f"{res_company.currency_id.symbol} {account.get('balance')}", monetary_format)
                     start_row += 1
 
         elif data['form']['enable_filter'] and not data['form']['debit_credit']:
@@ -226,6 +228,6 @@ class ReportFinancial(models.AbstractModel):
                 if account['level'] != 0:
                     style = normal_format if int(account.get('level')) > 3 else bold_format
                     sheet.write(start_row, 0, account.get('name'), style)
-                    sheet.write_number(start_row, 1, account.get('balance'), monetary_format)
-                    sheet.write_number(start_row, 2, account.get('balance_cmp'), monetary_format)
+                    sheet.write(start_row, 1, f"{res_company.currency_id.symbol} {account.get('balance')}", monetary_format)
+                    sheet.write(start_row, 2, f"{res_company.currency_id.symbol} {account.get('balance_cmp')}", monetary_format)
                     start_row += 1

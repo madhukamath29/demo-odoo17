@@ -81,6 +81,7 @@ class ReportTax(models.AbstractModel):
         bold_format = workbook.add_format({'bold': True})
         normal_format = workbook.add_format({'bold': False})
         monetary_format = workbook.add_format({'num_format': '#,##0.00'})
+        res_company = self.env.company
 
         sheet.write('A1', 'Tax Report', bold_format)
 
@@ -107,8 +108,8 @@ class ReportTax(models.AbstractModel):
 
         for line in lines.get('sale', []):
             sheet.write(start_row, 0, line.get('name', ''), normal_format)
-            sheet.write_number(start_row, 1, line.get('net', 0.0), monetary_format)
-            sheet.write_number(start_row, 2, line.get('tax', 0.0), monetary_format)
+            sheet.write_number(start_row, 1, f"{res_company.currency_id.symbol} {line.get('net', 0.0)}", monetary_format)
+            sheet.write_number(start_row, 2, f"{res_company.currency_id.symbol} {line.get('tax', 0.0)}", monetary_format)
             start_row += 1
 
         sheet.write(start_row, 0, 'Purchase', bold_format)
@@ -116,6 +117,6 @@ class ReportTax(models.AbstractModel):
 
         for line in lines.get('purchase', []):
             sheet.write(start_row, 0, line.get('name', ''), normal_format)
-            sheet.write_number(start_row, 1, line.get('net', 0.0), monetary_format)
-            sheet.write_number(start_row, 2, line.get('tax', 0.0), monetary_format)
+            sheet.write(start_row, 1, f"{res_company.currency_id.symbol} {line.get('net', 0.0)}", monetary_format)
+            sheet.write(start_row, 2, f"{res_company.currency_id.symbol} {line.get('tax', 0.0)}", monetary_format)
             start_row += 1

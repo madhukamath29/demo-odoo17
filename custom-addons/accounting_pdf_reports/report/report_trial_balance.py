@@ -145,7 +145,7 @@ class ReportTrialBalance(models.AbstractModel):
         for account in accounts:
             sheet.write(row, 0, account['code'])
             sheet.write(row, 1, account['name'])
-            sheet.write(row, 2, account['debit'], currency_format)
-            sheet.write(row, 3, account['credit'], currency_format)
-            sheet.write(row, 4, account['balance'], currency_format)
+            sheet.write(row, 2, f"{res_company.currency_id.symbol} {account['debit']}", currency_format)
+            sheet.write(row, 3, f"{res_company.currency_id.symbol} {account['credit']}", currency_format)
+            sheet.write(row, 4, f"{res_company.currency_id.symbol} {account['balance']}", currency_format)
             row += 1
