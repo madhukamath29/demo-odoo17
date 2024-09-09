@@ -1,8 +1,8 @@
 version: 0.0
 os: linux
 files:
-  - source: .
-    destination: /tmp/codedeploy1
+  - source: /tmp/codedeploy1
+    destination: /opt/odoo17/odoo17
 hooks:
   AfterInstall:
     - location: scripts/rsync.sh
