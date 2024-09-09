@@ -10,8 +10,8 @@ phases:
   pre_build:
     commands:
       - echo Starting the pre-build phase...
-      - git clonehttps://github.com/madhukamath29/enterprise_repo.git 
-      - git https://github.com/madhukamath29/demo-odoo17.git 
+      - git clone https://github.com/madhukamath29/enterprise_repo.git 
+      - git clone https://github.com/madhukamath29/demo-odoo17.git 
 
   build:
     commands:
