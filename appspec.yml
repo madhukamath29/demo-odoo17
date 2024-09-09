@@ -3,6 +3,9 @@ os: linux
 files:
   - source: .
     destination: /tmp/codedeploy
+
+  - source: .
+    destination: /temp/enterprise_addon
 hooks:
   AfterInstall:
     - location: scripts/rsync.sh
