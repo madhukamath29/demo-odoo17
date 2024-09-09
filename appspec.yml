@@ -1,24 +1,26 @@
 version: 0.0
 os: linux
-
 files:
-  - source: /tmp/codedeploy/
-    destination: /opt/odoo17/odoo17/
+  - source: .
+    destination: /tmp/codedeploy
 
 hooks:
+  BeforeInstall:
+    - location: scripts/create_tmp_dir.sh
+      timeout: 300
+      runas: root
+
   AfterInstall:
     - location: scripts/rsync.sh
       timeout: 300
+      runas: root
+
   ApplicationStart:
     - location: scripts/restart_server.sh
       timeout: 300
+      runas: root
 
 permissions:
-  - object: /opt/odoo17/odoo17
-    owner: odoo17
-    group: odoo17
-    mode: 755
   - object: /tmp/codedeploy
     owner: odoo17
     group: odoo17
-    mode: 755
