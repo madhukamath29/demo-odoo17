@@ -3,23 +3,13 @@ os: linux
 files:
   - source: .
     destination: /tmp/codedeploy
-
 hooks:
-  BeforeInstall:
-    - location: scripts/create_tmp_dir.sh
-      timeout: 300
-      runas: root
-
   AfterInstall:
     - location: scripts/rsync.sh
       timeout: 300
-      runas: root
-
   ApplicationStart:
     - location: scripts/restart_server.sh
       timeout: 300
-      runas: root
-
 permissions:
   - object: /tmp/codedeploy
     owner: odoo17
