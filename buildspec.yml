@@ -4,7 +4,8 @@ phases:
   install:
     commands:
       - echo Installing dependencies...
-      - yum install -y git
+      - sudo apt-get update
+      - sudo apt-get install -y git
 
   pre_build:
     commands:
