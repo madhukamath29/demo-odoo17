@@ -1,8 +1,8 @@
 version: 0.0
 os: linux
 files:
-  - source: /temp/test/  # Referencing the directory created in CodeBuild
-    destination: opt/test1  # Example destination on your EC2 instance
+  - source: /  
+    destination: opt/test1  
 
 hooks:
   AfterInstall:
