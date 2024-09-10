@@ -5,13 +5,13 @@ phases:
     commands:
       - echo Installing dependencies...
       - sudo apt-get update
-      - sudo apt-get install -y git awscli
+      - sudo apt-get install -y git
 
   pre_build:
     commands:
       - echo Starting the pre-build phase...
-      - git clone https://github.com/madhukamath29/enterprise_repo.git
-      - git clone https://github.com/madhukamath29/demo-odoo17.git
+      - git clone https://github.com/madhukamath29/enterprise_repo.git 
+      - git clone https://github.com/madhukamath29/demo-odoo17.git 
 
   build:
     commands:
@@ -30,13 +30,13 @@ phases:
       - echo Listing contents of merged_code...
       - ls -l merged_code
       - echo Preparing artifacts for CodeDeploy...
-      - mkdir -p /temp/test
+      - mkdir -p /temp/test 
+      - echo Copying files from merged_code to /temp/test ...
       - cp -r merged_code/* /temp/test/
-      - echo Uploading files to S3 bucket...
-      - aws s3 cp /temp/test s3://final-code-merged-bucket/deployment / --recursive
-      - echo Files uploaded to S3.
-
+      - echo Files in /temp/test...
+      - ls -l /temp/test/
+      - echo Artifacts prepared for deployment to EC2.
 artifacts:
   files:
     - '/temp/test/**/*'  # Include all files and directories in /temp/test/
-  discard-paths: no
+discard-paths: no
