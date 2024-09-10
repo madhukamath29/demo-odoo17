@@ -1,7 +1,7 @@
 version: 0.0
 os: linux
 files:
-  - source: .
+  - source: /temp/test/
     destination: /temp/test/
 
 hooks:
@@ -16,6 +16,6 @@ hooks:
       runas: root
 
 permissions:
-  - object: /tmp/codedeploy
+  - object: /tmp/test
     owner: odoo17
     group: odoo17
