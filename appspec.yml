@@ -5,11 +5,15 @@ files:
     destination: opt/test1  
 
 hooks:
-  AfterInstall:
-    - location: scripts/after_install.sh
-      timeout: 300
-      runas: root
+  #AfterInstall:
+    #- location: scripts/rsync.sh
+     # timeout: 300
+
   ApplicationStart:
-    - location: scripts/start_server.sh
+    - location: scripts/restart_server.sh
       timeout: 300
-      runas: root
+
+# permissions:
+#   - object: /temp/test
+#     owner: odoo17
+#     group: odoo17
