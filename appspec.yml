@@ -1,19 +1,15 @@
 version: 0.0
 os: linux
 files:
-  - source: /temp/test/
-    destination: opt/finalcode
+  - source: temp/test/  # Referencing the directory created in CodeBuild
+    destination: /var/www/html/  # Example destination on your EC2 instance
 
 hooks:
-  #AfterInstall:
-    #- location: scripts/rsync.sh
-     # timeout: 300
-
-  ApplicationStart:
-    - location: scripts/restart_server.sh
+  AfterInstall:
+    - location: scripts/after_install.sh
       timeout: 300
-
-permissions:
-  - object: /temp/test
-    owner: odoo17
-    group: odoo17
+      runas: root
+  ApplicationStart:
+    - location: scripts/start_server.sh
+      timeout: 300
+      runas: root
