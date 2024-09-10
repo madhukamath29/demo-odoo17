@@ -2,16 +2,24 @@ version: 0.0
 os: linux
 files:
   - source: /temp/enterprise_addon/
-    destination: /opt/odoo17/odoo17/  
-  - source: .
-    destination: /temp/enterprise_addon
+    destination:  /opt/odoo17/odoo17/
+
 hooks:
+  BeforeInstall:
+    - location: scripts/create_tmp_dir.sh
+      timeout: 300
+      runas: root
+
   AfterInstall:
     - location: scripts/rsync.sh
       timeout: 300
+      runas: root
+
   ApplicationStart:
     - location: scripts/restart_server.sh
       timeout: 300
+      runas: root
+
 permissions:
   - object: /tmp/codedeploy
     owner: odoo17

@@ -1,11 +1,14 @@
 #!/bin/bash
 set -e
 
-# Use rsync to copy the files
+# Sync files from the source directory to the destination
 rsync -vrah /temp/enterprise_addon/ /opt/odoo17/odoo17/
 
-# Remove the temporary directory
+# Optionally remove the source directory if no longer needed
 rm -rf /temp/enterprise_addon
 
 echo "Code Deployed to /opt/odoo17/odoo17/"
+
+
+
 

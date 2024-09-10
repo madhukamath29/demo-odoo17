@@ -36,3 +36,7 @@ phases:
       - echo Files in /temp/enterprise_addon...
       - ls -l /temp/enterprise_addon/
       - echo Artifacts prepared for deployment to EC2.
+artifacts:
+  files:
+    - '**/*'  # Includes all files in the build directory
+  discard-paths: no
