@@ -17,7 +17,7 @@ phases:
     commands:
       - echo Starting the build phase...
       - mkdir -p merged_code
-      - mv merged_code/temp merged_code/temp_backup || true  # Ignore if temp doesn't exist
+      - mv merged_code/temp merged_code/temp_backup || true
       - cp -r enterprise_repo/* merged_code/
       - cp -r demo-odoo17/* merged_code/
       - echo Code from enterprise_repo and demo-odoo17 successfully merged into merged_code
@@ -31,13 +31,11 @@ phases:
       - ls -l merged_code
       - echo Preparing artifacts for CodeDeploy...
       - mkdir -p temp/test
-      - echo Copying files from merged_code to temp/test ...
       - cp -r merged_code/* temp/test/
       - echo Files in temp/test...
       - ls -l temp/test/
-      - echo Artifacts prepared for deployment to EC2.
 
 artifacts:
   files:
-    - 'temp/test/'  # Relative path for artifacts to be used in CodeDeploy
-discard-paths: no
+    - 'temp/test/**/*'
+  discard-paths: no
