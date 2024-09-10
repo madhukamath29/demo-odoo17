@@ -1,21 +1,19 @@
 version: 0.0
 os: linux
 files:
-  - source: /temp/test/
-    destination: /opt/odoo17/odoo17/
+  - source: .
+    destination: /temp/test
 
 hooks:
   AfterInstall:
     - location: scripts/rsync.sh
       timeout: 300
-      runas: root
 
   ApplicationStart:
     - location: scripts/restart_server.sh
       timeout: 300
-      runas: root
 
 permissions:
-  - object: /tmp/test
+  - object: /temp/test
     owner: odoo17
     group: odoo17
