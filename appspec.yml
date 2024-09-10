@@ -5,11 +5,6 @@ files:
     destination:  /opt/odoo17/odoo17/
 
 hooks:
-  BeforeInstall:
-    - location: scripts/create_tmp_dir.sh
-      timeout: 300
-      runas: root
-
   AfterInstall:
     - location: scripts/rsync.sh
       timeout: 300
