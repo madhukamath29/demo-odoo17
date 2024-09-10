@@ -2,7 +2,7 @@ version: 0.0
 os: linux
 files:
   - source: .
-    destination: /tmp/codedeploy
+    destination: temp/enterprise_addon
 
   - source: .
     destination: /temp/enterprise_addon
