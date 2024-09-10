@@ -2,7 +2,7 @@ version: 0.0
 os: linux
 files:
   - source: /temp/test/
-    destination: /temp/test/
+    destination: /opt/odoo17/odoo17/
 
 hooks:
   AfterInstall:
