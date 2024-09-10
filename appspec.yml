@@ -1,9 +1,8 @@
 version: 0.0
 os: linux
 files:
-  - source: .
-    destination: temp/enterprise_addon
-
+  - source: /temp/enterprise_addon/
+    destination: /opt/odoo17/odoo17/  
   - source: .
     destination: /temp/enterprise_addon
 hooks:
