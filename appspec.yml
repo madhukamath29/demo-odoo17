@@ -1,13 +1,10 @@
 version: 0.0
 os: linux
-files:
-  - source: .
-    destination: /temp/test
-
 hooks:
   AfterInstall:
-    - location: scripts/rsync.sh
+    - location: scripts/download_from_s3.sh
       timeout: 300
+      runas: root
 
   ApplicationStart:
     - location: scripts/restart_server.sh
