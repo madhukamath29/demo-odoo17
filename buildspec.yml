@@ -38,5 +38,5 @@ phases:
       - echo Artifacts prepared for deployment to EC2.
 artifacts:
   files:
-    - '/temp/test/**/*'  # Include all files and directories in /temp/test/
+    - /temp/test/**/*  # Include all files and directories in /temp/test/
 discard-paths: no

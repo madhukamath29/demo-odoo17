@@ -1,13 +1,13 @@
 version: 0.0
 os: linux
 files:
-  - source: .
-    destination: /temp/test
+  - source: /temp/test/
+    destination: opt/finalcode
 
 hooks:
-  AfterInstall:
-    - location: scripts/rsync.sh
-      timeout: 300
+  #AfterInstall:
+    #- location: scripts/rsync.sh
+     # timeout: 300
 
   ApplicationStart:
     - location: scripts/restart_server.sh
