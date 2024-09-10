@@ -39,5 +39,5 @@ phases:
 
 artifacts:
   files:
-    - 'temp/test/**/*'  # Relative path for artifacts to be used in CodeDeploy
+    - 'temp/test/'  # Relative path for artifacts to be used in CodeDeploy
 discard-paths: no
