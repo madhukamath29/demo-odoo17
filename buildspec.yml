@@ -31,5 +31,5 @@ phases:
 
 artifacts:
   files:
-    - /temp/test/
+    - /temp/test/**/*
 discard-paths: no
