@@ -27,7 +27,7 @@ phases:
       - mkdir -p test 
       - cp -r merged_code/* test/
       - ls -l test/
-      - echo Artifacts ready...
+      - echo Artifacts ready....
 
 artifacts:
   files:
