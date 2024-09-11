@@ -37,5 +37,6 @@ phases:
 
 artifacts:
   files:
-    - 'temp/test/**/*'
+    - '**/*' # Capture everything inside the working directory
+  base-directory: temp/test # This will ensure files inside 'temp/test' are used
   discard-paths: no
