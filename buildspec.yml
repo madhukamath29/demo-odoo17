@@ -3,39 +3,33 @@ version: 0.2
 phases:
   install:
     commands:
-      - echo Installing dependencies...
+      - echo Installing necessary dependencies...
       - sudo apt-get update
       - sudo apt-get install -y git
 
   pre_build:
     commands:
-      - echo Starting the pre-build phase...
+      - echo Cloning repositories...
       - git clone https://github.com/madhukamath29/enterprise_repo.git 
       - git clone https://github.com/madhukamath29/demo-odoo17.git 
 
   build:
     commands:
-      - echo Starting the build phase...
-      - mkdir -p merged_code
-      # - mv merged_code/temp merged_code/temp_backup || true  # Ignore if temp doesn't exist
+      - echo Merging code from both repositories...
+      - mkdir merged_code
       - cp -r enterprise_repo/* merged_code/
       - cp -r demo-odoo17/* merged_code/
-      - echo Code from enterprise_repo and demo-odoo17 successfully merged into merged_code
+      - echo Merged code successfully.
 
   post_build:
     commands:
-      - echo Starting the post-build phase...
-      - echo Checking if merged_code has files...
-      - echo Listing contents of merged_code...
-      - ls -l merged_code
-      - echo Preparing artifacts for CodeDeploy...
+      - echo Preparing artifacts for deployment...
       - mkdir -p /temp/test 
-      - echo Copying files from merged_code to /temp/test ...
       - cp -r merged_code/* /temp/test/
-      - echo Files in /temp/test...
-      - ls -l /temp/test/
-      - echo Artifacts prepared for deployment to EC2.
+      - ls-l /temp/test/
+      - echo Artifacts ready.
+
 artifacts:
   files:
-    - '/temp/test/**/*'  # Include all files and directories in /temp/test/
+    - '/temp/test/**/*'
 discard-paths: no
