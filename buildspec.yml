@@ -24,13 +24,14 @@ phases:
   post_build:
     commands:
       - echo Preparing artifacts for deployment...
-      - mkdir -p test 
-      - cp -r merged_code/* test/
-      - ls -l test/
-      - echo Artifacts ready....
+      - mkdir -p /temp/test 
+      - cp -r merged_code/* /temp/test/
+      - ls -l /temp
+      - ls -l /temp/test/
+      - echo Artifacts ready...
 
 artifacts:
   files:
     - test/**
-  discard-paths: yes
+  discard-paths: no
 
