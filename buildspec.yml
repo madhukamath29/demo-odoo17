@@ -26,11 +26,12 @@ phases:
       - echo Preparing artifacts for deployment...
       - mkdir -p /temp/test 
       - cp -r merged_code/* /temp/test/
+      - ls -l /temp
       - ls -l /temp/test/
-      - echo Artifacts ready....
+      - echo Artifacts ready...
 
 artifacts:
   files:
-    - '**/*'   # Include everything inside the /temp/test/ directory
-  base-directory: /temp/test   # Set /temp/test/ as the base directory
-  discard-paths: no
+    - /temp/test/**
+  discard-paths: yes
+
