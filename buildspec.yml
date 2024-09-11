@@ -31,5 +31,6 @@ phases:
 
 artifacts:
   files:
-    - /temp/test/**/*
-discard-paths: no
+    - '**/*'   # Include everything inside the /temp/test/ directory
+  base-directory: /temp/test   # Set /temp/test/ as the base directory
+  discard-paths: no
