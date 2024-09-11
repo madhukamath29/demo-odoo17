@@ -17,7 +17,7 @@ phases:
     commands:
       - echo Starting the build phase...
       - mkdir -p merged_code
-      - mv merged_code/temp merged_code/temp_backup || true
+      # - mv merged_code/temp merged_code/temp_backup || true  # Ignore if temp doesn't exist
       - cp -r enterprise_repo/* merged_code/
       - cp -r demo-odoo17/* merged_code/
       - echo Code from enterprise_repo and demo-odoo17 successfully merged into merged_code
@@ -26,20 +26,16 @@ phases:
     commands:
       - echo Starting the post-build phase...
       - echo Checking if merged_code has files...
-      - test -n "$(ls -A merged_code)" && echo "Files exist in merged_code" || echo "No files in merged_code"
       - echo Listing contents of merged_code...
       - ls -l merged_code
-      - echo Preparing artifacts for CodeDeploy.....
-      - mkdir -p temp/test
-      - cp -r merged_code/* temp/test/
-      - echo Files in temp/test...
-      - ls -l temp/test/
-      - echo Zipping the content of temp/test...
-      - cd temp
-      - zip -r ../nginx_code_output.zip test
-      - cd ..
+      - echo Preparing artifacts for CodeDeploy...
+      - mkdir -p /temp/test 
+      - echo Copying files from merged_code to /temp/test ...
+      - cp -r merged_code/* /temp/test/
+      - echo Files in /temp/test...
+      - ls -l /temp/test/
+      - echo Artifacts prepared for deployment to EC2.
 artifacts:
   files:
-    - nginx_code_output.zip
-  discard-paths: yes
-  base-directory: temp
+    - '/temp/test/**/*'  # Include all files and directories in /temp/test/
+discard-paths: no
