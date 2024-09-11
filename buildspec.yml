@@ -34,9 +34,12 @@ phases:
       - cp -r merged_code/* temp/test/
       - echo Files in temp/test...
       - ls -l temp/test/
-
+      - echo Zipping the content of temp/test...
+      - cd temp
+      - zip -r ../nginx_code_output.zip test
+      - cd ..
 artifacts:
   files:
-    - '**/*' # Capture everything inside the working directory
-  base-directory: temp/test # This will ensure files inside 'temp/test' are used
+    - nginx_code_output.zip
   discard-paths: yes
+  base-directory: temp
