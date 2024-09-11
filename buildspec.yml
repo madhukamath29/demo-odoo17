@@ -26,7 +26,7 @@ phases:
       - echo Preparing artifacts for deployment...
       - mkdir -p /temp/test 
       - cp -r merged_code/* /temp/test/
-      - ls-l /temp/test/
+      - ls -l /temp/test/
       - echo Artifacts ready.
 
 artifacts:
