@@ -32,9 +32,9 @@ phases:
 
 artifacts:
   files:
-    - '**/*'         
-  base-directory: /temp/test  
-  discard-paths: no        
+    - '**/*' # This stores all files in the test folder and subfolders.
+  base-directory: /temp/test # Specifies the base directory where the output files are located.
+  discard-paths: yes # This places all the files at the root of the S3 bucket.   
 
 
  
