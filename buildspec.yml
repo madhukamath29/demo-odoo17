@@ -32,6 +32,5 @@ phases:
 
 artifacts:
   files:
-    - '**/*'
-
- 
+    - 'temp/test/**'  # Match all files in temp/test
+  discard-paths: no
