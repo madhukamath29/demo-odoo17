@@ -32,8 +32,9 @@ phases:
 
 artifacts:
   files:
-    - '/temp/test/**/*'
-  discard-paths: no
+    - '**/*'         
+  base-directory: /temp/test  
+  discard-paths: no        
 
 
  
