@@ -11,7 +11,7 @@ phases:
     commands:
       - echo Cloning repositories...
       - git clone https://github.com/madhukamath29/enterprise_repo.git /home/enterprise
-      - git clonehttps://github.com/madhukamath29/demo-odoo17.git /home/demo-odoo17
+      - git clone https://github.com/madhukamath29/demo-odoo17.git /home/demo-odoo17
 
   build:
     commands:
