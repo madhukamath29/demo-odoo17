@@ -10,27 +10,30 @@ phases:
   pre_build:
     commands:
       - echo Cloning repositories...
-      - git clone https://github.com/madhukamath29/enterprise_repo.git 
-      - git clone https://github.com/madhukamath29/demo-odoo17.git 
+      - git clone https://github.com/madhukamath29/enterprise_repo.git /home/enterprise
+      - git clonehttps://github.com/madhukamath29/demo-odoo17.git /home/demo-odoo17
 
   build:
     commands:
       - echo Merging code from both repositories...
       - mkdir merged_code
-      - cp -r enterprise_repo/* merged_code/
-      - cp -r demo-odoo17/* merged_code/
-      - echo Merged code successfully.
+      - cp -r /home/enterprise/* merged_code/
+      - ls -l merged_code/
+      - cp -r /home/demo-odoo17/* merged_code/
+      - ls -l merged_code/
+      - echo Merged code successfully....
 
   post_build:
     commands:
-      - echo Preparing artifacts for deployment...
-      - mkdir -p /temp/test 
-      - cp -r merged_code/* /temp/test/
-      - ls -l /temp
-      - ls -l /temp/test/
-      - echo Artifacts ready....
+      - echo Preparing artifacts for deployment.....
+      - mkdir -p temp/test
+      - cp -r merged_code/* temp/test/
+      - ls -l temp
+      - ls -l temp/test/
+      - echo Artifacts ready..............
 
 artifacts:
   files:
-    - 'temp/test/**'  # Match all files in temp/test
+    - '**/*'
+  base-directory: 'temp/test'
   discard-paths: no

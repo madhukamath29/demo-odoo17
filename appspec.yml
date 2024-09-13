@@ -1,19 +1,12 @@
 version: 0.0
 os: linux
 files:
-  - source: /  
-    destination: opt/test1  
-
+  - source: /
+    destination: /opt/enterprise_addons 
 hooks:
-  #AfterInstall:
-    #- location: scripts/rsync.sh
-     # timeout: 300
-
+  # AfterInstall:
+    # - location: scripts/rsync.sh
+      # timeout: 300
   ApplicationStart:
     - location: scripts/restart_server.sh
       timeout: 300
-
-# permissions:
-#   - object: /temp/test
-#     owner: odoo17
-#     group: odoo17
