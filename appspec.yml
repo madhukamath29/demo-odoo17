@@ -4,9 +4,9 @@ files:
   - source: /
     destination: /opt/enterprise_addons 
 hooks:
-  # AfterInstall:
-    # - location: scripts/rsync.sh
-      # timeout: 300
+  AfterInstall:
+    - location: scripts/rsync.sh
+      timeout: 300
   ApplicationStart:
     - location: scripts/restart_server.sh
       timeout: 300
