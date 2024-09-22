@@ -3,37 +3,75 @@ version: 0.2
 phases:
   install:
     commands:
-      - echo Installing necessary dependencies...
+      - echo Installing necessary dependencies....
       - sudo apt-get update
       - sudo apt-get install -y git
 
   pre_build:
     commands:
       - echo Cloning repositories...
-      - git clone https://github.com/madhukamath29/enterprise_repo.git /home/enterprise
       - git clone https://github.com/madhukamath29/demo-odoo17.git /home/demo-odoo17
+      - git clone https://github.com/madhukamath29/INV-Repo.git /home/INV-Repo
+      - echo Repositories cloned successfully....
 
   build:
     commands:
-      - echo Merging code from both repositories...
-      - mkdir merged_code
-      - cp -r /home/enterprise/* merged_code/
-      - ls -l merged_code/
-      - cp -r /home/demo-odoo17/* merged_code/
-      - ls -l merged_code/
-      - echo Merged code successfully....
+      - echo Merging code to demo-odoo17...
+      - mkdir -p /home/merged_code
+      - cp -r /home/demo-odoo17/* /home/merged_code/
+      
+      - echo "Merging INV-Repo branches..."
+
+      # Merge common-addons branch
+      - cd /home/INV-Repo
+      - git checkout common-addons
+      - cp -r common-addon-folder/ /home/merged_code/
+      - echo "Contents of common-addon-folder from common-addons branch:"
+      - ls -l /home/merged_code/common-addon-folder/
+
+      # Merge third-party-addons branch
+      - git checkout third-party-addons
+      - cp -r third-party-addons-folder/ /home/merged_code/
+      - echo "Contents of third-party-addons-folder from third-party-addons branch:"
+      - ls -l /home/merged_code/third-party-addons-folder/
+
+      # Merge dev-gst branch
+      - git checkout dev-gst
+      - cp -r custom-addons/ /home/merged_code/
+      - echo "Contents of custom-addons from dev-gst branch:"
+      - ls -l /home/merged_code/custom-addons/
+
+      # Merge qa-gst branch
+      - git checkout qa-gst
+      - cp -r custom-addons/ /home/merged_code/
+      - echo "Contents of custom-addons from qa-gst branch:"
+      - ls -l /home/merged_code/custom-addons/
+
+      # Merge prod-gst branch
+      - git checkout prod-gst
+      - cp -r custom-addons/ /home/merged_code/
+      - echo "Contents of custom-addons from prod-gst branch:"
+      - ls -l /home/merged_code/custom-addons/
+      - ls -l /home/merged_code/
+      - echo "Code from INV-Repo merged successfully....."
 
   post_build:
     commands:
       - echo Preparing artifacts for deployment.....
-      - mkdir -p temp/test
-      - cp -r merged_code/* temp/test/
-      - ls -l temp
-      - ls -l temp/test/
-      - echo Artifacts ready..............
+      - mkdir -p /home/temp/test
+      - cp -r /home/merged_code/* /home/temp/test/
+      - echo "Checking /home/temp/test directory..."
+      - ls -l /home
+      - ls -l /home/temp
+      - ls -l /home/temp/test
+      - echo Artifacts ready...............
 
 artifacts:
   files:
     - '**/*'
-  base-directory: 'temp/test'
+  base-directory: '/home/temp/test'
   discard-paths: no
+
+
+
+    
