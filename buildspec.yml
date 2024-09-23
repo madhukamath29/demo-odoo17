@@ -64,7 +64,7 @@ phases:
       - ls -l /home
       - ls -l /home/temp
       - ls -l /home/temp/test
-      - echo Artifacts ready...............
+      - echo Artifacts ready................
 
 artifacts:
   files:
