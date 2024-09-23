@@ -60,7 +60,7 @@ phases:
       - echo Preparing artifacts for deployment.....
       - mkdir -p /home/temp/test
       - cp -r /home/merged_code/* /home/temp/test/
-      - echo "Checking /home/temp/test directory..."
+      - echo "Checking /home/temp/test directory...."
       - ls -l /home
       - ls -l /home/temp
       - ls -l /home/temp/test
