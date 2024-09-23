@@ -3,6 +3,7 @@ os: linux
 files:
   - source: /
     destination: /opt/enterprise_addons 
+    overwrite: yes
 hooks:
   AfterInstall:
     - location: scripts/rsync.sh
